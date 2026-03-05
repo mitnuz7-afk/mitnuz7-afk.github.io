@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>TextureForge95 — Emboss Studio</title>
+<link id="favicon" rel="icon" type="image/png" href="logo1.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -14,6 +15,8 @@ body{background:#008080;font-family:'MS Sans Serif',Arial,sans-serif;font-size:1
   display:flex;flex-direction:column;width:100%;max-width:1300px;height:calc(100vh - 8px);}
 .tbar{background:linear-gradient(90deg,var(--wb),var(--wbl));color:#fff;padding:3px 6px;
   display:flex;align-items:center;justify-content:space-between;font-weight:bold;font-size:12px;height:22px;flex-shrink:0;}
+.tbar-left{display:flex;align-items:center;gap:6px;}
+#sitelogo{width:16px;height:16px;object-fit:cover;border:1px solid rgba(255,255,255,.3);flex-shrink:0;transition:opacity .3s;}
 .tbtns{display:flex;gap:2px;}
 .wb{background:var(--w);border:1px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);
   width:16px;height:14px;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
@@ -63,7 +66,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 .btn{background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);
   padding:2px 10px;font-size:11px;cursor:pointer;white-space:nowrap;font-family:inherit;}
 .btn:active{border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);}
-.cvp{flex:1;overflow:auto;background:#5a7a5a;padding:16px;min-height:0;}
+.cvp{flex:1;overflow:auto;background:#5a7a5a;padding:16px;}
 #mainCanvas{display:block;cursor:crosshair;border:2px solid;border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);}
 /* STATUS */
 .sb{background:var(--w);border-top:1px solid var(--wd);padding:2px 6px;
@@ -97,7 +100,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 <body>
 <div class="win">
   <div class="tbar">
-    <div>🖼 TextureForge95 — Emboss Studio</div>
+    <div class="tbar-left">
+      <img id="sitelogo" src="logo1.png" alt="" onerror="this.style.display='none'">
+      🖼 TextureForge95 — Emboss Studio
+    </div>
     <div class="tbtns"><div class="wb">_</div><div class="wb">□</div><div class="wb">✕</div></div>
   </div>
 
@@ -220,7 +226,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
       <div class="gb"><span class="gl">Canvas Size</span>
         <div class="cr"><span class="cl">Width</span>  <input type="number" class="ni" id="cvW" value="512" min="64" max="2048"><span class="cl">px</span></div>
-        <div class="cr"><span class="cl">Height</span> <input type="number" class="ni" id="cvH" value="512" min="64" max="2048"><span class="cl">px</span></div>
+        <div class="cr"><span class="cl">Height</span> <input type="number" class="ni" id="cvH" value="512" min="64" max="2048"></div>
         <div class="cr" style="margin-top:3px;gap:3px;flex-wrap:wrap">
           <div class="btn" onclick="applySize()" style="font-size:10px;padding:2px 7px">Apply</div>
           <div class="btn" onclick="qs(512,512)"   style="font-size:10px;padding:2px 5px">512²</div>
@@ -336,13 +342,34 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
 <script>
 // ══════════════════════════════════════════
+// LOGO CYCLING
+// ══════════════════════════════════════════
+(function(){
+  const logos = ['logo1.png','logo2.png','logo3.png'];
+  let idx = 0;
+  function next(){
+    idx = (idx + 1) % logos.length;
+    const src = logos[idx];
+    // title bar logo
+    const img = document.getElementById('sitelogo');
+    if(img){ img.style.opacity='0'; setTimeout(()=>{ img.src=src; img.style.opacity='1'; },300); }
+    // favicon
+    const fav = document.getElementById('favicon');
+    if(fav) fav.href = src;
+  }
+  // fast flicker on load, then slow
+  let count = 0;
+  const fast = setInterval(()=>{ next(); if(++count >= 5){ clearInterval(fast); setInterval(next, 3000); } }, 400);
+})();
+
+// ══════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════
 let noiseType = 'fiber';
 let cks = { ckSh:false, ckAO:false };
 let omenu = null;
 let rtimer = null;
-let pendingSAI = null; // holds decoded settings waiting for Apply
+let pendingSAI = null;
 
 // ══════════════════════════════════════════
 // MENU — mousedown on bar items, mousedown-outside closes
@@ -549,7 +576,6 @@ function doRender(){
   const perm=mkPerm(mul32(P.seed*7919+1));
   const nfn={fiber:fiberNoise,stucco:stuccoNoise,lava:lavaNoise,water:waterNoise}[noiseType]||fiberNoise;
 
-  // Pass 1: height map
   const heights=new Float32Array(W*H);
   let hMn=Infinity,hMx=-Infinity;
   for(let y=0;y<H;y++) for(let x=0;x<W;x++){
@@ -559,7 +585,6 @@ function doRender(){
   const hr=hMx-hMn||1;
   for(let i=0;i<heights.length;i++) heights[i]=(heights[i]-hMn)/hr;
 
-  // Pass 2: shade
   const lR=P.lightAngle*Math.PI/180,lE=P.lightElev*Math.PI/180;
   const lx=Math.cos(lR)*Math.cos(lE),ly=Math.sin(lR)*Math.cos(lE),lz=Math.sin(lE);
   const spow=4+P.specHard*3;
@@ -659,21 +684,6 @@ function saveImg(fmt){
 // ══════════════════════════════════════════
 // .SAI FORMAT
 // ══════════════════════════════════════════
-// Structure (plaintext before encryption):
-//   SAI1\n<JSON>\nSAI1END
-//
-// Encryption pipeline:
-//   1. UTF-8 encode the plaintext block
-//   2. XOR each byte with a rolling key derived from the app passphrase
-//      (carry byte = previous ciphertext byte, so identical plaintexts
-//       produce different ciphertext depending on position)
-//   3. Base64-encode the result
-//
-// Final .sai file content:  TF95::<base64>
-//   - "TF95::" = plaintext magic header (detectable format signature)
-//   - Everything after "::" is opaque without the key
-// ══════════════════════════════════════════
-
 const SAI_MAGIC = 'TF95::';
 const SAI_PASSPHRASE = 'TextureForge95_SAI_KEY_v1_EMBOSS';
 
@@ -688,7 +698,7 @@ function saiEncrypt(bytes){
   for(let i=0;i<bytes.length;i++){
     const k=(_KEY_TABLE[i&255]^carry)&0xFF;
     out[i]=bytes[i]^k;
-    carry=out[i]; // feedback: encrypt carry = cipher byte
+    carry=out[i];
   }
   return out;
 }
@@ -697,7 +707,7 @@ function saiDecrypt(bytes){
   for(let i=0;i<bytes.length;i++){
     const k=(_KEY_TABLE[i&255]^carry)&0xFF;
     out[i]=bytes[i]^k;
-    carry=bytes[i]; // feedback: decrypt carry = cipher byte (same positions)
+    carry=bytes[i];
   }
   return out;
 }
@@ -761,7 +771,6 @@ function onSAIFile(e){
     try{
       const obj=decodeSAI(text);
       pendingSAI=obj;
-      // Show preview modal
       const info=document.getElementById('saiInfo');
       info.innerHTML=
         '<b>File:</b> '+file.name+'<br>'+
@@ -769,7 +778,6 @@ function onSAIFile(e){
         '<b>Mode:</b> '+(obj.noiseType||'?')+'<br>'+
         '<b>Canvas:</b> '+(obj.canvasW||'?')+' × '+(obj.canvasH||'?')+'<br>'+
         '<b>Scale:</b> '+(obj.noiseScale||'?')+'  <b>Density:</b> '+(obj.noiseDensity||'?')+'  <b>Seed:</b> '+(obj.seed||'?');
-      // Show first 120 chars of encrypted blob as preview
       const raw=text.trim();
       document.getElementById('saiPreview').textContent=raw.slice(0,200)+(raw.length>200?'…':'');
       document.getElementById('saiApplyBtn').style.display='';
