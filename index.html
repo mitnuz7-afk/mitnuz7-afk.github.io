@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Free Online Texture v8</title>
+<title>Rustveil v8</title>
+<link rel="icon" type="image/png" href="logo.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -85,7 +86,7 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
 <body>
 <div class="win">
   <div class="tbar">
-    <span>🖼 Free Online Texture — Emboss Studio v8</span>
+    <span style="display:flex;align-items:center;gap:6px"><img src="logo.png" style="height:16px;width:auto;image-rendering:pixelated;vertical-align:middle"> Rustveil — Emboss Studio v8</span>
     <div class="tbtns"><div class="wb">_</div><div class="wb">□</div><div class="wb">✕</div></div>
   </div>
   <div class="mbar" id="mbar">
@@ -322,7 +323,7 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
 <div class="mo" id="aboutM">
   <div class="mwin" style="max-width:260px"><div class="mt"><span>About</span><div class="wb" onclick="hideM('aboutM')">✕</div></div>
     <div class="mb" style="text-align:center">
-      <div style="font-family:'VT323',monospace;font-size:28px;color:var(--wb)">Free Online Texture</div>
+      <div style="font-family:'VT323',monospace;font-size:28px;color:var(--wb)">Rustveil</div>
       <div style="margin-top:8px;font-size:11px;color:#555;line-height:1.8">v8.0 · Emboss Studio<br>9 Red Giant grunge presets<br>8 Sapphire S_Texture presets<br>✨ S_EmbossShiny · all modes<br>.SAI presets · up to 2K</div>
     </div>
     <div class="mbtns"><div class="btn" onclick="hideM('aboutM')">OK</div></div>
@@ -335,7 +336,7 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
     <div class="mt"><span>💾 Export Texture</span><div class="wb" onclick="hideM('exportModal')">✕</div></div>
     <div class="mb">
       <div style="font-size:11px;margin-bottom:4px">File name:</div>
-      <input id="exportName" type="text" style="width:100%;border:1px solid;border-color:#808080 #fff #fff #808080;padding:3px 5px;font-family:inherit;font-size:12px;background:#fff" value="free-online-texture">
+      <input id="exportName" type="text" style="width:100%;border:1px solid;border-color:#808080 #fff #fff #808080;padding:3px 5px;font-family:inherit;font-size:12px;background:#fff" value="rustveil">
       <div style="font-size:10px;color:#666;margin-top:3px">Format: <span id="exportFmtLabel">PNG</span></div>
     </div>
     <div class="mbtns">
@@ -832,8 +833,8 @@ function randomize(){
 }
 function resetDefs(){const d={noiseScale:51,noiseDensity:7,noiseAngle:35,roughness:21,seed:42,embossDepth:100,normalScale:1,lightAngle:135,lightElev:45,contrast:50,specularity:30,specHard:30,ambient:12,shadowSoft:40,sharpAmt:8,hueShift:48,saturation:75,brightness:55,darkTint:40,hueVar:12};const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',sharpAmt:'saV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV'};Object.entries(d).forEach(([id,v])=>{document.getElementById(id).value=v;uv(vm[id],v);});updP();sr();}
 let _exportFmt='png';
-function saveImg(fmt){_exportFmt=fmt;document.getElementById('exportFmtLabel').textContent=fmt.toUpperCase();document.getElementById('exportName').value='free-online-texture';showM('exportModal');setTimeout(()=>{const n=document.getElementById('exportName');n.focus();n.select();},50);}
-function doExport(){const c=document.getElementById('mainCanvas'),fmt=_exportFmt;const raw=document.getElementById('exportName').value.trim()||'free-online-texture';const name=raw.replace(/\.[^.]+$/,'')||'free-online-texture';const l=document.createElement('a');l.download=name+'.'+fmt;l.href=c.toDataURL(fmt==='jpg'?'image/jpeg':'image/png',.95);l.click();hideM('exportModal');}
+function saveImg(fmt){_exportFmt=fmt;document.getElementById('exportFmtLabel').textContent=fmt.toUpperCase();document.getElementById('exportName').value='rustveil';showM('exportModal');setTimeout(()=>{const n=document.getElementById('exportName');n.focus();n.select();},50);}
+function doExport(){const c=document.getElementById('mainCanvas'),fmt=_exportFmt;const raw=document.getElementById('exportName').value.trim()||'rustveil';const name=raw.replace(/\.[^.]+$/,'')||'rustveil';const l=document.createElement('a');l.download=name+'.'+fmt;l.href=c.toDataURL(fmt==='jpg'?'image/jpeg':'image/png',.95);l.click();hideM('exportModal');}
 
 // ── SAI FORMAT ────────────────────────────────────────────────────────────────
 const SM='TF95::',SK='TextureForge95_SAI_KEY_v1_EMBOSS';
