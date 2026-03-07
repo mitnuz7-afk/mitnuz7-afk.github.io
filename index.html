@@ -1,602 +1,857 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>TextureForge95 — Emboss Studio</title>
-<link rel="icon" type="image/png" href="logo.png">
+<title>Free Online Texture v8</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{--w:#c0c0c0;--wd:#808080;--wdd:#404040;--wl:#fff;--wb:#000080;--wbl:#1084d0;}
-body{background:#008080;font-family:'MS Sans Serif',Arial,sans-serif;font-size:11px;
-  overflow:hidden;height:100vh;display:flex;flex-direction:column;align-items:center;
-  justify-content:flex-start;padding:4px;user-select:none;}
-.win{background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);
-  display:flex;flex-direction:column;width:100%;max-width:1300px;height:calc(100vh - 8px);}
-.tbar{background:linear-gradient(90deg,var(--wb),var(--wbl));color:#fff;padding:3px 6px;
-  display:flex;align-items:center;justify-content:space-between;font-weight:bold;font-size:12px;height:22px;flex-shrink:0;}
-.tbar-left{display:flex;align-items:center;gap:6px;}
-#sitelogo{width:16px;height:16px;object-fit:cover;flex-shrink:0;}
+:root{--w:#c0c0c0;--wd:#808080;--wdd:#404040;--wl:#fff;--wb:#000080;--wbl:#1084d0;--sh:#aa7700;--shb:#ffcc44;}
+body{background:#008080;font-family:'MS Sans Serif',Arial,sans-serif;font-size:11px;overflow:hidden;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:4px;user-select:none;}
+.win{background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);display:flex;flex-direction:column;width:100%;max-width:1340px;height:calc(100vh - 8px);}
+.tbar{background:linear-gradient(90deg,var(--wb),var(--wbl));color:#fff;padding:3px 6px;display:flex;align-items:center;justify-content:space-between;font-weight:bold;font-size:12px;height:22px;flex-shrink:0;}
 .tbtns{display:flex;gap:2px;}
-.wb{background:var(--w);border:1px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);
-  width:16px;height:14px;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.wb{background:var(--w);border:1px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);width:16px;height:14px;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .wb:active{border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);}
-/* MENU */
-.mbar{background:var(--w);border-bottom:1px solid var(--wd);padding:1px 4px;
-  display:flex;font-size:11px;flex-shrink:0;position:relative;z-index:300;}
+.mbar{background:var(--w);border-bottom:1px solid var(--wd);padding:1px 4px;display:flex;font-size:11px;flex-shrink:0;position:relative;z-index:300;}
 .mi{padding:3px 8px;cursor:pointer;position:relative;white-space:nowrap;}
 .mi:hover,.mi.open{background:var(--wb);color:#fff;}
-.drop{display:none;position:absolute;top:100%;left:0;min-width:180px;
-  background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);
-  box-shadow:2px 2px 0 #000;z-index:999;}
+.drop{display:none;position:absolute;top:100%;left:0;min-width:190px;background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);box-shadow:2px 2px 0 #000;z-index:999;}
 .mi.open>.drop{display:block;}
 .di{padding:4px 20px;cursor:pointer;white-space:nowrap;}
 .di:hover{background:var(--wb);color:#fff;}
-.di.disabled{color:#888;pointer-events:none;}
 .dsep{border-top:1px solid var(--wd);border-bottom:1px solid #fff;margin:2px 4px;}
-/* LAYOUT */
 .body{display:flex;flex:1;overflow:hidden;min-height:0;}
-/* PANEL */
-.panel{width:236px;min-width:236px;background:var(--w);
-  border-right:2px solid var(--wd);overflow-y:auto;padding:4px;display:flex;flex-direction:column;}
-.gb{border:1px solid;border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);
-  padding:8px 7px 6px;position:relative;margin-top:10px;}
+.panel{width:248px;min-width:248px;background:var(--w);border-right:2px solid var(--wd);overflow-y:auto;padding:4px;display:flex;flex-direction:column;}
+.gb{border:1px solid;border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);padding:8px 7px 6px;position:relative;margin-top:10px;}
+.gb-shiny{border-color:var(--sh) #ffee99 #ffee99 var(--sh);background:linear-gradient(180deg,#2a1a00,#1a1000);}
 .gl{position:absolute;top:-8px;left:6px;background:var(--w);padding:0 3px;font-size:11px;font-weight:bold;}
+.gl-shiny{background:#1a1000;color:var(--shb);}
 .cr{display:flex;align-items:center;margin-bottom:5px;gap:3px;}
 .cl{font-size:10px;min-width:76px;flex-shrink:0;}
 .cv{font-family:'VT323',monospace;font-size:15px;min-width:32px;text-align:right;color:var(--wb);}
+.cv-shiny{color:var(--shb);}
+.cl-shiny{color:#ffcc88;min-width:76px;flex-shrink:0;font-size:10px;}
 input[type=range]{-webkit-appearance:none;width:82px;height:14px;background:transparent;outline:none;flex-shrink:0;}
-input[type=range]::-webkit-slider-runnable-track{height:4px;background:#fff;
-  border-top:1px solid var(--wdd);border-left:1px solid var(--wdd);}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:21px;
-  background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);
-  margin-top:-9px;cursor:pointer;}
-/* NOISE BTNS */
+input[type=range]::-webkit-slider-runnable-track{height:4px;background:#fff;border-top:1px solid var(--wdd);border-left:1px solid var(--wdd);}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:21px;background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);margin-top:-9px;cursor:pointer;}
 .nbs{display:flex;gap:2px;flex-wrap:wrap;margin:4px 0 6px;}
-.nb{background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);padding:2px 8px;font-size:10px;cursor:pointer;}
+.nb{background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);padding:2px 7px;font-size:10px;cursor:pointer;}
 .nb.on{border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);background:#b0b0b0;}
-/* CHECKBOXES */
+#nb_unitexture{background:linear-gradient(135deg,#0d0520,#1e0840);color:#c080ff;border-color:#8040c0 #300060 #300060 #8040c0;font-weight:bold;}
+#nb_unitexture.on{background:linear-gradient(135deg,#3a1070,#5a1a9a);color:#fff;border-color:#300060 #8040c0 #8040c0 #300060;}
 .ckr{display:flex;align-items:center;gap:5px;margin-bottom:5px;}
-.ck{width:13px;height:13px;border:1px solid;border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);
-  background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
-/* CANVAS AREA */
+.ck{width:13px;height:13px;border:1px solid;border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
+select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);font-family:inherit;font-size:10px;padding:1px 2px;cursor:pointer;outline:none;max-width:160px;}
 .ca{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
-.ctb{background:var(--w);border-bottom:1px solid var(--wd);padding:3px 6px;
-  display:flex;gap:4px;align-items:center;flex-wrap:wrap;flex-shrink:0;}
-.btn{background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);
-  padding:2px 10px;font-size:11px;cursor:pointer;white-space:nowrap;font-family:inherit;}
+.ctb{background:var(--w);border-bottom:1px solid var(--wd);padding:3px 6px;display:flex;gap:4px;align-items:center;flex-wrap:wrap;flex-shrink:0;}
+.btn{background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);padding:2px 10px;font-size:11px;cursor:pointer;white-space:nowrap;font-family:inherit;}
 .btn:active{border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);}
 .cvp{flex:1;overflow:auto;background:#5a7a5a;padding:16px;}
 #mainCanvas{display:block;cursor:crosshair;border:2px solid;border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);}
-/* STATUS */
-.sb{background:var(--w);border-top:1px solid var(--wd);padding:2px 6px;
-  display:flex;gap:6px;font-size:10px;flex-shrink:0;}
+.sb{background:var(--w);border-top:1px solid var(--wd);padding:2px 6px;display:flex;gap:6px;font-size:10px;flex-shrink:0;}
 .sp{border:1px solid;border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);padding:1px 6px;}
-/* SWATCHES */
 .swr{display:flex;gap:3px;flex-wrap:wrap;margin-top:4px;}
 .sw{width:17px;height:17px;border:1px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);cursor:pointer;}
 .sw.on{outline:2px solid #000;outline-offset:1px;}
-.swp{width:17px;height:17px;background:var(--w);border:1px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);
-  cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.swp{width:17px;height:17px;background:var(--w);border:1px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
 .ni{width:50px;border:1px solid;border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);padding:1px 3px;font-size:11px;font-family:inherit;}
-#rs{font-family:'VT323',monospace;font-size:15px;color:var(--wb);min-width:80px;}
-/* MODALS */
+#rs{font-family:'VT323',monospace;font-size:15px;color:var(--wb);min-width:90px;}
+#unitexturePanel{display:none;}
+.ut-glabel{font-size:9px;font-weight:bold;letter-spacing:.8px;text-transform:uppercase;padding:3px 2px 2px;margin-top:4px;}
+.ut-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:2px;}
+.ut-tile{border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);cursor:pointer;position:relative;overflow:hidden;height:46px;}
+.ut-tile.on{border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);outline:2px solid #c080ff;}
+.ut-tile canvas{display:block;width:100%;height:100%;}
+.ut-tile-lbl{font-size:7px;text-align:center;position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.75);color:#eee;padding:1px 0;line-height:1.2;white-space:nowrap;overflow:hidden;}
+.tint-row{display:flex;gap:3px;flex-wrap:wrap;margin:3px 0;}
+.tsw{width:17px;height:17px;border:1px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);cursor:pointer;flex-shrink:0;}
+.tsw.on{outline:2px solid #000;outline-offset:1px;}
 .mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center;}
 .mo.show{display:flex;}
 .mwin{background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);min-width:300px;}
-.mt{background:linear-gradient(90deg,var(--wb),var(--wbl));color:#fff;padding:3px 6px;
-  font-weight:bold;font-size:12px;height:22px;display:flex;align-items:center;justify-content:space-between;}
+.mt{background:linear-gradient(90deg,var(--wb),var(--wbl));color:#fff;padding:3px 6px;font-weight:bold;font-size:12px;height:22px;display:flex;align-items:center;justify-content:space-between;}
 .mb{padding:10px;display:flex;flex-direction:column;gap:8px;}
 .mbtns{display:flex;gap:4px;justify-content:flex-end;padding:4px 8px 8px;}
 .cprow{display:flex;gap:10px;align-items:flex-start;}
 .cpr{width:36px;height:36px;border:2px solid var(--wdd);margin-top:4px;}
 #prevBar{display:block;margin-top:5px;border:1px solid var(--wd);}
-.sai-preview{background:#f0f0f0;border:1px solid var(--wdd);padding:6px;font-family:'VT323',monospace;
-  font-size:13px;max-height:120px;overflow-y:auto;word-break:break-all;line-height:1.4;color:#333;}
 .sai-info{font-size:11px;line-height:1.6;color:#000;}
+.sai-pre{background:#f0f0f0;border:1px solid var(--wdd);padding:4px;font-family:'VT323',monospace;font-size:12px;max-height:80px;overflow-y:auto;word-break:break-all;color:#333;}
+.shiny-range::-webkit-slider-runnable-track{background:#3a2a00;border-color:#6a5a00;}
+.shiny-range::-webkit-slider-thumb{background:#3a2a00;border-color:#ffcc44 #885500 #885500 #ffcc44;}
 </style>
 </head>
 <body>
 <div class="win">
   <div class="tbar">
-    <div class="tbar-left">
-      <img id="sitelogo" src="logo.png" alt="" onerror="this.style.display='none'">
-      🖼 TextureForge95 — Emboss Studio
-    </div>
+    <span>🖼 Free Online Texture — Emboss Studio v8</span>
     <div class="tbtns"><div class="wb">_</div><div class="wb">□</div><div class="wb">✕</div></div>
   </div>
-
-  <!-- MENU BAR -->
   <div class="mbar" id="mbar">
-    <div class="mi" id="mFile">File
-      <div class="drop">
-        <div class="di" onclick="doRender();cm()">▶ Render Now</div>
-        <div class="dsep"></div>
-        <div class="di" onclick="saveSAI();cm()">💾 Save Preset (.sai)…</div>
-        <div class="di" onclick="triggerOpenSAI();cm()">📂 Open Preset (.sai)…</div>
-        <div class="dsep"></div>
-        <div class="di" onclick="saveImg('png');cm()">Export PNG…</div>
-        <div class="di" onclick="saveImg('jpg');cm()">Export JPEG…</div>
-      </div>
-    </div>
-    <div class="mi" id="mEdit">Edit
-      <div class="drop">
-        <div class="di" onclick="randomize();cm()">🎲 Randomize All</div>
-        <div class="di" onclick="resetDefs();cm()">Reset to Defaults</div>
-        <div class="dsep"></div>
-        <div class="di" onclick="copySet();cm()">Copy Settings JSON</div>
-      </div>
-    </div>
-    <div class="mi" id="mView">View
-      <div class="drop">
-        <div class="di" onclick="qs(256,256);cm()">Canvas 256 × 256</div>
-        <div class="di" onclick="qs(512,512);cm()">Canvas 512 × 512</div>
-        <div class="di" onclick="qs(1024,1024);cm()">Canvas 1024 × 1024</div>
-        <div class="di" onclick="qs(2048,2048);cm()">Canvas 2048 × 2048</div>
-        <div class="dsep"></div>
-        <div class="di" onclick="qs(1920,1080);cm()">1920 × 1080</div>
-      </div>
-    </div>
-    <div class="mi" id="mRender">Render
-      <div class="drop">
-        <div class="di" onclick="doRender();cm()">▶ Render</div>
-        <div class="dsep"></div>
-        <div class="di" onclick="switchN('fiber');cm()">Mode: Fiber</div>
-        <div class="di" onclick="switchN('stucco');cm()">Mode: Stucco</div>
-        <div class="di" onclick="switchN('lava');cm()">Mode: Lava</div>
-        <div class="di" onclick="switchN('water');cm()">Mode: Water</div>
-      </div>
-    </div>
-    <div class="mi" id="mHelp">Help
-      <div class="drop">
-        <div class="di" onclick="showM('helpM');cm()">Help Topics</div>
-        <div class="dsep"></div>
-        <div class="di" onclick="showM('aboutM');cm()">About TextureForge95</div>
-      </div>
-    </div>
+    <div class="mi" id="mFile">File<div class="drop">
+      <div class="di" onclick="doRender();cm()">▶ Render Now</div><div class="dsep"></div>
+      <div class="di" onclick="saveSAI();cm()">💾 Save Preset (.sai)…</div>
+      <div class="di" onclick="triggerSAI();cm()">📂 Open Preset (.sai)…</div><div class="dsep"></div>
+      <div class="di" onclick="saveImg('png');cm()">Export PNG…</div>
+      <div class="di" onclick="saveImg('jpg');cm()">Export JPEG…</div>
+    </div></div>
+    <div class="mi" id="mEdit">Edit<div class="drop">
+      <div class="di" onclick="randomize();cm()">🎲 Randomize All</div>
+      <div class="di" onclick="resetDefs();cm()">Reset to Defaults</div>
+    </div></div>
+    <div class="mi" id="mView">View<div class="drop">
+      <div class="di" onclick="qs(256,256);cm()">256 × 256</div>
+      <div class="di" onclick="qs(512,512);cm()">512 × 512</div>
+      <div class="di" onclick="qs(1024,1024);cm()">1024 × 1024</div>
+      <div class="di" onclick="qs(2048,2048);cm()">2048 × 2048</div><div class="dsep"></div>
+      <div class="di" onclick="qs(1920,1080);cm()">1920 × 1080</div>
+    </div></div>
+    <div class="mi" id="mRen">Render<div class="drop">
+      <div class="di" onclick="doRender();cm()">▶ Render</div><div class="dsep"></div>
+      <div class="di" onclick="switchN('fiber');cm()">Fiber</div>
+      <div class="di" onclick="switchN('stucco');cm()">Stucco</div>
+      <div class="di" onclick="switchN('water');cm()">Water</div>
+      <div class="di" onclick="switchN('unitexture');cm()">✦ UniTexture</div>
+    </div></div>
+    <div class="mi" id="mHelp">Help<div class="drop">
+      <div class="di" onclick="showM('helpM');cm()">Help</div>
+      <div class="di" onclick="showM('aboutM');cm()">About</div>
+    </div></div>
   </div>
-  <input type="file" id="saiInput" accept=".sai" style="display:none" onchange="onSAIFile(event)">
+  <input type="file" id="saiIn" accept=".sai" style="display:none" onchange="onSAI(event)">
 
   <div class="body">
-    <!-- CONTROLS PANEL -->
+    <!-- PANEL -->
     <div class="panel">
       <div class="gb"><span class="gl">Noise / Base</span>
-        <div style="margin-bottom:2px"><div class="cl">Type:</div>
-          <div class="nbs">
-            <div class="nb on" id="nb_fiber"  onclick="switchNB(this,'fiber')">Fiber</div>
-            <div class="nb"    id="nb_stucco" onclick="switchNB(this,'stucco')">Stucco</div>
-            <div class="nb"    id="nb_lava"   onclick="switchNB(this,'lava')">Lava</div>
-            <div class="nb"    id="nb_water"  onclick="switchNB(this,'water')">Water</div>
-          </div>
+        <div class="nbs">
+          <div class="nb on" id="nb_fiber"      onclick="switchNB(this,'fiber')">Fiber</div>
+          <div class="nb"    id="nb_stucco"     onclick="switchNB(this,'stucco')">Stucco</div>
+          <div class="nb"    id="nb_water"      onclick="switchNB(this,'water')">Water</div>
+          <div class="nb"    id="nb_unitexture" onclick="switchNB(this,'unitexture')">✦ UniTex</div>
         </div>
-        <div class="cr"><span class="cl">Scale</span>     <input type="range" min="2"  max="120" value="51" id="noiseScale"   oninput="uv('nsV',this.value);sr()"><span class="cv" id="nsV">51</span></div>
-        <div class="cr"><span class="cl">Density</span>   <input type="range" min="1"  max="16"  value="7"  id="noiseDensity" oninput="uv('ndV',this.value);sr()"><span class="cv" id="ndV">7</span></div>
-        <div class="cr"><span class="cl">Angle</span>     <input type="range" min="0"  max="180" value="35" id="noiseAngle"   oninput="uv('naV',this.value);sr()"><span class="cv" id="naV">35</span></div>
-        <div class="cr"><span class="cl">Roughness</span> <input type="range" min="0"  max="100" value="21" id="roughness"    oninput="uv('rrV',this.value);sr()"><span class="cv" id="rrV">21</span></div>
-        <div class="cr"><span class="cl">Seed</span>      <input type="range" min="1"  max="999" value="42" id="seed"         oninput="uv('sdV',this.value);sr()"><span class="cv" id="sdV">42</span></div>
+        <div class="cr"><span class="cl">Scale</span>    <input type="range" min="2"  max="120" value="51" id="noiseScale"   oninput="uv('nsV',this.value);sr()"><span class="cv" id="nsV">51</span></div>
+        <div class="cr"><span class="cl">Density</span>  <input type="range" min="1"  max="16"  value="7"  id="noiseDensity" oninput="uv('ndV',this.value);sr()"><span class="cv" id="ndV">7</span></div>
+        <div class="cr"><span class="cl">Angle</span>    <input type="range" min="0"  max="180" value="35" id="noiseAngle"   oninput="uv('naV',this.value);sr()"><span class="cv" id="naV">35</span></div>
+        <div class="cr"><span class="cl">Roughness</span><input type="range" min="0"  max="100" value="21" id="roughness"    oninput="uv('rrV',this.value);sr()"><span class="cv" id="rrV">21</span></div>
+        <div class="cr"><span class="cl">Seed</span>     <input type="range" min="1"  max="999" value="42" id="seed"         oninput="uv('sdV',this.value);sr()"><span class="cv" id="sdV">42</span></div>
       </div>
 
-      <div class="gb"><span class="gl">Emboss / Light</span>
-        <div class="cr"><span class="cl">Depth</span>        <input type="range" min="0"  max="100" value="100" id="embossDepth" oninput="uv('edV',this.value);sr()"><span class="cv" id="edV">100</span></div>
-        <div class="cr"><span class="cl">Normal Scale</span> <input type="range" min="1"  max="60"  value="1"   id="normalScale" oninput="uv('nmV',this.value);sr()"><span class="cv" id="nmV">1</span></div>
-        <div class="cr"><span class="cl">Light Dir</span>    <input type="range" min="0"  max="360" value="135" id="lightAngle"  oninput="uv('laV',this.value);sr()"><span class="cv" id="laV">135</span></div>
-        <div class="cr"><span class="cl">Light Elev</span>   <input type="range" min="1"  max="90"  value="45"  id="lightElev"   oninput="uv('leV',this.value);sr()"><span class="cv" id="leV">45</span></div>
-        <div class="cr"><span class="cl">Contrast</span>     <input type="range" min="0"  max="100" value="50"  id="contrast"    oninput="uv('cnV',this.value);sr()"><span class="cv" id="cnV">50</span></div>
-        <div class="cr"><span class="cl">Specularity</span>  <input type="range" min="0"  max="100" value="30"  id="specularity" oninput="uv('spV',this.value);sr()"><span class="cv" id="spV">30</span></div>
-        <div class="cr"><span class="cl">Spec Hard</span>    <input type="range" min="1"  max="100" value="30"  id="specHard"    oninput="uv('shV',this.value);sr()"><span class="cv" id="shV">30</span></div>
-        <div class="cr"><span class="cl">Ambient</span>      <input type="range" min="0"  max="80"  value="12"  id="ambient"     oninput="uv('amV',this.value);sr()"><span class="cv" id="amV">12</span></div>
-        <div class="cr"><span class="cl">Shadow Soft</span>  <input type="range" min="0"  max="100" value="40"  id="shadowSoft"  oninput="uv('ssV',this.value);sr()"><span class="cv" id="ssV">40</span></div>
-        <div class="ckr">
-          <div class="ck" id="ckSh" onclick="togCk('ckSh');sr()"></div>
-          <span class="cl">Sharpen</span>
-          <input type="range" min="1" max="12" value="3" id="sharpAmt" oninput="uv('saV',this.value);sr()" style="width:48px;">
-          <span class="cv" id="saV">3</span>
+      <div id="standardPanels">
+        <div class="gb"><span class="gl">Emboss / Light</span>
+          <div class="cr"><span class="cl">Depth</span>        <input type="range" min="0"  max="100" value="100" id="embossDepth" oninput="uv('edV',this.value);sr()"><span class="cv" id="edV">100</span></div>
+          <div class="cr"><span class="cl">Normal Scale</span> <input type="range" min="1"  max="60"  value="1"   id="normalScale" oninput="uv('nmV',this.value);sr()"><span class="cv" id="nmV">1</span></div>
+          <div class="cr"><span class="cl">Light Dir</span>    <input type="range" min="0"  max="360" value="135" id="lightAngle"  oninput="uv('laV',this.value);sr()"><span class="cv" id="laV">135</span></div>
+          <div class="cr"><span class="cl">Light Elev</span>   <input type="range" min="1"  max="90"  value="45"  id="lightElev"   oninput="uv('leV',this.value);sr()"><span class="cv" id="leV">45</span></div>
+          <div class="cr"><span class="cl">Contrast</span>     <input type="range" min="0"  max="100" value="50"  id="contrast"    oninput="uv('cnV',this.value);sr()"><span class="cv" id="cnV">50</span></div>
+          <div class="cr"><span class="cl">Specularity</span>  <input type="range" min="0"  max="100" value="30"  id="specularity" oninput="uv('spV',this.value);sr()"><span class="cv" id="spV">30</span></div>
+          <div class="cr"><span class="cl">Spec Hard</span>    <input type="range" min="1"  max="100" value="30"  id="specHard"    oninput="uv('shV',this.value);sr()"><span class="cv" id="shV">30</span></div>
+          <div class="cr"><span class="cl">Ambient</span>      <input type="range" min="0"  max="80"  value="12"  id="ambient"     oninput="uv('amV',this.value);sr()"><span class="cv" id="amV">12</span></div>
+          <div class="cr"><span class="cl">Shadow Soft</span>  <input type="range" min="0"  max="100" value="40"  id="shadowSoft"  oninput="uv('ssV',this.value);sr()"><span class="cv" id="ssV">40</span></div>
+          <div class="ckr"><div class="ck" id="ckSh" onclick="togCk('ckSh');sr()"></div><span class="cl">Sharpen</span><input type="range" min="1" max="20" value="8" id="sharpAmt" oninput="uv('saV',this.value);sr()" style="width:46px"><span class="cv" id="saV">8</span></div>
+          <div class="ckr"><div class="ck" id="ckAO" onclick="togCk('ckAO');sr()"></div><span class="cl" style="min-width:110px">Cavity Shadow</span></div>
         </div>
-        <div class="ckr">
-          <div class="ck" id="ckAO" onclick="togCk('ckAO');sr()"></div>
-          <span class="cl" style="min-width:110px">Cavity Shadow</span>
+        <div class="gb"><span class="gl">Color</span>
+          <div class="cr"><span class="cl">Hue</span>          <input type="range" min="0" max="360" value="48" id="hueShift"   oninput="uv('huV',this.value);updP();sr()"><span class="cv" id="huV">48</span></div>
+          <div class="cr"><span class="cl">Saturation</span>   <input type="range" min="0" max="100" value="75" id="saturation" oninput="uv('saTV',this.value);updP();sr()"><span class="cv" id="saTV">75</span></div>
+          <div class="cr"><span class="cl">Brightness</span>   <input type="range" min="0" max="100" value="55" id="brightness" oninput="uv('brV',this.value);updP();sr()"><span class="cv" id="brV">55</span></div>
+          <div class="cr"><span class="cl">Dark Tint</span>    <input type="range" min="0" max="100" value="40" id="darkTint"   oninput="uv('dtV',this.value);sr()"><span class="cv" id="dtV">40</span></div>
+          <div class="cr"><span class="cl">Hue Variance</span> <input type="range" min="0" max="60"  value="12" id="hueVar"     oninput="uv('hvV',this.value);sr()"><span class="cv" id="hvV">12</span></div>
+          <div style="margin-top:4px"><span class="cl" style="display:block;margin-bottom:3px">Palette:</span>
+            <div class="swr">
+              <div class="sw on" style="background:#b8860b" onclick="setPal(48,75,55,40,this)"></div>
+              <div class="sw"    style="background:#8b4513" onclick="setPal(20,65,45,50,this)"></div>
+              <div class="sw"    style="background:#2e8b57" onclick="setPal(120,60,40,45,this)"></div>
+              <div class="sw"    style="background:#4682b4" onclick="setPal(210,40,50,35,this)"></div>
+              <div class="sw"    style="background:#696969" onclick="setPal(30,10,50,40,this)"></div>
+              <div class="sw"    style="background:#8b0000" onclick="setPal(5,80,40,55,this)"></div>
+              <div class="sw"    style="background:#daa520" onclick="setPal(40,90,60,30,this)"></div>
+              <div class="swp"   title="Color Wheel" onclick="openCW()">⊕</div>
+            </div>
+            <canvas id="prevBar" width="212" height="16"></canvas>
+          </div>
         </div>
       </div>
 
-      <div class="gb"><span class="gl">Color</span>
-        <div class="cr"><span class="cl">Hue</span>          <input type="range" min="0" max="360" value="48" id="hueShift"   oninput="uv('huV',this.value);updP();sr()"><span class="cv" id="huV">48</span></div>
-        <div class="cr"><span class="cl">Saturation</span>   <input type="range" min="0" max="100" value="75" id="saturation" oninput="uv('saTV',this.value);updP();sr()"><span class="cv" id="saTV">75</span></div>
-        <div class="cr"><span class="cl">Brightness</span>   <input type="range" min="0" max="100" value="55" id="brightness" oninput="uv('brV',this.value);updP();sr()"><span class="cv" id="brV">55</span></div>
-        <div class="cr"><span class="cl">Dark Tint</span>    <input type="range" min="0" max="100" value="40" id="darkTint"   oninput="uv('dtV',this.value);sr()"><span class="cv" id="dtV">40</span></div>
-        <div class="cr"><span class="cl">Hue Variance</span> <input type="range" min="0" max="60"  value="12" id="hueVar"     oninput="uv('hvV',this.value);sr()"><span class="cv" id="hvV">12</span></div>
-        <div style="margin-top:4px">
-          <div class="cl" style="margin-bottom:3px">Palette / Color:</div>
-          <div class="swr">
-            <div class="sw on" style="background:#b8860b" onclick="setPal(48,75,55,40,this)"></div>
-            <div class="sw"    style="background:#8b4513" onclick="setPal(20,65,45,50,this)"></div>
-            <div class="sw"    style="background:#2e8b57" onclick="setPal(120,60,40,45,this)"></div>
-            <div class="sw"    style="background:#4682b4" onclick="setPal(210,40,50,35,this)"></div>
-            <div class="sw"    style="background:#696969" onclick="setPal(30,10,50,40,this)"></div>
-            <div class="sw"    style="background:#8b0000" onclick="setPal(5,80,40,55,this)"></div>
-            <div class="sw"    style="background:#ff4500" onclick="setPal(15,95,45,60,this)"></div>
-            <div class="sw"    style="background:#1e90ff" onclick="setPal(210,90,40,50,this)"></div>
-            <div class="sw"    style="background:#daa520" onclick="setPal(40,90,60,30,this)"></div>
-            <div class="swp"   title="Color Wheel" onclick="openCW()">⊕</div>
+      <!-- UNITEXTURE PANEL -->
+      <div id="unitexturePanel">
+        <div class="gb" style="border-color:#8040c0 #300060 #300060 #8040c0;background:linear-gradient(180deg,#0a0218,#180530)">
+          <span class="gl" style="background:#0a0218;color:#c080ff">✦ UniTexture</span>
+
+          <div class="ut-glabel" style="color:#d090ff">▸ Red Giant Texturize</div>
+          <div class="ut-grid" id="utGridA"></div>
+
+          <div class="ut-glabel" style="color:#ffcc44">▸ Sapphire S_Texture</div>
+          <div class="ut-grid" id="utGridB"></div>
+
+          <div class="cr" style="margin-top:6px">
+            <span class="cl" style="color:#c080ff">Blend</span>
+            <select class="wsel" id="utBlend" onchange="sr()" style="background:#0a0218;color:#c080ff;border-color:#8040c0 #300060 #300060 #8040c0;max-width:120px">
+              <option value="overlay" selected>Overlay</option>
+              <option value="multiply">Multiply</option>
+              <option value="screen">Screen</option>
+              <option value="softlight">Soft Light</option>
+              <option value="hardlight">Hard Light</option>
+              <option value="colorburn">Color Burn</option>
+              <option value="difference">Difference</option>
+              <option value="normal">Normal</option>
+            </select>
           </div>
-          <canvas id="prevBar" width="212" height="16"></canvas>
+          <div class="cr"><span class="cl" style="color:#c080ff">Amount</span>     <input type="range" min="0"    max="100" value="85"  id="utAmt"  oninput="uv('utAmV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utAmV">85</span></div>
+          <div class="cr"><span class="cl" style="color:#c080ff">Tex Scale</span>  <input type="range" min="5"    max="500" value="100" id="utSc"   oninput="uv('utScV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utScV">100</span></div>
+          <div class="cr"><span class="cl" style="color:#c080ff">Rotation</span>   <input type="range" min="0"    max="360" value="0"   id="utRot"  oninput="uv('utRoV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utRoV">0</span></div>
+          <div class="cr"><span class="cl" style="color:#c080ff">Offset X</span>   <input type="range" min="-100" max="100" value="0"   id="utOx"   oninput="uv('utOxV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utOxV">0</span></div>
+          <div class="cr"><span class="cl" style="color:#c080ff">Offset Y</span>   <input type="range" min="-100" max="100" value="0"   id="utOy"   oninput="uv('utOyV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utOyV">0</span></div>
+          <div class="cr"><span class="cl" style="color:#c080ff">Contrast</span>   <input type="range" min="0"    max="400" value="180" id="utCt"   oninput="uv('utCtV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utCtV">180</span></div>
+          <div class="cr"><span class="cl" style="color:#c080ff">Brightness</span> <input type="range" min="-100" max="100" value="0"   id="utBr"   oninput="uv('utBrV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utBrV">0</span></div>
+          <div class="ckr">
+            <div class="ck" id="ckUTInv" onclick="togCk('ckUTInv');sr()" style="background:#0a0218;border-color:#8040c0 #300060 #300060 #8040c0"></div>
+            <span style="color:#c080ff;font-size:10px">Invert</span>
+          </div>
+          <div style="color:#c080ff;font-size:10px;font-weight:bold;margin:3px 0 2px">Tint:</div>
+          <div class="tint-row">
+            <div class="tsw on"  style="background:#aaa"    title="None"   onclick="setTint(0,0,0,false,this)"></div>
+            <div class="tsw"     style="background:#7a5c38" title="Sepia"  onclick="setTint(30,45,22,true,this)"></div>
+            <div class="tsw"     style="background:#2a4020" title="Mold"   onclick="setTint(110,35,22,true,this)"></div>
+            <div class="tsw"     style="background:#3a1a08" title="Rust"   onclick="setTint(18,65,22,true,this)"></div>
+            <div class="tsw"     style="background:#1a2a3a" title="Steel"  onclick="setTint(210,22,26,true,this)"></div>
+            <div class="tsw"     style="background:#4a0010" title="Blood"  onclick="setTint(2,80,22,true,this)"></div>
+            <div class="tsw"     style="background:#1a1a1a" title="Soot"   onclick="setTint(0,0,12,true,this)"></div>
+            <div class="tsw"     style="background:#363620" title="Crude"  onclick="setTint(58,28,18,true,this)"></div>
+          </div>
+          <div class="cr" style="margin-top:4px"><span class="cl" style="color:#c080ff">Vignette</span><input type="range" min="0" max="100" value="0" id="utVig" oninput="uv('utVgV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utVgV">0</span></div>
+          <div class="ckr">
+            <div class="ck" id="ckUTGr" onclick="togCk('ckUTGr');sr()" style="background:#0a0218;border-color:#8040c0 #300060 #300060 #8040c0"></div>
+            <span style="color:#c080ff;font-size:10px">Film Grain</span>
+            <input type="range" min="0" max="60" value="15" id="utGr" oninput="uv('utGrV',this.value);sr()" style="width:46px">
+            <span class="cv" style="color:#c080ff" id="utGrV">15</span>
+          </div>
         </div>
+        <div class="gb" style="border-color:#8040c0 #300060 #300060 #8040c0;background:linear-gradient(180deg,#0a0218,#180530)">
+          <span class="gl" style="background:#0a0218;color:#c080ff">Surface Color</span>
+          <div class="cr"><span class="cl" style="color:#c080ff">Hue</span>        <input type="range" min="0"   max="360" value="30" id="utHue"  oninput="uv('utHuV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utHuV">30</span></div>
+          <div class="cr"><span class="cl" style="color:#c080ff">Saturation</span> <input type="range" min="0"   max="100" value="18" id="utSat"  oninput="uv('utSaV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utSaV">18</span></div>
+          <div class="cr"><span class="cl" style="color:#c080ff">Luminance</span>  <input type="range" min="5"   max="90"  value="48" id="utLum"  oninput="uv('utLuV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utLuV">48</span></div>
+          <div class="cr"><span class="cl" style="color:#c080ff">Variation</span>  <input type="range" min="0"   max="40"  value="14" id="utVar"  oninput="uv('utVaV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utVaV">14</span></div>
+          <div class="cr"><span class="cl" style="color:#c080ff">Seed</span>       <input type="range" min="1"   max="999" value="77" id="utSeed" oninput="uv('utSdV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utSdV">77</span></div>
+        </div>
+      </div>
+
+      <!-- S_EmbossShiny — all modes -->
+      <div class="gb gb-shiny">
+        <span class="gl gl-shiny">✨ S_EmbossShiny</span>
+        <div class="ckr"><div class="ck" id="ckShiny" onclick="togCk('ckShiny');sr()" style="background:#1a1000;border-color:#ffcc44 #885500 #885500 #ffcc44"></div><span style="color:#ffcc88;font-size:10px;font-weight:bold">Enable — all modes</span></div>
+        <div class="cr"><span class="cl-shiny">Hilight Bright</span><input class="shiny-range" type="range" min="0"   max="100" value="80" id="shHiB" oninput="uv('shHiBV',this.value);sr()"><span class="cv cv-shiny" id="shHiBV">80</span></div>
+        <div class="cr"><span class="cl-shiny">Hilight Size</span>  <input class="shiny-range" type="range" min="1"   max="100" value="45" id="shHiS" oninput="uv('shHiSV',this.value);sr()"><span class="cv cv-shiny" id="shHiSV">45</span></div>
+        <div class="cr"><span class="cl-shiny">Bump Smooth</span>   <input class="shiny-range" type="range" min="0"   max="30"  value="1"  id="shBS"  oninput="uv('shBSV',this.value);sr()"><span class="cv cv-shiny" id="shBSV">1</span></div>
+        <div class="cr"><span class="cl-shiny">Fresnel Mix</span>   <input class="shiny-range" type="range" min="0"   max="100" value="40" id="shFr"  oninput="uv('shFrV',this.value);sr()"><span class="cv cv-shiny" id="shFrV">40</span></div>
+        <div class="cr"><span class="cl-shiny">Light Color H</span> <input class="shiny-range" type="range" min="0"   max="360" value="48" id="shLC"  oninput="uv('shLCV',this.value);upSP();sr()"><span class="cv cv-shiny" id="shLCV">48</span></div>
+        <div class="cr"><span class="cl-shiny">Light Color S</span> <input class="shiny-range" type="range" min="0"   max="100" value="20" id="shLCS" oninput="uv('shLCSV',this.value);upSP();sr()"><span class="cv cv-shiny" id="shLCSV">20</span></div>
+        <div id="shinyPrev" style="width:100%;height:10px;border:1px solid #885500;margin-top:2px;border-radius:2px"></div>
       </div>
 
       <div class="gb"><span class="gl">Canvas Size</span>
         <div class="cr"><span class="cl">Width</span>  <input type="number" class="ni" id="cvW" value="512" min="64" max="2048"><span class="cl">px</span></div>
-        <div class="cr"><span class="cl">Height</span> <input type="number" class="ni" id="cvH" value="512" min="64" max="2048"></div>
+        <div class="cr"><span class="cl">Height</span> <input type="number" class="ni" id="cvH" value="512"></div>
         <div class="cr" style="margin-top:3px;gap:3px;flex-wrap:wrap">
           <div class="btn" onclick="applySize()" style="font-size:10px;padding:2px 7px">Apply</div>
-          <div class="btn" onclick="qs(512,512)"   style="font-size:10px;padding:2px 5px">512²</div>
-          <div class="btn" onclick="qs(1024,1024)" style="font-size:10px;padding:2px 5px">1K²</div>
-          <div class="btn" onclick="qs(2048,2048)" style="font-size:10px;padding:2px 5px">2K²</div>
+          <div class="btn" onclick="qs(512,512)"   style="font-size:10px;padding:2px 5px">512</div>
+          <div class="btn" onclick="qs(1024,1024)" style="font-size:10px;padding:2px 5px">1K</div>
+          <div class="btn" onclick="qs(2048,2048)" style="font-size:10px;padding:2px 5px">2K</div>
         </div>
       </div>
     </div>
 
-    <!-- CANVAS AREA -->
+    <!-- CANVAS -->
     <div class="ca">
       <div class="ctb">
         <div class="btn" onclick="doRender()" style="font-weight:bold">▶ Render</div>
         <div class="btn" onclick="randomize()">🎲 Random</div>
-        <div class="btn" onclick="saveImg('png')">💾 Save PNG</div>
-        <div class="btn" onclick="saveSAI()">💾 Save .sai</div>
-        <div class="btn" onclick="triggerOpenSAI()">📂 Open .sai</div>
+        <div class="btn" onclick="saveImg('png')">💾 PNG</div>
+        <div class="btn" onclick="saveSAI()">💾 .sai</div>
+        <div class="btn" onclick="triggerSAI()">📂 Open</div>
         <span id="rs">Ready</span>
       </div>
-      <div class="cvp">
-        <canvas id="mainCanvas" width="512" height="512"></canvas>
-      </div>
+      <div class="cvp"><canvas id="mainCanvas" width="512" height="512"></canvas></div>
       <div class="sb">
         <div class="sp" id="sSz">512 × 512</div>
         <div class="sp" id="sMode">Fiber Emboss</div>
         <div class="sp" id="sTime">--ms</div>
-        <div class="sp">TextureForge95 v5.0</div>
+        <div class="sp">TextureForge95 v8</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- COLOR WHEEL MODAL -->
+<!-- MODALS -->
 <div class="mo" id="cwModal">
-  <div class="mwin">
-    <div class="mt"><span>🎨 Color Picker</span><div class="wb" onclick="closeCW()">✕</div></div>
-    <div class="mb">
-      <div class="cprow">
-        <canvas id="cwC" width="160" height="160" style="cursor:crosshair;border-radius:50%"></canvas>
-        <div style="display:flex;flex-direction:column;gap:5px;flex:1">
-          <div class="cr"><span class="cl">Hue</span>        <input type="range" min="0" max="360" value="48" id="cwH" oninput="cwUpd()"><span class="cv" id="cwHv">48</span></div>
-          <div class="cr"><span class="cl">Saturation</span> <input type="range" min="0" max="100" value="75" id="cwS" oninput="cwUpd()"><span class="cv" id="cwSv">75</span></div>
-          <div class="cr"><span class="cl">Brightness</span> <input type="range" min="0" max="100" value="55" id="cwB" oninput="cwUpd()"><span class="cv" id="cwBv">55</span></div>
-          <div id="cwPrev" class="cpr"></div>
-        </div>
-      </div>
+  <div class="mwin"><div class="mt"><span>🎨 Color Picker</span><div class="wb" onclick="hideM('cwModal')">✕</div></div>
+    <div class="mb"><div class="cprow">
+      <canvas id="cwC" width="160" height="160" style="cursor:crosshair;border-radius:50%"></canvas>
+      <div style="display:flex;flex-direction:column;gap:5px;flex:1">
+        <div class="cr"><span class="cl">Hue</span>        <input type="range" min="0" max="360" value="48" id="cwH" oninput="cwU()"><span class="cv" id="cwHv">48</span></div>
+        <div class="cr"><span class="cl">Saturation</span> <input type="range" min="0" max="100" value="75" id="cwS" oninput="cwU()"><span class="cv" id="cwSv">75</span></div>
+        <div class="cr"><span class="cl">Brightness</span> <input type="range" min="0" max="100" value="55" id="cwB" oninput="cwU()"><span class="cv" id="cwBv">55</span></div>
+        <div id="cwPrev" class="cpr"></div>
+      </div></div>
       <canvas id="briBar" width="280" height="22" style="border:1px solid var(--wd);cursor:pointer" onclick="briClick(event)"></canvas>
     </div>
-    <div class="mbtns">
-      <div class="btn" onclick="applyCW()">OK</div>
-      <div class="btn" onclick="closeCW()">Cancel</div>
-    </div>
+    <div class="mbtns"><div class="btn" onclick="applyCW()">OK</div><div class="btn" onclick="hideM('cwModal')">Cancel</div></div>
   </div>
 </div>
-
-<!-- SAI IMPORT MODAL -->
 <div class="mo" id="saiModal">
-  <div class="mwin" style="max-width:460px">
-    <div class="mt"><span>📂 Open Preset (.sai)</span><div class="wb" onclick="hideM('saiModal')">✕</div></div>
-    <div class="mb">
-      <div class="sai-info" id="saiInfo">Loading preset…</div>
-      <div style="font-size:10px;color:#555;margin-top:2px">Encrypted data preview:</div>
-      <div class="sai-preview" id="saiPreview"></div>
-    </div>
-    <div class="mbtns">
-      <div class="btn" id="saiApplyBtn" onclick="applySAILoad()">Apply Preset</div>
-      <div class="btn" onclick="hideM('saiModal')">Cancel</div>
-    </div>
+  <div class="mwin" style="max-width:420px"><div class="mt"><span>📂 Open .sai</span><div class="wb" onclick="hideM('saiModal')">✕</div></div>
+    <div class="mb"><div class="sai-info" id="saiInfo">Loading…</div><div class="sai-pre" id="saiPre"></div></div>
+    <div class="mbtns"><div class="btn" id="saiApply" onclick="applySAI()">Apply</div><div class="btn" onclick="hideM('saiModal')">Cancel</div></div>
   </div>
 </div>
-
-<!-- HELP MODAL -->
 <div class="mo" id="helpM">
-  <div class="mwin" style="max-width:420px">
-    <div class="mt"><span>❓ Help Topics</span><div class="wb" onclick="hideM('helpM')">✕</div></div>
-    <div class="mb" style="font-size:11px;line-height:1.65;max-height:300px;overflow-y:auto">
-      <b>Noise Types:</b><br>
-      • <b>Fiber</b> — diagonal strand texture. Angle = direction. Density = strand count.<br>
-      • <b>Stucco</b> — bumpy plaster. Higher roughness = chunkier bumps.<br>
-      • <b>Lava</b> — Voronoi cellular. Dark seams between glowing cells.<br>
-      • <b>Water</b> — layered sine ripples. Density = wave directions stacked.<br><br>
-      <b>Emboss / Light:</b><br>
-      • <b>Depth</b> — surface relief intensity.<br>
-      • <b>Normal Scale 1</b> — sharpest detail. Higher = smoother wider bumps.<br>
-      • <b>Spec Hardness</b> — high = tight pin highlight, low = wide sheen.<br>
-      • <b>Ambient</b> — fills shadows (high = flat look).<br>
-      • <b>Cavity Shadow</b> — AO darkening in crevices.<br>
-      • <b>Sharpen</b> — unsharp mask post-process.<br><br>
-      <b>.SAI Format:</b><br>
-      Save/load all settings as an encrypted .sai preset file. Uses XOR encryption + base64 encoding.
+  <div class="mwin" style="max-width:440px"><div class="mt"><span>❓ Help</span><div class="wb" onclick="hideM('helpM')">✕</div></div>
+    <div class="mb" style="font-size:11px;line-height:1.7;max-height:300px;overflow-y:auto">
+      <b style="color:#7700bb">✦ UniTexture — Red Giant Texturize (9 presets):</b><br>
+      Concrete · Rust Bloom · Grime Drips · Cracked · Worn Paint · Asphalt · Fine Scratches · Plaster · Stucco<br><br>
+      <b style="color:#cc9900">✦ Sapphire S_Texture family (8 presets):</b><br>
+      S_Cells · S_Flux · S_Folded · S_Loops · S_Weave · S_Clouds · S_Grunge · S_Moire<br><br>
+      <b>Tip:</b> Contrast slider (default 180) dramatically changes texture impact. Invert flips dark/bright. Tint row colors the grunge. Blend Mode changes compositing math.<br><br>
+      <b style="color:#996600">✨ S_EmbossShiny</b> works on all modes. Fresnel Mix boosts edge shine.
     </div>
     <div class="mbtns"><div class="btn" onclick="hideM('helpM')">OK</div></div>
   </div>
 </div>
-
-<!-- ABOUT MODAL -->
 <div class="mo" id="aboutM">
-  <div class="mwin" style="max-width:280px">
-    <div class="mt"><span>🖼 About</span><div class="wb" onclick="hideM('aboutM')">✕</div></div>
-    <div class="mb" style="text-align:center;padding:14px;font-size:11px">
-      <div style="font-family:'VT323',monospace;font-size:32px;color:var(--wb)">TextureForge95</div>
-      <div>Emboss Studio v5.0</div>
-      <div style="margin-top:10px;color:#555;line-height:1.6">
-        Instant synchronous rendering<br>
-        4 modes · Color wheel · Sharpen · AO<br>
-        .SAI preset format (XOR + Base64)<br>
-        Phong lighting · Up to 2K canvas
-      </div>
+  <div class="mwin" style="max-width:260px"><div class="mt"><span>About</span><div class="wb" onclick="hideM('aboutM')">✕</div></div>
+    <div class="mb" style="text-align:center">
+      <div style="font-family:'VT323',monospace;font-size:28px;color:var(--wb)">Free Online Texture</div>
+      <div style="margin-top:8px;font-size:11px;color:#555;line-height:1.8">v8.0 · Emboss Studio<br>9 Red Giant grunge presets<br>8 Sapphire S_Texture presets<br>✨ S_EmbossShiny · all modes<br>.SAI presets · up to 2K</div>
     </div>
     <div class="mbtns"><div class="btn" onclick="hideM('aboutM')">OK</div></div>
   </div>
 </div>
 
+<!-- Export Rename Modal -->
+<div class="mo" id="exportModal">
+  <div class="mwin" style="max-width:320px">
+    <div class="mt"><span>💾 Export Texture</span><div class="wb" onclick="hideM('exportModal')">✕</div></div>
+    <div class="mb">
+      <div style="font-size:11px;margin-bottom:4px">File name:</div>
+      <input id="exportName" type="text" style="width:100%;border:1px solid;border-color:#808080 #fff #fff #808080;padding:3px 5px;font-family:inherit;font-size:12px;background:#fff" value="free-online-texture">
+      <div style="font-size:10px;color:#666;margin-top:3px">Format: <span id="exportFmtLabel">PNG</span></div>
+    </div>
+    <div class="mbtns">
+      <div class="btn" onclick="hideM('exportModal')">Cancel</div>
+      <div class="btn" style="font-weight:bold" onclick="doExport()">Export</div>
+    </div>
+  </div>
+</div>
+
 <script>
-let noiseType = 'fiber';
-let cks = { ckSh:false, ckAO:false };
-let omenu = null;
-let rtimer = null;
-let pendingSAI = null;
+"use strict";
+let noiseType='fiber';
+let cks={ckSh:false,ckAO:false,ckShiny:false,ckUTInv:false,ckUTGr:false};
+let omenu=null,rtimer=null,pendingSAI=null;
+let utTintH=0,utTintS=0,utTintL=0,utTintOn=false;
+let utTexIdx=0;
 
-document.getElementById('mbar').addEventListener('mousedown', function(e) {
-  e.stopPropagation();
-  const mi = e.target.closest('.mi');
-  if (!mi || e.target.closest('.drop')) return;
-  const id = mi.id;
-  if (omenu === id) { cm(); } else { cm(); mi.classList.add('open'); omenu = id; }
-});
-document.addEventListener('mousedown', cm);
-function cm() {
-  document.querySelectorAll('.mi.open').forEach(m => m.classList.remove('open'));
-  omenu = null;
-}
+// ── MENU ─────────────────────────────────────────────────────────────────────
+document.getElementById('mbar').addEventListener('mousedown',e=>{e.stopPropagation();const mi=e.target.closest('.mi');if(!mi||e.target.closest('.drop'))return;const id=mi.id;if(omenu===id)cm();else{cm();mi.classList.add('open');omenu=id;}});
+document.addEventListener('mousedown',cm);
+function cm(){document.querySelectorAll('.mi.open').forEach(m=>m.classList.remove('open'));omenu=null;}
+function uv(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+function gi(id){return parseFloat(document.getElementById(id).value);}
+function togCk(id){cks[id]=!cks[id];document.getElementById(id).textContent=cks[id]?'✔':'';}
+function showM(id){document.getElementById(id).classList.add('show');}
+function hideM(id){document.getElementById(id).classList.remove('show');}
+function switchNB(el,t){document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));el.classList.add('on');switchN(t);}
+function switchN(t){noiseType=t;const b=document.getElementById('nb_'+t);if(b){document.querySelectorAll('.nb').forEach(x=>x.classList.remove('on'));b.classList.add('on');}const isUT=t==='unitexture';document.getElementById('standardPanels').style.display=isUT?'none':'block';document.getElementById('unitexturePanel').style.display=isUT?'block':'none';document.getElementById('sMode').textContent=isUT?'✦ UniTexture':t[0].toUpperCase()+t.slice(1)+' Emboss';sr();}
+function setTint(h,s,l,on,el){utTintH=h;utTintS=s;utTintL=l;utTintOn=on;document.querySelectorAll('.tsw').forEach(x=>x.classList.remove('on'));if(el)el.classList.add('on');sr();}
+function setPal(h,s,b,d,el){document.querySelectorAll('.sw').forEach(x=>x.classList.remove('on'));if(el)el.classList.add('on');['hueShift','saturation','brightness','darkTint'].forEach((id,i)=>{const v=[h,s,b,d][i];document.getElementById(id).value=v;uv(['huV','saTV','brV','dtV'][i],v);});updP();sr();}
+function updP(){const c=document.getElementById('prevBar'),ctx=c.getContext('2d'),h=gi('hueShift'),s=gi('saturation'),bv=gi('brightness');const g=ctx.createLinearGradient(0,0,c.width,0);for(let i=0;i<=12;i++){const t=i/12,l=bv*.35+t*(bv*.85-bv*.2);const[r,gv,bb]=hsl2rgb(h+t*16-8,s,Math.max(0,Math.min(100,l)));g.addColorStop(t,`rgb(${r},${gv},${bb})`);}ctx.fillStyle=g;ctx.fillRect(0,0,c.width,c.height);}
+function upSP(){const h=gi('shLC'),s=gi('shLCS');const[r,g,b]=hsl2rgb(h,s,70);document.getElementById('shinyPrev').style.background=`linear-gradient(90deg,rgb(${r},${g},${b}),#ffeeaa,rgb(${r},${g},${b}))`;}
 
-function uv(id,v){ const e=document.getElementById(id); if(e) e.textContent=v; }
-function gi(id){ return parseFloat(document.getElementById(id).value); }
-function togCk(id){ cks[id]=!cks[id]; document.getElementById(id).textContent=cks[id]?'✔':''; }
-function showM(id){ document.getElementById(id).classList.add('show'); }
-function hideM(id){ document.getElementById(id).classList.remove('show'); }
+// CW
+function openCW(){['cwH','cwS','cwB'].forEach((id,i)=>{const src=['hueShift','saturation','brightness'][i];document.getElementById(id).value=gi(src);uv(id+'v',gi(src));});showM('cwModal');drawWheel();cwPv();drawBB();}
+function applyCW(){['hueShift','saturation','brightness'].forEach((id,i)=>{const cwid=['cwH','cwS','cwB'][i];document.getElementById(id).value=gi(cwid);uv(['huV','saTV','brV'][i],gi(cwid));});updP();hideM('cwModal');sr();}
+function drawWheel(){const c=document.getElementById('cwC'),ctx=c.getContext('2d'),cx=c.width/2,cy=c.height/2,R=cx-2;const img=ctx.createImageData(c.width,c.height);for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){const dx=x-cx,dy=y-cy,d=Math.sqrt(dx*dx+dy*dy);if(d<=R){const a=(Math.atan2(dy,dx)*180/Math.PI+360)%360,s=(d/R)*100;const[r,g,b]=hsl2rgb(a,s,55);const i=(y*c.width+x)*4;img.data[i]=r;img.data[i+1]=g;img.data[i+2]=b;img.data[i+3]=255;}}ctx.putImageData(img,0,0);const h=gi('cwH'),s=gi('cwS'),rad=h*Math.PI/180,pr=(s/100)*R,px=cx+Math.cos(rad)*pr,py=cy+Math.sin(rad)*pr;ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.stroke();ctx.beginPath();ctx.arc(px,py,4,0,Math.PI*2);ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.stroke();}
+document.getElementById('cwC').addEventListener('click',function(e){const r=this.getBoundingClientRect(),cx=this.width/2,cy=this.height/2,dx=e.clientX-r.left-cx,dy=e.clientY-r.top-cy,d=Math.sqrt(dx*dx+dy*dy);if(d<=cx-2){const a=(Math.atan2(dy,dx)*180/Math.PI+360)%360,s=Math.min(100,(d/(cx-2))*100);document.getElementById('cwH').value=Math.round(a);uv('cwHv',Math.round(a));document.getElementById('cwS').value=Math.round(s);uv('cwSv',Math.round(s));drawWheel();cwPv();drawBB();}});
+function cwU(){uv('cwHv',document.getElementById('cwH').value);uv('cwSv',document.getElementById('cwS').value);uv('cwBv',document.getElementById('cwB').value);drawWheel();cwPv();drawBB();}
+function cwPv(){const[r,g,b]=hsl2rgb(gi('cwH'),gi('cwS'),gi('cwB'));document.getElementById('cwPrev').style.background=`rgb(${r},${g},${b})`;}
+function drawBB(){const c=document.getElementById('briBar'),ctx=c.getContext('2d'),h=gi('cwH'),s=gi('cwS');const g=ctx.createLinearGradient(0,0,c.width,0);for(let i=0;i<=10;i++){const[r,gv,b]=hsl2rgb(h,s,(i/10)*100);g.addColorStop(i/10,`rgb(${r},${gv},${b})`);}ctx.fillStyle=g;ctx.fillRect(0,0,c.width,c.height);const bp=(gi('cwB')/100)*c.width;ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bp,0);ctx.lineTo(bp,c.height);ctx.stroke();ctx.strokeStyle='#000';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(bp,0);ctx.lineTo(bp,c.height);ctx.stroke();}
+function briClick(e){const r=e.currentTarget.getBoundingClientRect(),t=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));document.getElementById('cwB').value=Math.round(t*100);uv('cwBv',Math.round(t*100));cwPv();drawBB();}
 
-function switchNB(el,t){ document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on')); el.classList.add('on'); switchN(t); }
-function switchN(t){
-  noiseType=t;
-  const b=document.getElementById('nb_'+t);
-  if(b){ document.querySelectorAll('.nb').forEach(x=>x.classList.remove('on')); b.classList.add('on'); }
-  document.getElementById('sMode').textContent=t[0].toUpperCase()+t.slice(1)+' Emboss';
-  sr();
-}
+// ── MATH CORE ──────────────────────────────────────────────────────────────────
+function mul32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function mkPerm(rnd){const p=new Uint8Array(512),b=new Uint8Array(256);for(let i=0;i<256;i++)b[i]=i;for(let i=255;i>0;i--){const j=Math.floor(rnd()*(i+1));[b[i],b[j]]=[b[j],b[i]];}for(let i=0;i<512;i++)p[i]=b[i&255];return p;}
+const ss=t=>t*t*(3-2*t),lrp=(a,b,t)=>a+t*(b-a);
+function gn2(x,y,p){const xi=Math.floor(x)&255,yi=Math.floor(y)&255,xf=x-Math.floor(x),yf=y-Math.floor(y),u=ss(xf),v=ss(yf);const gf=(h,dx,dy)=>{const k=h&3;return[1,-1,1,-1][k]*dx+[1,1,-1,-1][k]*dy;};const aa=p[p[xi]+yi],ab=p[p[xi]+yi+1],ba=p[p[xi+1]+yi],bb=p[p[xi+1]+yi+1];return lrp(lrp(gf(aa,xf,yf),gf(ba,xf-1,yf),u),lrp(gf(ab,xf,yf-1),gf(bb,xf-1,yf-1),u),v);}
+function fbm(x,y,p,oct,lac,gain){let v=0,a=.5,f=1,m=0;for(let i=0;i<oct;i++){v+=gn2(x*f,y*f,p)*a;m+=a;a*=gain;f*=lac;}return v/m;}
+function v2f1(x,y,p){const cx=Math.floor(x),cy=Math.floor(y);let md=1e9;for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const cx2=cx+dx,cy2=cy+dy,idx=((cy2*1619+cx2)*6271)&0x7fffffff;const px=cx2+(p[idx&255]/255)*.75+.125,py2=cy2+(p[(idx>>4)&255]/255)*.75+.125;const d=Math.sqrt((x-px)**2+(y-py2)**2);if(d<md)md=d;}return md;}
+function v2f1f2(x,y,p){const cx=Math.floor(x),cy=Math.floor(y);let md=1e9,md2=1e9;for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const cx2=cx+dx,cy2=cy+dy,idx=((cy2*1619+cx2)*6271)&0x7fffffff;const px=cx2+(p[idx&255]/255)*.75+.125,py2=cy2+(p[(idx>>4)&255]/255)*.75+.125;const d=Math.sqrt((x-px)**2+(y-py2)**2);if(d<md){md2=md;md=d;}else if(d<md2)md2=d;}return{f1:md,f2:md2,edge:md2-md};}
 
-function setPal(h,s,b,d,el){
-  document.querySelectorAll('.sw').forEach(x=>x.classList.remove('on'));
-  if(el) el.classList.add('on');
-  document.getElementById('hueShift').value=h;   uv('huV',h);
-  document.getElementById('saturation').value=s; uv('saTV',s);
-  document.getElementById('brightness').value=b; uv('brV',b);
-  document.getElementById('darkTint').value=d;   uv('dtV',d);
-  updP(); sr();
-}
-function updP(){
-  const c=document.getElementById('prevBar'),ctx=c.getContext('2d');
-  const h=gi('hueShift'),s=gi('saturation'),bv=gi('brightness');
-  const g=ctx.createLinearGradient(0,0,c.width,0);
-  for(let i=0;i<=12;i++){const t=i/12,l=bv*.35+t*(bv*.85-bv*.2);const[r,gv,b]=hsl2rgb(h+t*16-8,s,Math.max(0,Math.min(100,l)));g.addColorStop(t,`rgb(${r},${gv},${b})`);}
-  ctx.fillStyle=g; ctx.fillRect(0,0,c.width,c.height);
-}
+// ── BASE NOISE TYPES ───────────────────────────────────────────────────────────
+function fiberNoise(x,y,ang,sc,dens,rough,p){const rad=ang*Math.PI/180,cos=Math.cos(rad),sin=Math.sin(rad),tx=(x*cos-y*sin)/sc,ty=(x*sin+y*cos)/sc,rr=rough/100;let v=0;for(let i=0;i<dens;i++){const fi=i/dens;v+=Math.abs(gn2(tx*.15+fi*3.7,ty*2.5+fbm(tx*.3,ty*.3+fi*7,p,3,2,.5)*rr*3,p));}return v/dens+fbm(tx*4,ty*4,p,4,2.1,.45)*rr*.4;}
+function stuccoNoise(x,y,ang,sc,dens,rough,p){const rad=ang*Math.PI/180,tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc,ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc,rr=rough/100;return Math.abs(fbm(tx,ty,p,4,2.5,.55)*.7+Math.abs(fbm(tx*5,ty*5,p,3,2,.4))*rr*.5)*1.2;}
+function waterNoise(x,y,ang,sc,dens,rough,p){const rad=ang*Math.PI/180,tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc,ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc,rr=rough/100;let v=0;for(let i=0;i<dens;i++){const fi=i/dens,wa=fi*Math.PI*2,warp=fbm(tx*.5+fi*2,ty*.5+fi*3,p,3,2,.5)*rr*2;v+=(Math.sin(tx*Math.cos(wa)*1.5+ty*Math.sin(wa)*1.5+warp*3)*.5+.5);}return Math.abs(v/dens+fbm(tx*3,ty*3,p,4,2.2,.5)*rr*.2);}
 
-function openCW(){
-  document.getElementById('cwH').value=gi('hueShift');   uv('cwHv',gi('hueShift'));
-  document.getElementById('cwS').value=gi('saturation'); uv('cwSv',gi('saturation'));
-  document.getElementById('cwB').value=gi('brightness'); uv('cwBv',gi('brightness'));
-  showM('cwModal'); drawWheel(); cwPrev(); drawBriBar();
-}
-function closeCW(){ hideM('cwModal'); }
-function applyCW(){
-  document.getElementById('hueShift').value=gi('cwH');   uv('huV',gi('cwH'));
-  document.getElementById('saturation').value=gi('cwS'); uv('saTV',gi('cwS'));
-  document.getElementById('brightness').value=gi('cwB'); uv('brV',gi('cwB'));
-  updP(); closeCW(); sr();
-}
-function drawWheel(){
-  const c=document.getElementById('cwC'),ctx=c.getContext('2d');
-  const cx=c.width/2,cy=c.height/2,R=cx-2;
-  const img=ctx.createImageData(c.width,c.height);
-  for(let y=0;y<c.height;y++) for(let x=0;x<c.width;x++){
-    const dx=x-cx,dy=y-cy,d=Math.sqrt(dx*dx+dy*dy);
-    if(d<=R){const a=(Math.atan2(dy,dx)*180/Math.PI+360)%360,s=(d/R)*100;
-      const[r,g,b]=hsl2rgb(a,s,55);const i=(y*c.width+x)*4;
-      img.data[i]=r;img.data[i+1]=g;img.data[i+2]=b;img.data[i+3]=255;}
-  }
-  ctx.putImageData(img,0,0);
-  const h=gi('cwH'),s=gi('cwS'),rad=h*Math.PI/180,pr=(s/100)*R;
-  const px=cx+Math.cos(rad)*pr,py=cy+Math.sin(rad)*pr;
-  ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.stroke();
-  ctx.beginPath();ctx.arc(px,py,4,0,Math.PI*2);ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.stroke();
-}
-document.getElementById('cwC').addEventListener('click',function(e){
-  const r=this.getBoundingClientRect(),cx=this.width/2,cy=this.height/2;
-  const dx=e.clientX-r.left-cx,dy=e.clientY-r.top-cy,d=Math.sqrt(dx*dx+dy*dy);
-  if(d<=cx-2){
-    const a=(Math.atan2(dy,dx)*180/Math.PI+360)%360,s=Math.min(100,(d/(cx-2))*100);
-    document.getElementById('cwH').value=Math.round(a); uv('cwHv',Math.round(a));
-    document.getElementById('cwS').value=Math.round(s); uv('cwSv',Math.round(s));
-    drawWheel(); cwPrev(); drawBriBar();
-  }
-});
-function cwUpd(){
-  uv('cwHv',document.getElementById('cwH').value);
-  uv('cwSv',document.getElementById('cwS').value);
-  uv('cwBv',document.getElementById('cwB').value);
-  drawWheel(); cwPrev(); drawBriBar();
-}
-function cwPrev(){ const[r,g,b]=hsl2rgb(gi('cwH'),gi('cwS'),gi('cwB')); document.getElementById('cwPrev').style.background=`rgb(${r},${g},${b})`; }
-function drawBriBar(){
-  const c=document.getElementById('briBar'),ctx=c.getContext('2d'),h=gi('cwH'),s=gi('cwS');
-  const g=ctx.createLinearGradient(0,0,c.width,0);
-  for(let i=0;i<=10;i++){const[r,gv,b]=hsl2rgb(h,s,(i/10)*100);g.addColorStop(i/10,`rgb(${r},${gv},${b})`);}
-  ctx.fillStyle=g; ctx.fillRect(0,0,c.width,c.height);
-  const bp=(gi('cwB')/100)*c.width;
-  ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bp,0);ctx.lineTo(bp,c.height);ctx.stroke();
-  ctx.strokeStyle='#000';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(bp,0);ctx.lineTo(bp,c.height);ctx.stroke();
-}
-function briClick(e){
-  const r=e.currentTarget.getBoundingClientRect(),t=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
-  document.getElementById('cwB').value=Math.round(t*100); uv('cwBv',Math.round(t*100));
-  cwPrev(); drawBriBar();
+// ══════════════════════════════════════════════════════════════════════════════
+// GROUP A — Red Giant Texturize style (grunge overlays, Walking Dead look)
+// Each fn(x,y,p) → float 0-1, designed for strong visual contrast
+// ══════════════════════════════════════════════════════════════════════════════
+
+function ut_Concrete(x,y,p){
+  // Poured concrete: large slabs + aggregate pits + fine dust grain
+  const macro=fbm(x*.6,y*.6,p,4,2.1,.52)*.4+.42;      // large 0.02–0.82
+  const agg=Math.abs(fbm(x*5,y*5,p,3,2,.48))*.35;       // medium aggregate
+  const grain=fbm(x*22,y*22,p,2,2,.4)*.07;              // fine surface
+  // Aggregate pits: reversed bright spots become dark holes
+  const f1=v2f1(x*14,y*14,p);
+  const pits=Math.pow(Math.max(0,.28-f1),2)*12*.22;
+  return Math.max(0,Math.min(1,macro+agg*.25+grain-pits));
 }
 
-function mul32(a){ return function(){ a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296; }; }
-function mkPerm(rnd){ const p=new Uint8Array(512),b=new Uint8Array(256);for(let i=0;i<256;i++)b[i]=i;for(let i=255;i>0;i--){const j=Math.floor(rnd()*(i+1));[b[i],b[j]]=[b[j],b[i]];}for(let i=0;i<512;i++)p[i]=b[i&255];return p; }
-const ss2=t=>t*t*(3-2*t);
-const lrp=(a,b,t)=>a+t*(b-a);
-function gn2(x,y,p){
-  const xi=Math.floor(x)&255,yi=Math.floor(y)&255,xf=x-Math.floor(x),yf=y-Math.floor(y),u=ss2(xf),v=ss2(yf);
-  const g=(h,dx,dy)=>{const k=h&3;return[1,-1,1,-1][k]*dx+[1,1,-1,-1][k]*dy;};
-  const aa=p[p[xi]+yi],ab=p[p[xi]+yi+1],ba=p[p[xi+1]+yi],bb=p[p[xi+1]+yi+1];
-  return lrp(lrp(g(aa,xf,yf),g(ba,xf-1,yf),u),lrp(g(ab,xf,yf-1),g(bb,xf-1,yf-1),u),v);
-}
-function fbm(x,y,p,oct,lac,gain){ let v=0,a=.5,f=1,m=0;for(let i=0;i<oct;i++){v+=gn2(x*f,y*f,p)*a;m+=a;a*=gain;f*=lac;}return v/m; }
-function fiberNoise(x,y,ang,sc,dens,rough,perm){
-  const rad=ang*Math.PI/180,cos=Math.cos(rad),sin=Math.sin(rad);
-  const tx=(x*cos-y*sin)/sc,ty=(x*sin+y*cos)/sc,rr=rough/100;
-  let v=0; for(let i=0;i<dens;i++){const fi=i/dens;v+=Math.abs(gn2(tx*.15+fi*3.7,ty*2.5+fbm(tx*.3,ty*.3+fi*7,perm,3,2,.5)*rr*3,perm));} v/=dens;
-  v+=fbm(tx*4,ty*4,perm,4,2.1,.45)*rr*.4; return v;
-}
-function stuccoNoise(x,y,ang,sc,dens,rough,perm){
-  const rad=ang*Math.PI/180,tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc,ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc,rr=rough/100;
-  return Math.abs(fbm(tx,ty,perm,4,2.5,.55)*.7+Math.abs(fbm(tx*5,ty*5,perm,3,2,.4))*rr*.5)*1.2;
-}
-function lavaNoise(x,y,ang,sc,dens,rough,perm){
-  const rad=ang*Math.PI/180,tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc,ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc,rr=rough/100;
-  const cx2=Math.floor(tx),cy2=Math.floor(ty); let md=1e9;
-  for(let dy=-2;dy<=2;dy++) for(let dx=-2;dx<=2;dx++){
-    const cx3=cx2+dx,cy3=cy2+dy,idx=((cy3*1619+cx3)*6271)&0x7fffffff;
-    const px2=cx3+(perm[idx&255]/255)*.8+.1,py2=cy3+(perm[(idx>>4)&255]/255)*.8+.1;
-    const d=Math.sqrt((tx-px2)**2+(ty-py2)**2); if(d<md)md=d;
-  }
-  let v=1-Math.min(1,md*1.8); v+=fbm(tx*2+rr,ty*2+rr,perm,3,2,.5)*rr*.35; return Math.max(0,v);
-}
-function waterNoise(x,y,ang,sc,dens,rough,perm){
-  const rad=ang*Math.PI/180,tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc,ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc,rr=rough/100;
-  let v=0; for(let i=0;i<dens;i++){const fi=i/dens,wa=fi*Math.PI*2,warp=fbm(tx*.5+fi*2,ty*.5+fi*3,perm,3,2,.5)*rr*2;v+=(Math.sin(tx*Math.cos(wa)*1.5+ty*Math.sin(wa)*1.5+warp*3)*.5+.5);} v/=dens;
-  v+=fbm(tx*3,ty*3,perm,4,2.2,.5)*rr*.2; return Math.abs(v);
-}
-function hsl2rgb(h,s,l){
-  h/=360;s/=100;l/=100;
-  const hu=(p,q,t)=>{if(t<0)t++;if(t>1)t--;if(t<1/6)return p+(q-p)*6*t;if(t<.5)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};
-  if(!s){const v=Math.round(l*255);return[v,v,v];}
-  const q=l<.5?l*(1+s):l+s-l*s,p2=2*l-q;
-  return[Math.round(hu(p2,q,h+1/3)*255),Math.round(hu(p2,q,h)*255),Math.round(hu(p2,q,h-1/3)*255)];
-}
-function doSharpen(data,W,H,amt){
-  const src=new Uint8ClampedArray(data),k=amt*.12;
-  for(let y=1;y<H-1;y++) for(let x=1;x<W-1;x++){
-    const i=(y*W+x)*4;
-    for(let c=0;c<3;c++){const v=src[i+c]*5-src[i-4+c]-src[i+4+c]-src[i-W*4+c]-src[i+W*4+c];data[i+c]=Math.max(0,Math.min(255,src[i+c]+k*(v-src[i+c])));}
-  }
+function ut_Rust(x,y,p){
+  // Rust bloom: heavy domain warp → organic patches with clear edge contrast
+  const wx=fbm(x*1.8,y*1.8,p,3,2,.55)*.9;
+  const wy=fbm(x*1.8+4.2,y*1.8+4.2,p,3,2,.55)*.9;
+  const blob=fbm(x*.9+wx,y*.9+wy,p,5,2.3,.6);
+  // S-curve: pulls midrange apart for clear patches
+  const v=blob*.5+.5;
+  const sc=v<.45?v*.5:v>.55?v*.5+.5:v*3-.85; // steepen middle
+  const sharp=Math.max(0,Math.min(1,sc));
+  // Fine pitting on rust face
+  const pit=Math.abs(fbm(x*16,y*16,p,2,2,.45))*.12;
+  return Math.max(0,Math.min(1,sharp*.88+pit));
 }
 
-function sr(){ if(rtimer)clearTimeout(rtimer); rtimer=setTimeout(doRender,20); }
+function ut_GrimeDrips(x,y,p){
+  // Vertical drip streaks — key: much higher X freq than Y freq
+  // Slow horizontal warp creates irregular organic streaks
+  const hWarp=fbm(x*2.2,y*.35,p,3,2,.5)*.55;
+  // Primary drips: high X, low Y
+  const drip=Math.pow(Math.abs(fbm(x*8+hWarp,y*.22,p,4,2.5,.58)),1.1);
+  // Secondary thinner drips
+  const drip2=Math.pow(Math.abs(fbm(x*13+hWarp*.6+.9,y*.16+.4,p,3,2,.5)),1.5)*.55;
+  // Splatter puddles at drip ends (voronoi distorted more in Y)
+  const{f1}=v2f1f2(x*4.5+hWarp*.25,y*9.5+2,p);
+  const splat=Math.pow(Math.max(0,.38-f1),2)*7*.4;
+  return Math.max(0,Math.min(1,drip*.55+drip2*.28+splat));
+}
+
+function ut_Cracked(x,y,p){
+  // Voronoi crack network: thin DARK lines on LIGHT surface
+  const{edge}=v2f1f2(x*2.8,y*2.8,p);
+  // Crack: very dark at center (edge≈0), quickly goes to surface level
+  const crackDark=Math.pow(Math.max(0,1-edge*14),2.5);
+  // Surface: slightly variable bright
+  const surf=fbm(x*6,y*6,p,3,2,.48)*.18+.68;
+  return Math.max(0,Math.min(1,surf-crackDark*.82));
+}
+
+function ut_WornPaint(x,y,p){
+  // Paint chips: clear bright (paint present) vs dark (bare surface exposed)
+  const wx=fbm(x*.8,y*.8,p,3,2,.55)*.65;
+  const wy=fbm(x*.8+3.1,y*.8+3.1,p,3,2,.55)*.65;
+  const raw=fbm(x*1.1+wx,y*1.1+wy,p,3,2,.52);
+  // Hard-ish threshold: push to clearly paint or clearly bare
+  const mask=Math.max(0,Math.min(1,(raw+.15)*3.5));
+  const paintFace=fbm(x*9,y*9,p,3,2,.5)*.14+.66;    // bright paint
+  const bareFace =fbm(x*13,y*13,p,2,2,.5)*.09+.16;   // dark bare metal
+  return mask*paintFace+(1-mask)*bareFace;
+}
+
+function ut_Asphalt(x,y,p){
+  // Dark base + bright aggregate speckle + subtle cracks
+  const base=fbm(x*2.2,y*2.2,p,4,2.1,.52)*.22+.16;  // dark 0.05–0.38
+  // Aggregate: bright reversed-voronoi spots
+  const f1=v2f1(x*22,y*22,p);
+  const agg=Math.pow(Math.max(0,.22-f1),2)*16*.55;
+  // Light macro variation
+  const macro=fbm(x*.8,y*.8,p,3,2,.5)*.1;
+  return Math.max(0,Math.min(1,base+agg+macro));
+}
+
+function ut_FineScratches(x,y,p){
+  // Directional scratches: slowly varying angle field drives anisotropic sampling
+  const angFld=fbm(x*.35,y*.35,p,2,2,.5)*.9;   // gentle angle variation
+  const ca=Math.cos(angFld),sa=Math.sin(angFld);
+  const rx=x*ca-y*sa, ry=x*sa+y*ca;
+  // Scratches: high along-scratch freq, very low cross-scratch freq
+  const s1=Math.pow(Math.abs(gn2(rx*24,ry*.07,p)),1.4);
+  const s2=Math.pow(Math.abs(gn2(rx*18+3.1,ry*.09+1,p)),1.7)*.7;
+  const s3=Math.pow(Math.abs(gn2(rx*30+6,ry*.05+2,p)),1.5)*.5;
+  const base=fbm(x*4,y*4,p,2,2,.5)*.08+.22;     // dark base
+  return Math.max(0,Math.min(1,base+s1*.48+s2*.25+s3*.15));
+}
+
+function ut_Plaster(x,y,p){
+  // Smooth organic trowelled surface — already the most liked preset
+  const wave=fbm(x*.9,y*.9,p,5,2.1,.5);
+  const ripple=fbm(x*3.5+wave*1.6,y*3.5,p,3,2,.47)*.2;
+  const dust=fbm(x*20,y*20,p,2,2,.45)*.06;
+  return Math.max(0,Math.min(1,wave*.48+ripple+dust+.3));
+}
+
+function ut_Stucco(x,y,p){
+  // Coarse chunky exterior stucco — ridged noise for bumpy appearance
+  const base=Math.abs(fbm(x*.7,y*.7,p,5,2.5,.55))*.65+.15;
+  const bumps=Math.abs(fbm(x*4.5,y*4.5,p,3,2,.48))*.35;
+  const grit=fbm(x*16,y*16,p,2,2,.4)*.08;
+  return Math.max(0,Math.min(1,base*.58+bumps+grit));
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// GROUP B — Sapphire S_Texture family
+// ══════════════════════════════════════════════════════════════════════════════
+
+function st_Cells(x,y,p){
+  // S_TextureCells: procedural cellular shapes — Voronoi cells with varied brightness
+  const{f1,edge}=v2f1f2(x*4,y*4,p);
+  // Cell face: use nested noise keyed to f1 for per-cell variation
+  const faceV=fbm(f1*6+x*.3,f1*6+y*.3,p,2,2,.5)*.22+.6;
+  // Dark cell boundary
+  const bdry=Math.pow(Math.max(0,1-edge*11),2)*.75;
+  return Math.max(0,Math.min(1,faceV*(1-bdry)));
+}
+
+function st_Flux(x,y,p){
+  // S_TextureFlux: fluctuating liquid/amoeba cellular patterns
+  // Heavy warp creates organic flowing cell boundaries
+  const wx=fbm(x*2.2,y*2.2,p,4,2,.58)*.8;
+  const wy=fbm(x*2.2+5.1,y*2.2+5.1,p,4,2,.58)*.8;
+  const f1=v2f1(x*3.2+wx,y*3.2+wy,p);
+  const cell=Math.pow(1-Math.min(1,f1*2.8),1.8);
+  // Subtle internal gradient
+  const interior=fbm(x*7+wx*.5,y*7+wy*.5,p,3,2,.5)*.18;
+  return Math.max(0,Math.min(1,cell*.82+interior));
+}
+
+function st_Folded(x,y,p){
+  // S_TextureFolded: folded cloth / turbulent liquid surface
+  // Multiple directional turbulent sine waves create fold ridges
+  const n1=fbm(x*1.6,y*1.6,p,4,2,.52);
+  const n2=fbm(x*1.6+2.2,y*1.6+2.2,p,4,2,.52);
+  const fold1=Math.sin(x*5.5+n1*7)*.5+.5;
+  const fold2=Math.sin(y*4.8+n2*6+1.3)*.5+.5;
+  const fold3=Math.sin((x+y)*3.5+n1*5+n2*4)*.5+.5;
+  const fold4=Math.sin((x-y)*4.2+n2*5.5)*.5+.5;
+  return Math.max(0,Math.min(1,fold1*.3+fold2*.28+fold3*.24+fold4*.18));
+}
+
+function st_Loops(x,y,p){
+  // S_TextureLoops: overlapping concentric loop shapes — rings from Voronoi centers
+  const f1a=v2f1(x*2.8,y*2.8,p);
+  const f1b=v2f1(x*3.5+1.4,y*3.5+0.7,p);
+  const f1c=v2f1(x*2.2-0.9,y*2.2+1.3,p);
+  // Each center emits concentric rings
+  const r1=Math.sin(f1a*Math.PI*12)*.5+.5;
+  const r2=Math.sin(f1b*Math.PI*9+.8)*.5+.5;
+  const r3=Math.sin(f1c*Math.PI*14+1.6)*.5+.5;
+  // Max blend shows all rings clearly
+  return Math.max(r1,r2,r3);
+}
+
+function st_Weave(x,y,p){
+  // S_TextureWeave: perpendicular woven strands (plain weave over-under pattern)
+  const freq=9;
+  const u=(x*freq)%1, v=(y*freq)%1;
+  const cellX=Math.floor(x*freq)&255, cellY=Math.floor(y*freq)&255;
+  // Alternating cells: which strand is on top
+  const horzOnTop=(cellX+cellY)%2===0;
+  // Cylindrical strand profiles (0 at edges, 1 at center)
+  const hCyl=Math.sin(v*Math.PI);   // horizontal strand shape
+  const vCyl=Math.sin(u*Math.PI);   // vertical strand shape
+  // Gap between strands
+  const gap=(u<.055||u>.945||v<.055||v>.945);
+  if(gap) return .07;
+  let b;
+  if(horzOnTop){b=hCyl*.52+.28;} // horizontal on top: brighter
+  else{b=vCyl*.42+.2;}            // vertical on top: slightly less bright
+  // Fine yarn grain
+  return Math.max(0,Math.min(1,b+fbm(x*32,y*32,p,1,2,.5)*.06));
+}
+
+function st_Clouds(x,y,p){
+  // S_Clouds: classic smooth fractal noise — clean and full range
+  const v=fbm(x*1.5,y*1.5,p,6,2.0,.54)*.52+.5;
+  return Math.max(0,Math.min(1,v));
+}
+
+function st_Grunge(x,y,p){
+  // S_Grunge: irregular dirt/stain/splatter overlay
+  const warp=fbm(x*.9,y*.9,p,3,2,.5)*.55;
+  // Large dark stains
+  const f1a=v2f1(x*2.8+warp,y*2.8+warp,p);
+  const stain=Math.pow(Math.max(0,.45-f1a),2)*5*.6;
+  // Small spatter spots
+  const f1b=v2f1(x*6+warp*.4+1,y*6+warp*.4+1,p);
+  const spatter=Math.pow(Math.max(0,.28-f1b),2)*12*.45;
+  // Fine grime texture
+  const grime=fbm(x*14,y*14,p,3,2,.5)*.14;
+  return Math.max(0,Math.min(1,stain+spatter+grime));
+}
+
+function st_Moire(x,y,p){
+  // S_Moire (custom): two overlapping ring systems creating interference
+  // Slight noise distortion keeps it from being perfectly mechanical
+  const nd=fbm(x*1.2,y*1.2,p,3,2,.5)*.35;
+  const r1=Math.sqrt(x*x+y*y);
+  const r2=Math.sqrt((x-.4)*(x-.4)+(y+.3)*(y+.3));
+  // Two ring systems at slightly different frequencies
+  const ring1=Math.sin((r1+nd)*.5*20)*.5+.5;
+  const ring2=Math.sin((r2+nd*.7)*.5*17+.6)*.5+.5;
+  // Interference: multiply gives the classic moire look
+  return ring1*ring2;
+}
+
+// ── PRESET REGISTRY ───────────────────────────────────────────────────────────
+const GROUP_A=[
+  {name:'Concrete',    fn:ut_Concrete,   ts:1.0},
+  {name:'Rust Bloom',  fn:ut_Rust,       ts:0.8},
+  {name:'Grime Drips', fn:ut_GrimeDrips, ts:1.0},
+  {name:'Cracked',     fn:ut_Cracked,    ts:0.8},
+  {name:'Worn Paint',  fn:ut_WornPaint,  ts:0.9},
+  {name:'Asphalt',     fn:ut_Asphalt,    ts:1.0},
+  {name:'Scratches',   fn:ut_FineScratches,ts:1.0},
+  {name:'Plaster',     fn:ut_Plaster,    ts:1.0},
+  {name:'Stucco',      fn:ut_Stucco,     ts:1.0},
+];
+const GROUP_B=[
+  {name:'S_Cells',  fn:st_Cells,  ts:0.8},
+  {name:'S_Flux',   fn:st_Flux,   ts:0.9},
+  {name:'S_Folded', fn:st_Folded, ts:0.9},
+  {name:'S_Loops',  fn:st_Loops,  ts:0.8},
+  {name:'S_Weave',  fn:st_Weave,  ts:1.2},
+  {name:'S_Clouds', fn:st_Clouds, ts:1.0},
+  {name:'S_Grunge', fn:st_Grunge, ts:0.9},
+  {name:'S_Moire',  fn:st_Moire,  ts:0.25},// moire is zoomed out
+];
+const ALL_PRESETS=[...GROUP_A,...GROUP_B];
+
+// ── BLEND ─────────────────────────────────────────────────────────────────────
+function blend(m,b,t){switch(m){case'multiply':return b*t;case'screen':return 1-(1-b)*(1-t);case'overlay':return b<.5?2*b*t:1-2*(1-b)*(1-t);case'softlight':return b<.5?2*b*t+b*b*(1-2*t):Math.sqrt(b)*(2*t-1)+2*b*(1-t);case'hardlight':return t<.5?2*b*t:1-2*(1-b)*(1-t);case'colorburn':return t===0?0:Math.max(0,1-(1-b)/t);case'difference':return Math.abs(b-t);default:return t;}}
+
+// ── HSL ───────────────────────────────────────────────────────────────────────
+function hsl2rgb(h,s,l){h/=360;s/=100;l/=100;const hu=(p,q,t)=>{if(t<0)t++;if(t>1)t--;if(t<1/6)return p+(q-p)*6*t;if(t<.5)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};if(!s){const v=Math.round(l*255);return[v,v,v];}const q=l<.5?l*(1+s):l+s-l*s,p2=2*l-q;return[Math.round(hu(p2,q,h+1/3)*255),Math.round(hu(p2,q,h)*255),Math.round(hu(p2,q,h-1/3)*255)];}
+
+// ── BOX BLUR ──────────────────────────────────────────────────────────────────
+function bBlur(arr,W,H,r){if(r<1)return arr;const t=new Float32Array(arr.length);for(let y=0;y<H;y++)for(let x=0;x<W;x++){let s=0,c=0;for(let dx=-r;dx<=r;dx++){const nx=Math.min(W-1,Math.max(0,x+dx));s+=arr[y*W+nx];c++;}t[y*W+x]=s/c;}const o=new Float32Array(arr.length);for(let y=0;y<H;y++)for(let x=0;x<W;x++){let s=0,c=0;for(let dy=-r;dy<=r;dy++){const ny=Math.min(H-1,Math.max(0,y+dy));s+=t[ny*W+x];c++;}o[y*W+x]=s/c;}return o;}
+
+// ── SHARPEN ───────────────────────────────────────────────────────────────────
+function doSharpen(d,W,H,amt){const s=new Uint8ClampedArray(d);const k=amt*0.08;for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){const i=(y*W+x)*4;for(let c=0;c<3;c++){const blur=(s[i-4+c]+s[i+4+c]+s[i-W*4+c]+s[i+W*4+c])*0.20+(s[i-W*4-4+c]+s[i-W*4+4+c]+s[i+W*4-4+c]+s[i+W*4+4+c])*0.05;const detail=s[i+c]-blur;d[i+c]=Math.max(0,Math.min(255,Math.round(s[i+c]+k*detail)));}}}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function sr(){if(rtimer)clearTimeout(rtimer);rtimer=setTimeout(doRender,20);}
+
 function doRender(){
   if(rtimer){clearTimeout(rtimer);rtimer=null;}
   const canvas=document.getElementById('mainCanvas');
-  const ctx=canvas.getContext('2d');
-  const W=canvas.width,H=canvas.height;
-  const t0=performance.now();
+  const W=canvas.width,H=canvas.height,t0=performance.now();
   document.getElementById('rs').textContent='Rendering…';
-  const P={scale:gi('noiseScale'),density:gi('noiseDensity'),angle:gi('noiseAngle'),roughness:gi('roughness'),seed:gi('seed'),embossDepth:gi('embossDepth')/100,normalScale:Math.max(1,Math.floor(gi('normalScale'))),lightAngle:gi('lightAngle'),lightElev:gi('lightElev'),contrast:gi('contrast')/100,specularity:gi('specularity')/100,specHard:gi('specHard'),ambient:gi('ambient')/100,shadowSoft:gi('shadowSoft')/100,doAO:cks['ckAO'],doSharpen:cks['ckSh'],sharpenAmt:gi('sharpAmt'),hueShift:gi('hueShift'),saturation:gi('saturation'),brightness:gi('brightness'),darkTint:gi('darkTint')/100,hueVar:gi('hueVar')};
+
+  const doShiny=cks['ckShiny'];
+  const shHiB=gi('shHiB')/100,shHiS=gi('shHiS'),shBS=gi('shBS'),shFr=gi('shFr')/100;
+  const [shLR,shLG,shLB]=hsl2rgb(gi('shLC'),gi('shLCS'),80).map(v=>v/255);
+
+  if(noiseType==='unitexture'){
+    renderUT(canvas,W,H,doShiny,shHiB,shHiS,shBS,shFr,shLR,shLG,shLB);
+    const ms=Math.round(performance.now()-t0);document.getElementById('rs').textContent='✦ '+ms+'ms';document.getElementById('sTime').textContent=ms+'ms';
+    return;
+  }
+
+  const P={sc:gi('noiseScale'),dens:gi('noiseDensity'),ang:gi('noiseAngle'),rough:gi('roughness'),seed:gi('seed'),dep:gi('embossDepth')/100,ns:Math.max(1,Math.floor(gi('normalScale'))),lAng:gi('lightAngle'),lElev:gi('lightElev'),ct:gi('contrast')/100,spec:gi('specularity')/100,specH:gi('specHard'),amb:gi('ambient')/100,shSft:gi('shadowSoft')/100,doAO:cks['ckAO'],doSh:cks['ckSh'],shAmt:gi('sharpAmt'),hue:gi('hueShift'),sat:gi('saturation'),bri:gi('brightness'),dT:gi('darkTint')/100,hV:gi('hueVar')};
   const perm=mkPerm(mul32(P.seed*7919+1));
-  const nfn={fiber:fiberNoise,stucco:stuccoNoise,lava:lavaNoise,water:waterNoise}[noiseType]||fiberNoise;
-  const heights=new Float32Array(W*H);
-  let hMn=Infinity,hMx=-Infinity;
-  for(let y=0;y<H;y++) for(let x=0;x<W;x++){const v=nfn(x,y,P.angle,P.scale,P.density,P.roughness,perm);heights[y*W+x]=v;if(v<hMn)hMn=v;if(v>hMx)hMx=v;}
-  const hr=hMx-hMn||1;
-  for(let i=0;i<heights.length;i++) heights[i]=(heights[i]-hMn)/hr;
-  const lR=P.lightAngle*Math.PI/180,lE=P.lightElev*Math.PI/180;
-  const lx=Math.cos(lR)*Math.cos(lE),ly=Math.sin(lR)*Math.cos(lE),lz=Math.sin(lE);
-  const spow=4+P.specHard*3,ns=P.normalScale;
-  const imgData=ctx.createImageData(W,H),px=imgData.data;
-  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
-    const i=y*W+x,h=heights[i];
+  const nfn={fiber:fiberNoise,stucco:stuccoNoise,water:waterNoise}[noiseType]||fiberNoise;
+
+  let hs=new Float32Array(W*H);let mn=Infinity,mx=-Infinity;
+  const scX=512/W,scY=512/H;for(let y=0;y<H;y++)for(let x=0;x<W;x++){const v=nfn(x*scX,y*scY,P.ang,P.sc,P.dens,P.rough,perm);hs[y*W+x]=v;if(v<mn)mn=v;if(v>mx)mx=v;}
+  const hr=mx-mn||1;for(let i=0;i<hs.length;i++)hs[i]=(hs[i]-mn)/hr;
+  if(doShiny&&shBS>0)hs=bBlur(hs,W,H,Math.round(shBS));
+
+  const lR2=P.lAng*Math.PI/180,lE=P.lElev*Math.PI/180;
+  const lx=Math.cos(lR2)*Math.cos(lE),ly=Math.sin(lR2)*Math.cos(lE),lz=Math.sin(lE);
+  const spow=4+P.specH*3,ns=P.ns;
+  const ctx=canvas.getContext('2d');const img=ctx.createImageData(W,H);const px=img.data;
+
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    const idx=y*W+x,h=hs[idx];
     const x0=Math.max(0,x-ns),x1=Math.min(W-1,x+ns),y0=Math.max(0,y-ns),y1=Math.min(H-1,y+ns);
-    const hL=heights[y*W+x0],hR=heights[y*W+x1],hU=heights[y0*W+x],hD=heights[y1*W+x];
-    const str=P.embossDepth*10,dx2=(x1-x0)||1,dy2=(y1-y0)||1;
-    let nx=(hL-hR)*str/dx2,ny=(hU-hD)*str/dy2,nz=1;
+    const str=P.dep*10,dxx=(x1-x0)||1,dyy=(y1-y0)||1;
+    let nx=(hs[y*W+x0]-hs[y*W+x1])*str/dxx,ny=(hs[y0*W+x]-hs[y1*W+x])*str/dyy,nz=1;
     const nl=Math.sqrt(nx*nx+ny*ny+nz*nz);nx/=nl;ny/=nl;nz/=nl;
     let diff=Math.max(0,nx*lx+ny*ly+nz*lz);
-    let light=diff*(1-P.ambient)+P.ambient;
-    light*=1-P.shadowSoft*.5*(1-diff);
-    light=light*(1-P.specularity*.35)+Math.pow(Math.max(0,diff),spow)*P.specularity;
-    light=.5+(light-.5)*(1+P.contrast*1.6);
-    light=Math.max(0,Math.min(1,light));
-    let cav=1;
-    if(P.doAO){const lp2=x>0?heights[i-1]:h,rp=x<W-1?heights[i+1]:h,up=y>0?heights[i-W]:h,dp=y<H-1?heights[i+W]:h;cav=1-Math.max(0,-(h*4-lp2-rp-up-dp))*3*P.shadowSoft;}
-    const finL=Math.max(0,Math.min(100,((P.brightness*.5+h*18)*(1-P.darkTint*(1-diff))+light*38)*cav));
-    const[r,g,b]=hsl2rgb(P.hueShift+h*P.hueVar-P.hueVar*.5,P.saturation*(.65+diff*.35),finL);
-    const pi=i*4;px[pi]=r;px[pi+1]=g;px[pi+2]=b;px[pi+3]=255;
+    let light=diff*(1-P.amb)+P.amb;light*=1-P.shSft*.5*(1-diff);
+    light=light*(1-P.spec*.35)+Math.pow(Math.max(0,diff),spow)*P.spec;
+    light=.5+(light-.5)*(1+P.ct*1.6);light=Math.max(0,Math.min(1,light));
+    let cav=1;if(P.doAO){const lp=x>0?hs[idx-1]:h,rp=x<W-1?hs[idx+1]:h,up=y>0?hs[idx-W]:h,dp=y<H-1?hs[idx+W]:h;cav=1-Math.max(0,-(h*4-lp-rp-up-dp))*3*P.shSft;}
+    const fL=Math.max(0,Math.min(100,((P.bri*.5+h*18)*(1-P.dT*(1-diff))+light*38)*cav));
+    let[r,g,b]=hsl2rgb(P.hue+h*P.hV-P.hV*.5,P.sat*(.65+diff*.35),fL);
+    if(doShiny){const dot=nx*lx+ny*ly+nz*lz;const rx=2*dot*nx-lx,ry=2*dot*ny-ly,rz=2*dot*nz-lz;const spec=Math.pow(Math.max(0,rz),2+shHiS*3)*shHiB;const fr2=Math.pow(1-Math.max(0,nz),.5)*shFr*spec*.5;const s=Math.min(2,(spec+fr2)*1.8);r=Math.min(255,r+s*shLR*255);g=Math.min(255,g+s*shLG*255);b=Math.min(255,b+s*shLB*255);}
+    const pi=idx*4;px[pi]=r;px[pi+1]=g;px[pi+2]=b;px[pi+3]=255;
   }
-  if(P.doSharpen) doSharpen(px,W,H,P.sharpenAmt);
-  ctx.putImageData(imgData,0,0);
-  const ms=Math.round(performance.now()-t0);
-  document.getElementById('rs').textContent='✔ '+ms+'ms';
-  document.getElementById('sTime').textContent=ms+'ms';
+  if(P.doSh)doSharpen(px,W,H,P.shAmt);
+  canvas.getContext('2d').putImageData(img,0,0);
+  const ms=Math.round(performance.now()-t0);document.getElementById('rs').textContent='✔ '+ms+'ms';document.getElementById('sTime').textContent=ms+'ms';
 }
 
-function applySize(){
-  let w=Math.max(64,Math.min(2048,parseInt(document.getElementById('cvW').value)||512));
-  let h=Math.max(64,Math.min(2048,parseInt(document.getElementById('cvH').value)||512));
-  document.getElementById('cvW').value=w;document.getElementById('cvH').value=h;
-  const c=document.getElementById('mainCanvas');c.width=w;c.height=h;
-  document.getElementById('sSz').textContent=w+' × '+h;
-  doRender();
-}
-function qs(w,h){ document.getElementById('cvW').value=w;document.getElementById('cvH').value=h;applySize(); }
+function renderUT(canvas,W,H,doShiny,shHiB,shHiS,shBS,shFr,shLR,shLG,shLB){
+  const ctx=canvas.getContext('2d');
+  const pBase=mkPerm(mul32(gi('utSeed')*7919+1));
+  const pTex=mkPerm(mul32(gi('seed')*6571+13));
+  const nsc=gi('noiseScale');
+  const utAmt=gi('utAmt')/100,utSc=gi('utSc')/100,utRot=gi('utRot')*Math.PI/180;
+  const utOx=gi('utOx')/100,utOy=gi('utOy')/100;
+  const utCt=gi('utCt')/100,utBr=gi('utBr')/100;
+  const utVig=gi('utVig')/100,utGrAmt=gi('utGr')/100;
+  const blendMode=document.getElementById('utBlend').value;
+  const inv=cks['ckUTInv'],doGrain=cks['ckUTGr'];
+  const utHue=gi('utHue'),utSat=gi('utSat'),utLum=gi('utLum'),utVar=gi('utVar');
+  const texFn=ALL_PRESETS[utTexIdx].fn;
+  const cosR=Math.cos(utRot),sinR=Math.sin(utRot);
+  const cx=W/2,cy=H/2;
+  const scX=512/W,scY=512/H;
 
+  let heights=null;
+  if(doShiny){
+    heights=new Float32Array(W*H);let hmn=Infinity,hmx=-Infinity;
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++){const v=fbm(x*scX/nsc,y*scY/nsc,pBase,5,2.1,.5);heights[y*W+x]=v;if(v<hmn)hmn=v;if(v>hmx)hmx=v;}
+    const hr=hmx-hmn||1;for(let i=0;i<heights.length;i++)heights[i]=(heights[i]-hmn)/hr;
+    if(shBS>0)heights=bBlur(heights,W,H,Math.round(shBS));
+  }
+  const lA=135*Math.PI/180,lEl=45*Math.PI/180;
+  const lx=Math.cos(lA)*Math.cos(lEl),ly=Math.sin(lA)*Math.cos(lEl),lz2=Math.sin(lEl);
+
+  const img=ctx.createImageData(W,H);const px=img.data;
+  let gs=98765;function grng(){gs=(gs*1664525+1013904223)&0xFFFFFFFF;return(gs>>>0)/4294967296-0.5;}
+
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    const idx=y*W+x;
+    // Base surface color
+    const bh=fbm(x*scX/nsc,y*scY/nsc,pBase,5,2.1,.5)*.5+.5;
+    const sL=utLum+bh*utVar-utVar*.5,sH=utHue+(bh-.5)*8;
+    let[br,bg,bb]=hsl2rgb(sH,utSat,Math.max(5,Math.min(95,sL)));
+
+    // Texture sample with transform
+    const dx2=x-cx,dy2=y-cy;
+    const tx2=(dx2*cosR-dy2*sinR)/W,ty2=(dx2*sinR+dy2*cosR)/H;
+    const tsx=(tx2/utSc+utOx+.5)*4,tsy=(ty2/utSc+utOy+.5)*4;
+    let tv=texFn(tsx,tsy,pTex);
+    tv=(tv-.5)*utCt+.5+utBr;
+    tv=Math.max(0,Math.min(1,tv));
+    if(inv)tv=1-tv;
+
+    // Tint
+    let[tr,tg,tb]=[tv,tv,tv];
+    if(utTintOn){const[tR,tG,tB]=hsl2rgb(utTintH,utTintS,utTintL+(tv*18-9));tr=tv*tR/255+(1-tv)*tr;tg=tv*tG/255+(1-tv)*tg;tb=tv*tB/255+(1-tv)*tb;}
+
+    // Blend
+    const brf=br/255,bgf=bg/255,bbf=bb/255;
+    let fr=blend(blendMode,brf,tr)*utAmt+brf*(1-utAmt);
+    let fg=blend(blendMode,bgf,tg)*utAmt+bgf*(1-utAmt);
+    let fb2=blend(blendMode,bbf,tb)*utAmt+bbf*(1-utAmt);
+
+    // Vignette
+    if(utVig>0){const ex=Math.abs((x/W-.5)*2),ey=Math.abs((y/H-.5)*2);const ed=Math.max(ex,ey);const vig=Math.pow(Math.max(0,1-ed),1/(utVig*.05+.01))*.5;fr*=1-vig*.5;fg*=1-vig*.5;fb2*=1-vig*.5;}
+
+    // S_EmbossShiny
+    if(doShiny&&heights){
+      const h=heights[idx];
+      const x0=Math.max(0,x-2),x1=Math.min(W-1,x+2),y0=Math.max(0,y-2),y1=Math.min(H-1,y+2);
+      let nx=(heights[y*W+x0]-heights[y*W+x1])*15/((x1-x0)||1),ny=(heights[y0*W+x]-heights[y1*W+x])*15/((y1-y0)||1),nz=1;
+      const nl=Math.sqrt(nx*nx+ny*ny+nz*nz);nx/=nl;ny/=nl;nz/=nl;
+      const dot=nx*lx+ny*ly+nz*lz2;const rx=2*dot*nx-lx,ry=2*dot*ny-ly,rz2=2*dot*nz-lz2;
+      const spec=Math.pow(Math.max(0,rz2),2+shHiS*3)*shHiB;const frn=Math.pow(1-Math.max(0,nz),.5)*shFr*spec*.5;
+      const s=Math.min(2,(spec+frn)*1.8);
+      fr=Math.min(1,fr+s*shLR);fg=Math.min(1,fg+s*shLG);fb2=Math.min(1,fb2+s*shLB);
+    }
+    if(doGrain){const g=grng()*utGrAmt;fr+=g;fg+=g;fb2+=g;}
+
+    const pi=idx*4;px[pi]=Math.max(0,Math.min(255,fr*255));px[pi+1]=Math.max(0,Math.min(255,fg*255));px[pi+2]=Math.max(0,Math.min(255,fb2*255));px[pi+3]=255;
+  }
+  ctx.putImageData(img,0,0);
+}
+
+// ── THUMBNAILS — auto-normalised for full contrast ────────────────────────────
+function buildPreviews(){
+  const perm=mkPerm(mul32(42*7919+1));
+  const TW=50,TH=44;
+
+  function mkGrid(gridId,presets,offset){
+    const grid=document.getElementById(gridId);grid.innerHTML='';
+    presets.forEach((preset,i)=>{
+      const gi2=i+offset;
+      const wrap=document.createElement('div');wrap.className='ut-tile'+(gi2===utTexIdx?' on':'');
+      wrap.title=preset.name;
+      wrap.onclick=()=>{utTexIdx=gi2;document.querySelectorAll('.ut-tile').forEach(x=>x.classList.remove('on'));wrap.classList.add('on');sr();};
+
+      // Sample texture — use preset.ts scale for good thumbnail framing
+      const sc=preset.ts||1;
+      const vals=new Float32Array(TW*TH);
+      for(let py=0;py<TH;py++)for(let px2=0;px2<TW;px2++)vals[py*TW+px2]=preset.fn(px2/12*sc,py/11*sc,perm);
+
+      // AUTO-NORMALISE: find min/max and remap to full 0-1 range
+      let vmn=Infinity,vmx=-Infinity;
+      for(let k=0;k<vals.length;k++){if(vals[k]<vmn)vmn=vals[k];if(vals[k]>vmx)vmx=vals[k];}
+      const vrange=vmx-vmn||1;
+
+      const cv=document.createElement('canvas');cv.width=TW;cv.height=TH;
+      const c2=cv.getContext('2d');const id2=c2.createImageData(TW,TH);
+      for(let k=0;k<vals.length;k++){
+        // Remap + mild gamma for perceptual brightness
+        const v=Math.pow((vals[k]-vmn)/vrange,.85);
+        const g=Math.round(Math.max(0,Math.min(255,v*255)));
+        const ii=k*4;id2.data[ii]=g;id2.data[ii+1]=g;id2.data[ii+2]=g;id2.data[ii+3]=255;
+      }
+      c2.putImageData(id2,0,0);
+      const lbl=document.createElement('div');lbl.className='ut-tile-lbl';lbl.textContent=preset.name;
+      wrap.appendChild(cv);wrap.appendChild(lbl);grid.appendChild(wrap);
+    });
+  }
+  mkGrid('utGridA',GROUP_A,0);
+  mkGrid('utGridB',GROUP_B,GROUP_A.length);
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function applySize(){let w=Math.max(64,Math.min(2048,parseInt(document.getElementById('cvW').value)||512));let h=Math.max(64,Math.min(2048,parseInt(document.getElementById('cvH').value)||512));document.getElementById('cvW').value=w;document.getElementById('cvH').value=h;const c=document.getElementById('mainCanvas');c.width=w;c.height=h;document.getElementById('sSz').textContent=w+' × '+h;doRender();}
+function qs(w,h){document.getElementById('cvW').value=w;document.getElementById('cvH').value=h;applySize();}
+function sv(id,v,vid){document.getElementById(id).value=v;uv(vid,v);}
 function randomize(){
-  const s=(id,v,vid)=>{document.getElementById(id).value=v;uv(vid,v);};
-  s('seed',Math.floor(Math.random()*999)+1,'sdV');s('noiseScale',10+Math.floor(Math.random()*90),'nsV');s('noiseDensity',2+Math.floor(Math.random()*12),'ndV');s('noiseAngle',Math.floor(Math.random()*180),'naV');s('roughness',Math.floor(Math.random()*80),'rrV');s('embossDepth',40+Math.floor(Math.random()*60),'edV');s('lightAngle',Math.floor(Math.random()*360),'laV');s('lightElev',20+Math.floor(Math.random()*65),'leV');s('specularity',Math.floor(Math.random()*70),'spV');s('specHard',5+Math.floor(Math.random()*80),'shV');s('ambient',Math.floor(Math.random()*30),'amV');s('hueVar',Math.floor(Math.random()*40),'hvV');
-  updP();sr();
+  sv('seed',Math.floor(Math.random()*999)+1,'sdV');
+  if(noiseType==='unitexture'){
+    sv('utSeed',Math.floor(Math.random()*999)+1,'utSdV');sv('noiseScale',10+Math.floor(Math.random()*80),'nsV');
+    sv('utSc',20+Math.floor(Math.random()*300),'utScV');sv('utRot',Math.floor(Math.random()*360),'utRoV');
+    sv('utAmt',55+Math.floor(Math.random()*45),'utAmV');sv('utCt',100+Math.floor(Math.random()*200),'utCtV');
+    sv('utHue',Math.floor(Math.random()*360),'utHuV');sv('utSat',Math.floor(Math.random()*35),'utSaV');sv('utLum',20+Math.floor(Math.random()*50),'utLuV');
+    utTexIdx=Math.floor(Math.random()*ALL_PRESETS.length);
+    document.querySelectorAll('.ut-tile').forEach((x,i)=>x.classList.toggle('on',i===utTexIdx));
+    document.getElementById('utBlend').value=['overlay','multiply','screen','softlight','hardlight'][Math.floor(Math.random()*5)];
+  }else{
+    sv('noiseScale',10+Math.floor(Math.random()*90),'nsV');sv('noiseDensity',2+Math.floor(Math.random()*12),'ndV');sv('noiseAngle',Math.floor(Math.random()*180),'naV');sv('roughness',Math.floor(Math.random()*80),'rrV');sv('embossDepth',40+Math.floor(Math.random()*60),'edV');sv('lightAngle',Math.floor(Math.random()*360),'laV');sv('lightElev',20+Math.floor(Math.random()*65),'leV');sv('specularity',Math.floor(Math.random()*70),'spV');sv('specHard',5+Math.floor(Math.random()*80),'shV');sv('ambient',Math.floor(Math.random()*30),'amV');sv('hueVar',Math.floor(Math.random()*40),'hvV');
+    updP();
+  }
+  sr();
 }
-function resetDefs(){
-  const d={noiseScale:51,noiseDensity:7,noiseAngle:35,roughness:21,seed:42,embossDepth:100,normalScale:1,lightAngle:135,lightElev:45,contrast:50,specularity:30,specHard:30,ambient:12,shadowSoft:40,sharpAmt:3,hueShift:48,saturation:75,brightness:55,darkTint:40,hueVar:12};
-  const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',sharpAmt:'saV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV'};
-  Object.entries(d).forEach(([id,v])=>{document.getElementById(id).value=v;uv(vm[id],v);});
-  updP();sr();
-}
-function copySet(){
-  const ids=['noiseScale','noiseDensity','noiseAngle','roughness','seed','embossDepth','normalScale','lightAngle','lightElev','contrast','specularity','specHard','ambient','shadowSoft','hueShift','saturation','brightness','darkTint','hueVar'];
-  const o={noiseType};ids.forEach(id=>{const el=document.getElementById(id);if(el)o[id]=el.value;});
-  try{navigator.clipboard.writeText(JSON.stringify(o,null,2));}catch(e){}
-}
-function saveImg(fmt){
-  const c=document.getElementById('mainCanvas'),l=document.createElement('a');
-  l.download='texture_'+noiseType+'_'+Date.now()+'.'+fmt;
-  l.href=c.toDataURL(fmt==='jpg'?'image/jpeg':'image/png',.95);l.click();
-}
+function resetDefs(){const d={noiseScale:51,noiseDensity:7,noiseAngle:35,roughness:21,seed:42,embossDepth:100,normalScale:1,lightAngle:135,lightElev:45,contrast:50,specularity:30,specHard:30,ambient:12,shadowSoft:40,sharpAmt:8,hueShift:48,saturation:75,brightness:55,darkTint:40,hueVar:12};const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',sharpAmt:'saV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV'};Object.entries(d).forEach(([id,v])=>{document.getElementById(id).value=v;uv(vm[id],v);});updP();sr();}
+let _exportFmt='png';
+function saveImg(fmt){_exportFmt=fmt;document.getElementById('exportFmtLabel').textContent=fmt.toUpperCase();document.getElementById('exportName').value='free-online-texture';showM('exportModal');setTimeout(()=>{const n=document.getElementById('exportName');n.focus();n.select();},50);}
+function doExport(){const c=document.getElementById('mainCanvas'),fmt=_exportFmt;const raw=document.getElementById('exportName').value.trim()||'free-online-texture';const name=raw.replace(/\.[^.]+$/,'')||'free-online-texture';const l=document.createElement('a');l.download=name+'.'+fmt;l.href=c.toDataURL(fmt==='jpg'?'image/jpeg':'image/png',.95);l.click();hideM('exportModal');}
 
-const SAI_MAGIC='TF95::',SAI_PASSPHRASE='TextureForge95_SAI_KEY_v1_EMBOSS';
-function _saiKeyTable(){const enc=new TextEncoder(),kb=enc.encode(SAI_PASSPHRASE);const t=new Uint8Array(256);for(let i=0;i<256;i++)t[i]=kb[i%kb.length];return t;}
-const _KEY_TABLE=_saiKeyTable();
-function saiEncrypt(bytes){const out=new Uint8Array(bytes.length);let carry=0x5A;for(let i=0;i<bytes.length;i++){const k=(_KEY_TABLE[i&255]^carry)&0xFF;out[i]=bytes[i]^k;carry=out[i];}return out;}
-function saiDecrypt(bytes){const out=new Uint8Array(bytes.length);let carry=0x5A;for(let i=0;i<bytes.length;i++){const k=(_KEY_TABLE[i&255]^carry)&0xFF;out[i]=bytes[i]^k;carry=bytes[i];}return out;}
-function u8toB64(bytes){let s='';for(let i=0;i<bytes.length;i++)s+=String.fromCharCode(bytes[i]);return btoa(s);}
-function b64toU8(b64){const s=atob(b64),o=new Uint8Array(s.length);for(let i=0;i<s.length;i++)o[i]=s.charCodeAt(i);return o;}
-function collectSettings(){const ids=['noiseScale','noiseDensity','noiseAngle','roughness','seed','embossDepth','normalScale','lightAngle','lightElev','contrast','specularity','specHard','ambient','shadowSoft','sharpAmt','hueShift','saturation','brightness','darkTint','hueVar'];const o={_format:'TextureForge95 SAI Preset v1',_saved:new Date().toISOString(),noiseType,sharpen:cks['ckSh'],cavityShadow:cks['ckAO'],canvasW:document.getElementById('mainCanvas').width,canvasH:document.getElementById('mainCanvas').height};ids.forEach(id=>{const el=document.getElementById(id);if(el)o[id]=parseFloat(el.value);});return o;}
-function encodeSAI(obj){const plain='SAI1\n'+JSON.stringify(obj,null,2)+'\nSAI1END';const bytes=new TextEncoder().encode(plain);return SAI_MAGIC+u8toB64(saiEncrypt(bytes));}
-function decodeSAI(text){text=text.trim();if(!text.startsWith(SAI_MAGIC))throw new Error('Not a valid .sai file — missing TF95:: header');const bytes=b64toU8(text.slice(SAI_MAGIC.length));const plain=new TextDecoder().decode(saiDecrypt(bytes));if(!plain.startsWith('SAI1\n')||!plain.endsWith('\nSAI1END'))throw new Error('Corrupted or wrong-version .sai file');return JSON.parse(plain.slice(5,plain.length-8));}
-function saveSAI(){const obj=collectSettings();const content=encodeSAI(obj);const name='preset_'+noiseType+'_'+Date.now()+'.sai';const blob=new Blob([content],{type:'text/plain'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();URL.revokeObjectURL(url);document.getElementById('rs').textContent='✔ Saved '+name;}
-function triggerOpenSAI(){document.getElementById('saiInput').value='';document.getElementById('saiInput').click();}
-function onSAIFile(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{const text=ev.target.result;try{const obj=decodeSAI(text);pendingSAI=obj;const info=document.getElementById('saiInfo');info.innerHTML='<b>File:</b> '+file.name+'<br><b>Saved:</b> '+(obj._saved||'unknown')+'<br><b>Mode:</b> '+(obj.noiseType||'?')+'<br><b>Canvas:</b> '+(obj.canvasW||'?')+' × '+(obj.canvasH||'?')+'<br><b>Scale:</b> '+(obj.noiseScale||'?')+'  <b>Density:</b> '+(obj.noiseDensity||'?')+'  <b>Seed:</b> '+(obj.seed||'?');const raw=text.trim();document.getElementById('saiPreview').textContent=raw.slice(0,200)+(raw.length>200?'…':'');document.getElementById('saiApplyBtn').style.display='';showM('saiModal');}catch(err){pendingSAI=null;document.getElementById('saiInfo').innerHTML='<span style="color:red">❌ '+err.message+'</span>';document.getElementById('saiPreview').textContent=text.trim().slice(0,200);document.getElementById('saiApplyBtn').style.display='none';showM('saiModal');}};reader.readAsText(file);}
-function applySAILoad(){if(!pendingSAI)return;const o=pendingSAI;const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',sharpAmt:'saV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV'};Object.entries(vm).forEach(([id,vid])=>{if(o[id]!==undefined){document.getElementById(id).value=o[id];uv(vid,o[id]);}});if(o.noiseType)switchN(o.noiseType);if(o.sharpen!==undefined){cks['ckSh']=!!o.sharpen;document.getElementById('ckSh').textContent=cks['ckSh']?'✔':'';}if(o.cavityShadow!==undefined){cks['ckAO']=!!o.cavityShadow;document.getElementById('ckAO').textContent=cks['ckAO']?'✔':'';}if(o.canvasW&&o.canvasH){document.getElementById('cvW').value=o.canvasW;document.getElementById('cvH').value=o.canvasH;const c=document.getElementById('mainCanvas');c.width=o.canvasW;c.height=o.canvasH;document.getElementById('sSz').textContent=o.canvasW+' × '+o.canvasH;}hideM('saiModal');updP();doRender();pendingSAI=null;}
+// ── SAI FORMAT ────────────────────────────────────────────────────────────────
+const SM='TF95::',SK='TextureForge95_SAI_KEY_v1_EMBOSS';
+function _kt(){const e=new TextEncoder(),kb=e.encode(SK);const t=new Uint8Array(256);for(let i=0;i<256;i++)t[i]=kb[i%kb.length];return t;}
+const _KT=_kt();
+function enc(b){const o=new Uint8Array(b.length);let c=0x5A;for(let i=0;i<b.length;i++){const k=(_KT[i&255]^c)&0xFF;o[i]=b[i]^k;c=o[i];}return o;}
+function dec2(b){const o=new Uint8Array(b.length);let c=0x5A;for(let i=0;i<b.length;i++){const k=(_KT[i&255]^c)&0xFF;o[i]=b[i]^k;c=b[i];}return o;}
+function u2b(b){let s='';for(let i=0;i<b.length;i++)s+=String.fromCharCode(b[i]);return btoa(s);}
+function b2u(s){const a=atob(s),o=new Uint8Array(a.length);for(let i=0;i<a.length;i++)o[i]=a.charCodeAt(i);return o;}
+function collectSettings(){const ids=['noiseScale','noiseDensity','noiseAngle','roughness','seed','embossDepth','normalScale','lightAngle','lightElev','contrast','specularity','specHard','ambient','shadowSoft','sharpAmt','hueShift','saturation','brightness','darkTint','hueVar','shHiB','shHiS','shBS','shFr','shLC','shLCS','utAmt','utSc','utRot','utOx','utOy','utCt','utBr','utVig','utGr','utHue','utSat','utLum','utVar','utSeed'];const o={_f:'TF95v8',_d:new Date().toISOString(),noiseType,ckSh:cks.ckSh,ckAO:cks.ckAO,ckShiny:cks.ckShiny,ckUTInv:cks.ckUTInv,ckUTGr:cks.ckUTGr,utTexIdx,utTintH,utTintS,utTintL,utTintOn,utBlend:document.getElementById('utBlend').value,cW:document.getElementById('mainCanvas').width,cH:document.getElementById('mainCanvas').height};ids.forEach(id=>{const el=document.getElementById(id);if(el)o[id]=parseFloat(el.value);});return o;}
+function encodeSAI(obj){const p='SAI1\n'+JSON.stringify(obj)+'\nSAI1END';const b=new TextEncoder().encode(p);return SM+u2b(enc(b));}
+function decodeSAI(t){t=t.trim();if(!t.startsWith(SM))throw new Error('Not a .sai file');const b=b2u(t.slice(SM.length));const p=new TextDecoder().decode(dec2(b));if(!p.startsWith('SAI1\n')||!p.endsWith('\nSAI1END'))throw new Error('Corrupted .sai');return JSON.parse(p.slice(5,p.length-8));}
+function saveSAI(){const content=encodeSAI(collectSettings());const blob=new Blob([content],{type:'text/plain'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='preset_'+Date.now()+'.sai';a.click();URL.revokeObjectURL(url);}
+function triggerSAI(){document.getElementById('saiIn').value='';document.getElementById('saiIn').click();}
+function onSAI(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{const t=ev.target.result;try{const o=decodeSAI(t);pendingSAI=o;document.getElementById('saiInfo').innerHTML='<b>'+file.name+'</b> — Mode: '+(o.noiseType||'?')+' '+((o.cW||'?')+'×'+(o.cH||'?'));document.getElementById('saiPre').textContent=t.trim().slice(0,140)+'…';document.getElementById('saiApply').style.display='';showM('saiModal');}catch(err){pendingSAI=null;document.getElementById('saiInfo').innerHTML='<span style="color:red">❌ '+err.message+'</span>';document.getElementById('saiPre').textContent='';document.getElementById('saiApply').style.display='none';showM('saiModal');}};r.readAsText(file);}
+function applySAI(){if(!pendingSAI)return;const o=pendingSAI;const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',sharpAmt:'saV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV',shHiB:'shHiBV',shHiS:'shHiSV',shBS:'shBSV',shFr:'shFrV',shLC:'shLCV',shLCS:'shLCSV',utAmt:'utAmV',utSc:'utScV',utRot:'utRoV',utOx:'utOxV',utOy:'utOyV',utCt:'utCtV',utBr:'utBrV',utVig:'utVgV',utGr:'utGrV',utHue:'utHuV',utSat:'utSaV',utLum:'utLuV',utVar:'utVaV',utSeed:'utSdV'};Object.entries(vm).forEach(([id,vid])=>{if(o[id]!==undefined){document.getElementById(id).value=o[id];uv(vid,o[id]);}});if(o.noiseType)switchN(o.noiseType);[['ckSh','ckSh'],['ckAO','ckAO'],['ckShiny','ckShiny'],['ckUTInv','ckUTInv'],['ckUTGr','ckUTGr']].forEach(([k,id])=>{if(o[k]!==undefined){cks[id]=!!o[k];document.getElementById(id).textContent=cks[id]?'✔':'';}});if(o.cW&&o.cH){document.getElementById('cvW').value=o.cW;document.getElementById('cvH').value=o.cH;const c=document.getElementById('mainCanvas');c.width=o.cW;c.height=o.cH;document.getElementById('sSz').textContent=o.cW+' × '+o.cH;}if(o.utTexIdx!==undefined){utTexIdx=o.utTexIdx;document.querySelectorAll('.ut-tile').forEach((x,i)=>x.classList.toggle('on',i===utTexIdx));}if(o.utBlend)document.getElementById('utBlend').value=o.utBlend;if(o.utTintH!==undefined){utTintH=o.utTintH;utTintS=o.utTintS;utTintL=o.utTintL;utTintOn=o.utTintOn;}updP();upSP();hideM('saiModal');doRender();pendingSAI=null;}
 
-window.addEventListener('load',()=>{ updP(); doRender(); });
+window.addEventListener('load',()=>{buildPreviews();updP();upSP();doRender();});
 </script>
 </body>
 </html>
