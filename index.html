@@ -150,7 +150,7 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
           <div class="cr"><span class="cl">Spec Hard</span>    <input type="range" min="1"  max="100" value="30"  id="specHard"    oninput="uv('shV',this.value);sr()"><span class="cv" id="shV">30</span></div>
           <div class="cr"><span class="cl">Ambient</span>      <input type="range" min="0"  max="80"  value="12"  id="ambient"     oninput="uv('amV',this.value);sr()"><span class="cv" id="amV">12</span></div>
           <div class="cr"><span class="cl">Shadow Soft</span>  <input type="range" min="0"  max="100" value="40"  id="shadowSoft"  oninput="uv('ssV',this.value);sr()"><span class="cv" id="ssV">40</span></div>
-          <div class="ckr"><div class="ck" id="ckSh" onclick="togCk('ckSh');sr()"></div><span class="cl">Sharpen</span><input type="range" min="1" max="20" value="8" id="sharpAmt" oninput="uv('saV',this.value);sr()" style="width:46px"><span class="cv" id="saV">8</span></div>
+          <div class="ckr"><div class="ck" id="ckSh" onclick="togCk('ckSh');sr()"></div><span class="cl">Sharpen</span><input type="range" min="1" max="12" value="3" id="sharpAmt" oninput="uv('saV',this.value);sr()" style="width:46px"><span class="cv" id="saV">3</span></div>
           <div class="ckr"><div class="ck" id="ckAO" onclick="togCk('ckAO');sr()"></div><span class="cl" style="min-width:110px">Cavity Shadow</span></div>
         </div>
         <div class="gb"><span class="gl">Color</span>
@@ -336,7 +336,7 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
     <div class="mt"><span>💾 Export Texture</span><div class="wb" onclick="hideM('exportModal')">✕</div></div>
     <div class="mb">
       <div style="font-size:11px;margin-bottom:4px">File name:</div>
-      <input id="exportName" type="text" style="width:100%;border:1px solid;border-color:#808080 #fff #fff #808080;padding:3px 5px;font-family:inherit;font-size:12px;background:#fff" value="rustveil">
+      <input id="exportName" type="text" onkeydown="if(event.key==='Enter')doExport()" style="width:100%;border:1px solid;border-color:#808080 #fff #fff #808080;padding:3px 5px;font-family:inherit;font-size:12px;background:#fff" value="rustveil">
       <div style="font-size:10px;color:#666;margin-top:3px">Format: <span id="exportFmtLabel">PNG</span></div>
     </div>
     <div class="mbtns">
@@ -638,7 +638,7 @@ function hsl2rgb(h,s,l){h/=360;s/=100;l/=100;const hu=(p,q,t)=>{if(t<0)t++;if(t>
 function bBlur(arr,W,H,r){if(r<1)return arr;const t=new Float32Array(arr.length);for(let y=0;y<H;y++)for(let x=0;x<W;x++){let s=0,c=0;for(let dx=-r;dx<=r;dx++){const nx=Math.min(W-1,Math.max(0,x+dx));s+=arr[y*W+nx];c++;}t[y*W+x]=s/c;}const o=new Float32Array(arr.length);for(let y=0;y<H;y++)for(let x=0;x<W;x++){let s=0,c=0;for(let dy=-r;dy<=r;dy++){const ny=Math.min(H-1,Math.max(0,y+dy));s+=t[ny*W+x];c++;}o[y*W+x]=s/c;}return o;}
 
 // ── SHARPEN ───────────────────────────────────────────────────────────────────
-function doSharpen(d,W,H,amt){const s=new Uint8ClampedArray(d);const k=amt*0.08;for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){const i=(y*W+x)*4;for(let c=0;c<3;c++){const blur=(s[i-4+c]+s[i+4+c]+s[i-W*4+c]+s[i+W*4+c])*0.20+(s[i-W*4-4+c]+s[i-W*4+4+c]+s[i+W*4-4+c]+s[i+W*4+4+c])*0.05;const detail=s[i+c]-blur;d[i+c]=Math.max(0,Math.min(255,Math.round(s[i+c]+k*detail)));}}}
+function doSharpen(d,W,H,amt){const s=new Uint8ClampedArray(d),k=amt*.12;for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){const i=(y*W+x)*4;for(let c=0;c<3;c++){const v=s[i+c]*5-s[i-4+c]-s[i+4+c]-s[i-W*4+c]-s[i+W*4+c];d[i+c]=Math.max(0,Math.min(255,s[i+c]+k*(v-s[i+c])));}};}
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function sr(){if(rtimer)clearTimeout(rtimer);rtimer=setTimeout(doRender,20);}
@@ -831,10 +831,10 @@ function randomize(){
   }
   sr();
 }
-function resetDefs(){const d={noiseScale:51,noiseDensity:7,noiseAngle:35,roughness:21,seed:42,embossDepth:100,normalScale:1,lightAngle:135,lightElev:45,contrast:50,specularity:30,specHard:30,ambient:12,shadowSoft:40,sharpAmt:8,hueShift:48,saturation:75,brightness:55,darkTint:40,hueVar:12};const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',sharpAmt:'saV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV'};Object.entries(d).forEach(([id,v])=>{document.getElementById(id).value=v;uv(vm[id],v);});updP();sr();}
+function resetDefs(){const d={noiseScale:51,noiseDensity:7,noiseAngle:35,roughness:21,seed:42,embossDepth:100,normalScale:1,lightAngle:135,lightElev:45,contrast:50,specularity:30,specHard:30,ambient:12,shadowSoft:40,sharpAmt:3,hueShift:48,saturation:75,brightness:55,darkTint:40,hueVar:12};const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',sharpAmt:'saV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV'};Object.entries(d).forEach(([id,v])=>{document.getElementById(id).value=v;uv(vm[id],v);});updP();sr();}
 let _exportFmt='png';
-function saveImg(fmt){_exportFmt=fmt;document.getElementById('exportFmtLabel').textContent=fmt.toUpperCase();document.getElementById('exportName').value='rustveil';showM('exportModal');setTimeout(()=>{const n=document.getElementById('exportName');n.focus();n.select();},50);}
-function doExport(){const c=document.getElementById('mainCanvas'),fmt=_exportFmt;const raw=document.getElementById('exportName').value.trim()||'rustveil';const name=raw.replace(/\.[^.]+$/,'')||'rustveil';const l=document.createElement('a');l.download=name+'.'+fmt;l.href=c.toDataURL(fmt==='jpg'?'image/jpeg':'image/png',.95);l.click();hideM('exportModal');}
+function saveImg(fmt){_exportFmt=fmt;setTimeout(()=>{document.getElementById('exportFmtLabel').textContent=fmt.toUpperCase();document.getElementById('exportName').value='rustveil';showM('exportModal');setTimeout(()=>{const n=document.getElementById('exportName');n.focus();n.select();},60);},10);}
+function doExport(){const c=document.getElementById('mainCanvas'),fmt=_exportFmt;const name=(document.getElementById('exportName').value.trim()||'rustveil');const l=document.createElement('a');l.download=name+'.'+fmt;l.href=c.toDataURL(fmt==='jpg'?'image/jpeg':'image/png',.95);l.click();hideM('exportModal');}
 
 // ── SAI FORMAT ────────────────────────────────────────────────────────────────
 const SM='TF95::',SK='TextureForge95_SAI_KEY_v1_EMBOSS';
