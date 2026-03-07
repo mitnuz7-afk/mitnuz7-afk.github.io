@@ -330,7 +330,7 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
   </div>
 </div>
 
-<!-- Export Rename Modal -->
+<!-- Export Rename Modal (PNG/JPEG) -->
 <div class="mo" id="exportModal">
   <div class="mwin" style="max-width:320px">
     <div class="mt"><span>💾 Export Texture</span><div class="wb" onclick="hideM('exportModal')">✕</div></div>
@@ -342,6 +342,22 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
     <div class="mbtns">
       <div class="btn" onclick="hideM('exportModal')">Cancel</div>
       <div class="btn" style="font-weight:bold" onclick="doExport()">Export</div>
+    </div>
+  </div>
+</div>
+
+<!-- *** NEW: Save Preset Rename Modal *** -->
+<div class="mo" id="saiSaveModal">
+  <div class="mwin" style="max-width:320px">
+    <div class="mt"><span>💾 Save Preset</span><div class="wb" onclick="hideM('saiSaveModal')">✕</div></div>
+    <div class="mb">
+      <div style="font-size:11px;margin-bottom:4px">File name:</div>
+      <input id="saiSaveName" type="text" onkeydown="if(event.key==='Enter')doSaveSAI()" style="width:100%;border:1px solid;border-color:#808080 #fff #fff #808080;padding:3px 5px;font-family:inherit;font-size:12px;background:#fff" value="preset">
+      <div style="font-size:10px;color:#666;margin-top:3px">Format: .sai</div>
+    </div>
+    <div class="mbtns">
+      <div class="btn" onclick="hideM('saiSaveModal')">Cancel</div>
+      <div class="btn" style="font-weight:bold" onclick="doSaveSAI()">Save</div>
     </div>
   </div>
 </div>
@@ -395,226 +411,41 @@ function stuccoNoise(x,y,ang,sc,dens,rough,p){const rad=ang*Math.PI/180,tx=(x*Ma
 function waterNoise(x,y,ang,sc,dens,rough,p){const rad=ang*Math.PI/180,tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc,ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc,rr=rough/100;let v=0;for(let i=0;i<dens;i++){const fi=i/dens,wa=fi*Math.PI*2,warp=fbm(tx*.5+fi*2,ty*.5+fi*3,p,3,2,.5)*rr*2;v+=(Math.sin(tx*Math.cos(wa)*1.5+ty*Math.sin(wa)*1.5+warp*3)*.5+.5);}return Math.abs(v/dens+fbm(tx*3,ty*3,p,4,2.2,.5)*rr*.2);}
 
 // ══════════════════════════════════════════════════════════════════════════════
-// GROUP A — Red Giant Texturize style (grunge overlays, Walking Dead look)
-// Each fn(x,y,p) → float 0-1, designed for strong visual contrast
+// GROUP A — Red Giant Texturize style
 // ══════════════════════════════════════════════════════════════════════════════
-
-function ut_Concrete(x,y,p){
-  // Poured concrete: large slabs + aggregate pits + fine dust grain
-  const macro=fbm(x*.6,y*.6,p,4,2.1,.52)*.4+.42;      // large 0.02–0.82
-  const agg=Math.abs(fbm(x*5,y*5,p,3,2,.48))*.35;       // medium aggregate
-  const grain=fbm(x*22,y*22,p,2,2,.4)*.07;              // fine surface
-  // Aggregate pits: reversed bright spots become dark holes
-  const f1=v2f1(x*14,y*14,p);
-  const pits=Math.pow(Math.max(0,.28-f1),2)*12*.22;
-  return Math.max(0,Math.min(1,macro+agg*.25+grain-pits));
-}
-
-function ut_Rust(x,y,p){
-  // Rust bloom: heavy domain warp → organic patches with clear edge contrast
-  const wx=fbm(x*1.8,y*1.8,p,3,2,.55)*.9;
-  const wy=fbm(x*1.8+4.2,y*1.8+4.2,p,3,2,.55)*.9;
-  const blob=fbm(x*.9+wx,y*.9+wy,p,5,2.3,.6);
-  // S-curve: pulls midrange apart for clear patches
-  const v=blob*.5+.5;
-  const sc=v<.45?v*.5:v>.55?v*.5+.5:v*3-.85; // steepen middle
-  const sharp=Math.max(0,Math.min(1,sc));
-  // Fine pitting on rust face
-  const pit=Math.abs(fbm(x*16,y*16,p,2,2,.45))*.12;
-  return Math.max(0,Math.min(1,sharp*.88+pit));
-}
-
-function ut_GrimeDrips(x,y,p){
-  // Vertical drip streaks — key: much higher X freq than Y freq
-  // Slow horizontal warp creates irregular organic streaks
-  const hWarp=fbm(x*2.2,y*.35,p,3,2,.5)*.55;
-  // Primary drips: high X, low Y
-  const drip=Math.pow(Math.abs(fbm(x*8+hWarp,y*.22,p,4,2.5,.58)),1.1);
-  // Secondary thinner drips
-  const drip2=Math.pow(Math.abs(fbm(x*13+hWarp*.6+.9,y*.16+.4,p,3,2,.5)),1.5)*.55;
-  // Splatter puddles at drip ends (voronoi distorted more in Y)
-  const{f1}=v2f1f2(x*4.5+hWarp*.25,y*9.5+2,p);
-  const splat=Math.pow(Math.max(0,.38-f1),2)*7*.4;
-  return Math.max(0,Math.min(1,drip*.55+drip2*.28+splat));
-}
-
-function ut_Cracked(x,y,p){
-  // Voronoi crack network: thin DARK lines on LIGHT surface
-  const{edge}=v2f1f2(x*2.8,y*2.8,p);
-  // Crack: very dark at center (edge≈0), quickly goes to surface level
-  const crackDark=Math.pow(Math.max(0,1-edge*14),2.5);
-  // Surface: slightly variable bright
-  const surf=fbm(x*6,y*6,p,3,2,.48)*.18+.68;
-  return Math.max(0,Math.min(1,surf-crackDark*.82));
-}
-
-function ut_WornPaint(x,y,p){
-  // Paint chips: clear bright (paint present) vs dark (bare surface exposed)
-  const wx=fbm(x*.8,y*.8,p,3,2,.55)*.65;
-  const wy=fbm(x*.8+3.1,y*.8+3.1,p,3,2,.55)*.65;
-  const raw=fbm(x*1.1+wx,y*1.1+wy,p,3,2,.52);
-  // Hard-ish threshold: push to clearly paint or clearly bare
-  const mask=Math.max(0,Math.min(1,(raw+.15)*3.5));
-  const paintFace=fbm(x*9,y*9,p,3,2,.5)*.14+.66;    // bright paint
-  const bareFace =fbm(x*13,y*13,p,2,2,.5)*.09+.16;   // dark bare metal
-  return mask*paintFace+(1-mask)*bareFace;
-}
-
-function ut_Asphalt(x,y,p){
-  // Dark base + bright aggregate speckle + subtle cracks
-  const base=fbm(x*2.2,y*2.2,p,4,2.1,.52)*.22+.16;  // dark 0.05–0.38
-  // Aggregate: bright reversed-voronoi spots
-  const f1=v2f1(x*22,y*22,p);
-  const agg=Math.pow(Math.max(0,.22-f1),2)*16*.55;
-  // Light macro variation
-  const macro=fbm(x*.8,y*.8,p,3,2,.5)*.1;
-  return Math.max(0,Math.min(1,base+agg+macro));
-}
-
-function ut_FineScratches(x,y,p){
-  // Directional scratches: slowly varying angle field drives anisotropic sampling
-  const angFld=fbm(x*.35,y*.35,p,2,2,.5)*.9;   // gentle angle variation
-  const ca=Math.cos(angFld),sa=Math.sin(angFld);
-  const rx=x*ca-y*sa, ry=x*sa+y*ca;
-  // Scratches: high along-scratch freq, very low cross-scratch freq
-  const s1=Math.pow(Math.abs(gn2(rx*24,ry*.07,p)),1.4);
-  const s2=Math.pow(Math.abs(gn2(rx*18+3.1,ry*.09+1,p)),1.7)*.7;
-  const s3=Math.pow(Math.abs(gn2(rx*30+6,ry*.05+2,p)),1.5)*.5;
-  const base=fbm(x*4,y*4,p,2,2,.5)*.08+.22;     // dark base
-  return Math.max(0,Math.min(1,base+s1*.48+s2*.25+s3*.15));
-}
-
-function ut_Plaster(x,y,p){
-  // Smooth organic trowelled surface — already the most liked preset
-  const wave=fbm(x*.9,y*.9,p,5,2.1,.5);
-  const ripple=fbm(x*3.5+wave*1.6,y*3.5,p,3,2,.47)*.2;
-  const dust=fbm(x*20,y*20,p,2,2,.45)*.06;
-  return Math.max(0,Math.min(1,wave*.48+ripple+dust+.3));
-}
-
-function ut_Stucco(x,y,p){
-  // Coarse chunky exterior stucco — ridged noise for bumpy appearance
-  const base=Math.abs(fbm(x*.7,y*.7,p,5,2.5,.55))*.65+.15;
-  const bumps=Math.abs(fbm(x*4.5,y*4.5,p,3,2,.48))*.35;
-  const grit=fbm(x*16,y*16,p,2,2,.4)*.08;
-  return Math.max(0,Math.min(1,base*.58+bumps+grit));
-}
+function ut_Concrete(x,y,p){const macro=fbm(x*.6,y*.6,p,4,2.1,.52)*.4+.42;const agg=Math.abs(fbm(x*5,y*5,p,3,2,.48))*.35;const grain=fbm(x*22,y*22,p,2,2,.4)*.07;const f1=v2f1(x*14,y*14,p);const pits=Math.pow(Math.max(0,.28-f1),2)*12*.22;return Math.max(0,Math.min(1,macro+agg*.25+grain-pits));}
+function ut_Rust(x,y,p){const wx=fbm(x*1.8,y*1.8,p,3,2,.55)*.9;const wy=fbm(x*1.8+4.2,y*1.8+4.2,p,3,2,.55)*.9;const blob=fbm(x*.9+wx,y*.9+wy,p,5,2.3,.6);const v=blob*.5+.5;const sc=v<.45?v*.5:v>.55?v*.5+.5:v*3-.85;const sharp=Math.max(0,Math.min(1,sc));const pit=Math.abs(fbm(x*16,y*16,p,2,2,.45))*.12;return Math.max(0,Math.min(1,sharp*.88+pit));}
+function ut_GrimeDrips(x,y,p){const hWarp=fbm(x*2.2,y*.35,p,3,2,.5)*.55;const drip=Math.pow(Math.abs(fbm(x*8+hWarp,y*.22,p,4,2.5,.58)),1.1);const drip2=Math.pow(Math.abs(fbm(x*13+hWarp*.6+.9,y*.16+.4,p,3,2,.5)),1.5)*.55;const{f1}=v2f1f2(x*4.5+hWarp*.25,y*9.5+2,p);const splat=Math.pow(Math.max(0,.38-f1),2)*7*.4;return Math.max(0,Math.min(1,drip*.55+drip2*.28+splat));}
+function ut_Cracked(x,y,p){const{edge}=v2f1f2(x*2.8,y*2.8,p);const crackDark=Math.pow(Math.max(0,1-edge*14),2.5);const surf=fbm(x*6,y*6,p,3,2,.48)*.18+.68;return Math.max(0,Math.min(1,surf-crackDark*.82));}
+function ut_WornPaint(x,y,p){const wx=fbm(x*.8,y*.8,p,3,2,.55)*.65;const wy=fbm(x*.8+3.1,y*.8+3.1,p,3,2,.55)*.65;const raw=fbm(x*1.1+wx,y*1.1+wy,p,3,2,.52);const mask=Math.max(0,Math.min(1,(raw+.15)*3.5));const paintFace=fbm(x*9,y*9,p,3,2,.5)*.14+.66;const bareFace=fbm(x*13,y*13,p,2,2,.5)*.09+.16;return mask*paintFace+(1-mask)*bareFace;}
+function ut_Asphalt(x,y,p){const base=fbm(x*2.2,y*2.2,p,4,2.1,.52)*.22+.16;const f1=v2f1(x*22,y*22,p);const agg=Math.pow(Math.max(0,.22-f1),2)*16*.55;const macro=fbm(x*.8,y*.8,p,3,2,.5)*.1;return Math.max(0,Math.min(1,base+agg+macro));}
+function ut_FineScratches(x,y,p){const angFld=fbm(x*.35,y*.35,p,2,2,.5)*.9;const ca=Math.cos(angFld),sa=Math.sin(angFld);const rx=x*ca-y*sa,ry=x*sa+y*ca;const s1=Math.pow(Math.abs(gn2(rx*24,ry*.07,p)),1.4);const s2=Math.pow(Math.abs(gn2(rx*18+3.1,ry*.09+1,p)),1.7)*.7;const s3=Math.pow(Math.abs(gn2(rx*30+6,ry*.05+2,p)),1.5)*.5;const base=fbm(x*4,y*4,p,2,2,.5)*.08+.22;return Math.max(0,Math.min(1,base+s1*.48+s2*.25+s3*.15));}
+function ut_Plaster(x,y,p){const wave=fbm(x*.9,y*.9,p,5,2.1,.5);const ripple=fbm(x*3.5+wave*1.6,y*3.5,p,3,2,.47)*.2;const dust=fbm(x*20,y*20,p,2,2,.45)*.06;return Math.max(0,Math.min(1,wave*.48+ripple+dust+.3));}
+function ut_Stucco(x,y,p){const base=Math.abs(fbm(x*.7,y*.7,p,5,2.5,.55))*.65+.15;const bumps=Math.abs(fbm(x*4.5,y*4.5,p,3,2,.48))*.35;const grit=fbm(x*16,y*16,p,2,2,.4)*.08;return Math.max(0,Math.min(1,base*.58+bumps+grit));}
 
 // ══════════════════════════════════════════════════════════════════════════════
 // GROUP B — Sapphire S_Texture family
 // ══════════════════════════════════════════════════════════════════════════════
-
-function st_Cells(x,y,p){
-  // S_TextureCells: procedural cellular shapes — Voronoi cells with varied brightness
-  const{f1,edge}=v2f1f2(x*4,y*4,p);
-  // Cell face: use nested noise keyed to f1 for per-cell variation
-  const faceV=fbm(f1*6+x*.3,f1*6+y*.3,p,2,2,.5)*.22+.6;
-  // Dark cell boundary
-  const bdry=Math.pow(Math.max(0,1-edge*11),2)*.75;
-  return Math.max(0,Math.min(1,faceV*(1-bdry)));
-}
-
-function st_Flux(x,y,p){
-  // S_TextureFlux: fluctuating liquid/amoeba cellular patterns
-  // Heavy warp creates organic flowing cell boundaries
-  const wx=fbm(x*2.2,y*2.2,p,4,2,.58)*.8;
-  const wy=fbm(x*2.2+5.1,y*2.2+5.1,p,4,2,.58)*.8;
-  const f1=v2f1(x*3.2+wx,y*3.2+wy,p);
-  const cell=Math.pow(1-Math.min(1,f1*2.8),1.8);
-  // Subtle internal gradient
-  const interior=fbm(x*7+wx*.5,y*7+wy*.5,p,3,2,.5)*.18;
-  return Math.max(0,Math.min(1,cell*.82+interior));
-}
-
-function st_Folded(x,y,p){
-  // S_TextureFolded: folded cloth / turbulent liquid surface
-  // Multiple directional turbulent sine waves create fold ridges
-  const n1=fbm(x*1.6,y*1.6,p,4,2,.52);
-  const n2=fbm(x*1.6+2.2,y*1.6+2.2,p,4,2,.52);
-  const fold1=Math.sin(x*5.5+n1*7)*.5+.5;
-  const fold2=Math.sin(y*4.8+n2*6+1.3)*.5+.5;
-  const fold3=Math.sin((x+y)*3.5+n1*5+n2*4)*.5+.5;
-  const fold4=Math.sin((x-y)*4.2+n2*5.5)*.5+.5;
-  return Math.max(0,Math.min(1,fold1*.3+fold2*.28+fold3*.24+fold4*.18));
-}
-
-function st_Loops(x,y,p){
-  // S_TextureLoops: overlapping concentric loop shapes — rings from Voronoi centers
-  const f1a=v2f1(x*2.8,y*2.8,p);
-  const f1b=v2f1(x*3.5+1.4,y*3.5+0.7,p);
-  const f1c=v2f1(x*2.2-0.9,y*2.2+1.3,p);
-  // Each center emits concentric rings
-  const r1=Math.sin(f1a*Math.PI*12)*.5+.5;
-  const r2=Math.sin(f1b*Math.PI*9+.8)*.5+.5;
-  const r3=Math.sin(f1c*Math.PI*14+1.6)*.5+.5;
-  // Max blend shows all rings clearly
-  return Math.max(r1,r2,r3);
-}
-
-function st_Weave(x,y,p){
-  // S_TextureWeave: perpendicular woven strands (plain weave over-under pattern)
-  const freq=9;
-  const u=(x*freq)%1, v=(y*freq)%1;
-  const cellX=Math.floor(x*freq)&255, cellY=Math.floor(y*freq)&255;
-  // Alternating cells: which strand is on top
-  const horzOnTop=(cellX+cellY)%2===0;
-  // Cylindrical strand profiles (0 at edges, 1 at center)
-  const hCyl=Math.sin(v*Math.PI);   // horizontal strand shape
-  const vCyl=Math.sin(u*Math.PI);   // vertical strand shape
-  // Gap between strands
-  const gap=(u<.055||u>.945||v<.055||v>.945);
-  if(gap) return .07;
-  let b;
-  if(horzOnTop){b=hCyl*.52+.28;} // horizontal on top: brighter
-  else{b=vCyl*.42+.2;}            // vertical on top: slightly less bright
-  // Fine yarn grain
-  return Math.max(0,Math.min(1,b+fbm(x*32,y*32,p,1,2,.5)*.06));
-}
-
-function st_Clouds(x,y,p){
-  // S_Clouds: classic smooth fractal noise — clean and full range
-  const v=fbm(x*1.5,y*1.5,p,6,2.0,.54)*.52+.5;
-  return Math.max(0,Math.min(1,v));
-}
-
-function st_Grunge(x,y,p){
-  // S_Grunge: irregular dirt/stain/splatter overlay
-  const warp=fbm(x*.9,y*.9,p,3,2,.5)*.55;
-  // Large dark stains
-  const f1a=v2f1(x*2.8+warp,y*2.8+warp,p);
-  const stain=Math.pow(Math.max(0,.45-f1a),2)*5*.6;
-  // Small spatter spots
-  const f1b=v2f1(x*6+warp*.4+1,y*6+warp*.4+1,p);
-  const spatter=Math.pow(Math.max(0,.28-f1b),2)*12*.45;
-  // Fine grime texture
-  const grime=fbm(x*14,y*14,p,3,2,.5)*.14;
-  return Math.max(0,Math.min(1,stain+spatter+grime));
-}
-
-function st_Moire(x,y,p){
-  // S_Moire (custom): two overlapping ring systems creating interference
-  // Slight noise distortion keeps it from being perfectly mechanical
-  const nd=fbm(x*1.2,y*1.2,p,3,2,.5)*.35;
-  const r1=Math.sqrt(x*x+y*y);
-  const r2=Math.sqrt((x-.4)*(x-.4)+(y+.3)*(y+.3));
-  // Two ring systems at slightly different frequencies
-  const ring1=Math.sin((r1+nd)*.5*20)*.5+.5;
-  const ring2=Math.sin((r2+nd*.7)*.5*17+.6)*.5+.5;
-  // Interference: multiply gives the classic moire look
-  return ring1*ring2;
-}
+function st_Cells(x,y,p){const{f1,edge}=v2f1f2(x*4,y*4,p);const faceV=fbm(f1*6+x*.3,f1*6+y*.3,p,2,2,.5)*.22+.6;const bdry=Math.pow(Math.max(0,1-edge*11),2)*.75;return Math.max(0,Math.min(1,faceV*(1-bdry)));}
+function st_Flux(x,y,p){const wx=fbm(x*2.2,y*2.2,p,4,2,.58)*.8;const wy=fbm(x*2.2+5.1,y*2.2+5.1,p,4,2,.58)*.8;const f1=v2f1(x*3.2+wx,y*3.2+wy,p);const cell=Math.pow(1-Math.min(1,f1*2.8),1.8);const interior=fbm(x*7+wx*.5,y*7+wy*.5,p,3,2,.5)*.18;return Math.max(0,Math.min(1,cell*.82+interior));}
+function st_Folded(x,y,p){const n1=fbm(x*1.6,y*1.6,p,4,2,.52);const n2=fbm(x*1.6+2.2,y*1.6+2.2,p,4,2,.52);const fold1=Math.sin(x*5.5+n1*7)*.5+.5;const fold2=Math.sin(y*4.8+n2*6+1.3)*.5+.5;const fold3=Math.sin((x+y)*3.5+n1*5+n2*4)*.5+.5;const fold4=Math.sin((x-y)*4.2+n2*5.5)*.5+.5;return Math.max(0,Math.min(1,fold1*.3+fold2*.28+fold3*.24+fold4*.18));}
+function st_Loops(x,y,p){const f1a=v2f1(x*2.8,y*2.8,p);const f1b=v2f1(x*3.5+1.4,y*3.5+0.7,p);const f1c=v2f1(x*2.2-0.9,y*2.2+1.3,p);const r1=Math.sin(f1a*Math.PI*12)*.5+.5;const r2=Math.sin(f1b*Math.PI*9+.8)*.5+.5;const r3=Math.sin(f1c*Math.PI*14+1.6)*.5+.5;return Math.max(r1,r2,r3);}
+function st_Weave(x,y,p){const freq=9;const u=(x*freq)%1,v=(y*freq)%1;const cellX=Math.floor(x*freq)&255,cellY=Math.floor(y*freq)&255;const horzOnTop=(cellX+cellY)%2===0;const hCyl=Math.sin(v*Math.PI);const vCyl=Math.sin(u*Math.PI);const gap=(u<.055||u>.945||v<.055||v>.945);if(gap)return .07;let b;if(horzOnTop){b=hCyl*.52+.28;}else{b=vCyl*.42+.2;}return Math.max(0,Math.min(1,b+fbm(x*32,y*32,p,1,2,.5)*.06));}
+function st_Clouds(x,y,p){const v=fbm(x*1.5,y*1.5,p,6,2.0,.54)*.52+.5;return Math.max(0,Math.min(1,v));}
+function st_Grunge(x,y,p){const warp=fbm(x*.9,y*.9,p,3,2,.5)*.55;const f1a=v2f1(x*2.8+warp,y*2.8+warp,p);const stain=Math.pow(Math.max(0,.45-f1a),2)*5*.6;const f1b=v2f1(x*6+warp*.4+1,y*6+warp*.4+1,p);const spatter=Math.pow(Math.max(0,.28-f1b),2)*12*.45;const grime=fbm(x*14,y*14,p,3,2,.5)*.14;return Math.max(0,Math.min(1,stain+spatter+grime));}
+function st_Moire(x,y,p){const nd=fbm(x*1.2,y*1.2,p,3,2,.5)*.35;const r1=Math.sqrt(x*x+y*y);const r2=Math.sqrt((x-.4)*(x-.4)+(y+.3)*(y+.3));const ring1=Math.sin((r1+nd)*.5*20)*.5+.5;const ring2=Math.sin((r2+nd*.7)*.5*17+.6)*.5+.5;return ring1*ring2;}
 
 // ── PRESET REGISTRY ───────────────────────────────────────────────────────────
 const GROUP_A=[
-  {name:'Concrete',    fn:ut_Concrete,   ts:1.0},
-  {name:'Rust Bloom',  fn:ut_Rust,       ts:0.8},
-  {name:'Grime Drips', fn:ut_GrimeDrips, ts:1.0},
-  {name:'Cracked',     fn:ut_Cracked,    ts:0.8},
-  {name:'Worn Paint',  fn:ut_WornPaint,  ts:0.9},
-  {name:'Asphalt',     fn:ut_Asphalt,    ts:1.0},
-  {name:'Scratches',   fn:ut_FineScratches,ts:1.0},
-  {name:'Plaster',     fn:ut_Plaster,    ts:1.0},
-  {name:'Stucco',      fn:ut_Stucco,     ts:1.0},
+  {name:'Concrete',    fn:ut_Concrete,      ts:1.0},
+  {name:'Rust Bloom',  fn:ut_Rust,          ts:0.8},
+  {name:'Grime Drips', fn:ut_GrimeDrips,    ts:1.0},
+  {name:'Cracked',     fn:ut_Cracked,       ts:0.8},
+  {name:'Worn Paint',  fn:ut_WornPaint,     ts:0.9},
+  {name:'Asphalt',     fn:ut_Asphalt,       ts:1.0},
+  {name:'Scratches',   fn:ut_FineScratches, ts:1.0},
+  {name:'Plaster',     fn:ut_Plaster,       ts:1.0},
+  {name:'Stucco',      fn:ut_Stucco,        ts:1.0},
 ];
 const GROUP_B=[
   {name:'S_Cells',  fn:st_Cells,  ts:0.8},
@@ -624,7 +455,7 @@ const GROUP_B=[
   {name:'S_Weave',  fn:st_Weave,  ts:1.2},
   {name:'S_Clouds', fn:st_Clouds, ts:1.0},
   {name:'S_Grunge', fn:st_Grunge, ts:0.9},
-  {name:'S_Moire',  fn:st_Moire,  ts:0.25},// moire is zoomed out
+  {name:'S_Moire',  fn:st_Moire,  ts:0.25},
 ];
 const ALL_PRESETS=[...GROUP_A,...GROUP_B];
 
@@ -726,12 +557,9 @@ function renderUT(canvas,W,H,doShiny,shHiB,shHiS,shBS,shFr,shLR,shLG,shLB){
 
   for(let y=0;y<H;y++)for(let x=0;x<W;x++){
     const idx=y*W+x;
-    // Base surface color
     const bh=fbm(x*scX/nsc,y*scY/nsc,pBase,5,2.1,.5)*.5+.5;
     const sL=utLum+bh*utVar-utVar*.5,sH=utHue+(bh-.5)*8;
     let[br,bg,bb]=hsl2rgb(sH,utSat,Math.max(5,Math.min(95,sL)));
-
-    // Texture sample with transform
     const dx2=x-cx,dy2=y-cy;
     const tx2=(dx2*cosR-dy2*sinR)/W,ty2=(dx2*sinR+dy2*cosR)/H;
     const tsx=(tx2/utSc+utOx+.5)*4,tsy=(ty2/utSc+utOy+.5)*4;
@@ -739,21 +567,13 @@ function renderUT(canvas,W,H,doShiny,shHiB,shHiS,shBS,shFr,shLR,shLG,shLB){
     tv=(tv-.5)*utCt+.5+utBr;
     tv=Math.max(0,Math.min(1,tv));
     if(inv)tv=1-tv;
-
-    // Tint
     let[tr,tg,tb]=[tv,tv,tv];
     if(utTintOn){const[tR,tG,tB]=hsl2rgb(utTintH,utTintS,utTintL+(tv*18-9));tr=tv*tR/255+(1-tv)*tr;tg=tv*tG/255+(1-tv)*tg;tb=tv*tB/255+(1-tv)*tb;}
-
-    // Blend
     const brf=br/255,bgf=bg/255,bbf=bb/255;
     let fr=blend(blendMode,brf,tr)*utAmt+brf*(1-utAmt);
     let fg=blend(blendMode,bgf,tg)*utAmt+bgf*(1-utAmt);
     let fb2=blend(blendMode,bbf,tb)*utAmt+bbf*(1-utAmt);
-
-    // Vignette
     if(utVig>0){const ex=Math.abs((x/W-.5)*2),ey=Math.abs((y/H-.5)*2);const ed=Math.max(ex,ey);const vig=Math.pow(Math.max(0,1-ed),1/(utVig*.05+.01))*.5;fr*=1-vig*.5;fg*=1-vig*.5;fb2*=1-vig*.5;}
-
-    // S_EmbossShiny
     if(doShiny&&heights){
       const h=heights[idx];
       const x0=Math.max(0,x-2),x1=Math.min(W-1,x+2),y0=Math.max(0,y-2),y1=Math.min(H-1,y+2);
@@ -765,17 +585,15 @@ function renderUT(canvas,W,H,doShiny,shHiB,shHiS,shBS,shFr,shLR,shLG,shLB){
       fr=Math.min(1,fr+s*shLR);fg=Math.min(1,fg+s*shLG);fb2=Math.min(1,fb2+s*shLB);
     }
     if(doGrain){const g=grng()*utGrAmt;fr+=g;fg+=g;fb2+=g;}
-
     const pi=idx*4;px[pi]=Math.max(0,Math.min(255,fr*255));px[pi+1]=Math.max(0,Math.min(255,fg*255));px[pi+2]=Math.max(0,Math.min(255,fb2*255));px[pi+3]=255;
   }
   ctx.putImageData(img,0,0);
 }
 
-// ── THUMBNAILS — auto-normalised for full contrast ────────────────────────────
+// ── THUMBNAILS ────────────────────────────────────────────────────────────────
 function buildPreviews(){
   const perm=mkPerm(mul32(42*7919+1));
   const TW=50,TH=44;
-
   function mkGrid(gridId,presets,offset){
     const grid=document.getElementById(gridId);grid.innerHTML='';
     presets.forEach((preset,i)=>{
@@ -783,21 +601,15 @@ function buildPreviews(){
       const wrap=document.createElement('div');wrap.className='ut-tile'+(gi2===utTexIdx?' on':'');
       wrap.title=preset.name;
       wrap.onclick=()=>{utTexIdx=gi2;document.querySelectorAll('.ut-tile').forEach(x=>x.classList.remove('on'));wrap.classList.add('on');sr();};
-
-      // Sample texture — use preset.ts scale for good thumbnail framing
       const sc=preset.ts||1;
       const vals=new Float32Array(TW*TH);
       for(let py=0;py<TH;py++)for(let px2=0;px2<TW;px2++)vals[py*TW+px2]=preset.fn(px2/12*sc,py/11*sc,perm);
-
-      // AUTO-NORMALISE: find min/max and remap to full 0-1 range
       let vmn=Infinity,vmx=-Infinity;
       for(let k=0;k<vals.length;k++){if(vals[k]<vmn)vmn=vals[k];if(vals[k]>vmx)vmx=vals[k];}
       const vrange=vmx-vmn||1;
-
       const cv=document.createElement('canvas');cv.width=TW;cv.height=TH;
       const c2=cv.getContext('2d');const id2=c2.createImageData(TW,TH);
       for(let k=0;k<vals.length;k++){
-        // Remap + mild gamma for perceptual brightness
         const v=Math.pow((vals[k]-vmn)/vrange,.85);
         const g=Math.round(Math.max(0,Math.min(255,v*255)));
         const ii=k*4;id2.data[ii]=g;id2.data[ii+1]=g;id2.data[ii+2]=g;id2.data[ii+3]=255;
@@ -832,6 +644,8 @@ function randomize(){
   sr();
 }
 function resetDefs(){const d={noiseScale:51,noiseDensity:7,noiseAngle:35,roughness:21,seed:42,embossDepth:100,normalScale:1,lightAngle:135,lightElev:45,contrast:50,specularity:30,specHard:30,ambient:12,shadowSoft:40,sharpAmt:3,hueShift:48,saturation:75,brightness:55,darkTint:40,hueVar:12};const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',sharpAmt:'saV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV'};Object.entries(d).forEach(([id,v])=>{document.getElementById(id).value=v;uv(vm[id],v);});updP();sr();}
+
+// ── EXPORT (PNG/JPEG) ─────────────────────────────────────────────────────────
 let _exportFmt='png';
 function saveImg(fmt){_exportFmt=fmt;setTimeout(()=>{document.getElementById('exportFmtLabel').textContent=fmt.toUpperCase();document.getElementById('exportName').value='rustveil';showM('exportModal');setTimeout(()=>{const n=document.getElementById('exportName');n.focus();n.select();},60);},10);}
 function doExport(){const c=document.getElementById('mainCanvas'),fmt=_exportFmt;const name=(document.getElementById('exportName').value.trim()||'rustveil');const l=document.createElement('a');l.download=name+'.'+fmt;l.href=c.toDataURL(fmt==='jpg'?'image/jpeg':'image/png',.95);l.click();hideM('exportModal');}
@@ -847,7 +661,34 @@ function b2u(s){const a=atob(s),o=new Uint8Array(a.length);for(let i=0;i<a.lengt
 function collectSettings(){const ids=['noiseScale','noiseDensity','noiseAngle','roughness','seed','embossDepth','normalScale','lightAngle','lightElev','contrast','specularity','specHard','ambient','shadowSoft','sharpAmt','hueShift','saturation','brightness','darkTint','hueVar','shHiB','shHiS','shBS','shFr','shLC','shLCS','utAmt','utSc','utRot','utOx','utOy','utCt','utBr','utVig','utGr','utHue','utSat','utLum','utVar','utSeed'];const o={_f:'TF95v8',_d:new Date().toISOString(),noiseType,ckSh:cks.ckSh,ckAO:cks.ckAO,ckShiny:cks.ckShiny,ckUTInv:cks.ckUTInv,ckUTGr:cks.ckUTGr,utTexIdx,utTintH,utTintS,utTintL,utTintOn,utBlend:document.getElementById('utBlend').value,cW:document.getElementById('mainCanvas').width,cH:document.getElementById('mainCanvas').height};ids.forEach(id=>{const el=document.getElementById(id);if(el)o[id]=parseFloat(el.value);});return o;}
 function encodeSAI(obj){const p='SAI1\n'+JSON.stringify(obj)+'\nSAI1END';const b=new TextEncoder().encode(p);return SM+u2b(enc(b));}
 function decodeSAI(t){t=t.trim();if(!t.startsWith(SM))throw new Error('Not a .sai file');const b=b2u(t.slice(SM.length));const p=new TextDecoder().decode(dec2(b));if(!p.startsWith('SAI1\n')||!p.endsWith('\nSAI1END'))throw new Error('Corrupted .sai');return JSON.parse(p.slice(5,p.length-8));}
-function saveSAI(){const content=encodeSAI(collectSettings());const blob=new Blob([content],{type:'text/plain'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='preset_'+Date.now()+'.sai';a.click();URL.revokeObjectURL(url);}
+
+// *** FIXED: saveSAI now opens a rename modal instead of saving directly ***
+function saveSAI(){
+  // Generate a smart default name based on mode + timestamp
+  const modeShort = noiseType==='unitexture' ? 'unitex' : noiseType;
+  const ts = new Date().toISOString().slice(0,10).replace(/-/g,'');
+  document.getElementById('saiSaveName').value = 'preset_' + modeShort + '_' + ts;
+  showM('saiSaveModal');
+  setTimeout(()=>{
+    const n = document.getElementById('saiSaveName');
+    n.focus();
+    n.select();
+  }, 60);
+}
+
+function doSaveSAI(){
+  const name = (document.getElementById('saiSaveName').value.trim() || 'preset');
+  const content = encodeSAI(collectSettings());
+  const blob = new Blob([content], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name + '.sai';
+  a.click();
+  URL.revokeObjectURL(url);
+  hideM('saiSaveModal');
+}
+
 function triggerSAI(){document.getElementById('saiIn').value='';document.getElementById('saiIn').click();}
 function onSAI(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{const t=ev.target.result;try{const o=decodeSAI(t);pendingSAI=o;document.getElementById('saiInfo').innerHTML='<b>'+file.name+'</b> — Mode: '+(o.noiseType||'?')+' '+((o.cW||'?')+'×'+(o.cH||'?'));document.getElementById('saiPre').textContent=t.trim().slice(0,140)+'…';document.getElementById('saiApply').style.display='';showM('saiModal');}catch(err){pendingSAI=null;document.getElementById('saiInfo').innerHTML='<span style="color:red">❌ '+err.message+'</span>';document.getElementById('saiPre').textContent='';document.getElementById('saiApply').style.display='none';showM('saiModal');}};r.readAsText(file);}
 function applySAI(){if(!pendingSAI)return;const o=pendingSAI;const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',sharpAmt:'saV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV',shHiB:'shHiBV',shHiS:'shHiSV',shBS:'shBSV',shFr:'shFrV',shLC:'shLCV',shLCS:'shLCSV',utAmt:'utAmV',utSc:'utScV',utRot:'utRoV',utOx:'utOxV',utOy:'utOyV',utCt:'utCtV',utBr:'utBrV',utVig:'utVgV',utGr:'utGrV',utHue:'utHuV',utSat:'utSaV',utLum:'utLuV',utVar:'utVaV',utSeed:'utSdV'};Object.entries(vm).forEach(([id,vid])=>{if(o[id]!==undefined){document.getElementById(id).value=o[id];uv(vid,o[id]);}});if(o.noiseType)switchN(o.noiseType);[['ckSh','ckSh'],['ckAO','ckAO'],['ckShiny','ckShiny'],['ckUTInv','ckUTInv'],['ckUTGr','ckUTGr']].forEach(([k,id])=>{if(o[k]!==undefined){cks[id]=!!o[k];document.getElementById(id).textContent=cks[id]?'✔':'';}});if(o.cW&&o.cH){document.getElementById('cvW').value=o.cW;document.getElementById('cvH').value=o.cH;const c=document.getElementById('mainCanvas');c.width=o.cW;c.height=o.cH;document.getElementById('sSz').textContent=o.cW+' × '+o.cH;}if(o.utTexIdx!==undefined){utTexIdx=o.utTexIdx;document.querySelectorAll('.ut-tile').forEach((x,i)=>x.classList.toggle('on',i===utTexIdx));}if(o.utBlend)document.getElementById('utBlend').value=o.utBlend;if(o.utTintH!==undefined){utTintH=o.utTintH;utTintS=o.utTintS;utTintL=o.utTintL;utTintOn=o.utTintOn;}updP();upSP();hideM('saiModal');doRender();pendingSAI=null;}
