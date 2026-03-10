@@ -2,15 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Rustveil v8</title>
-<link rel="icon" type="image/png" href="logo.png">
+<title>Rustveil v8 — Rust Edition</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--w:#c0c0c0;--wd:#808080;--wdd:#404040;--wl:#fff;--wb:#000080;--wbl:#1084d0;--sh:#aa7700;--shb:#ffcc44;}
 body{background:#008080;font-family:'MS Sans Serif',Arial,sans-serif;font-size:11px;overflow:hidden;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:4px;user-select:none;}
 .win{background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);display:flex;flex-direction:column;width:100%;max-width:1340px;height:calc(100vh - 8px);}
-.tbar{background:linear-gradient(90deg,var(--wb),var(--wbl));color:#fff;padding:3px 6px;display:flex;align-items:center;justify-content:space-between;font-weight:bold;font-size:12px;height:22px;flex-shrink:0;}
+.tbar{background:linear-gradient(90deg,#5a1a00,#a03000);color:#fff;padding:3px 6px;display:flex;align-items:center;justify-content:space-between;font-weight:bold;font-size:12px;height:22px;flex-shrink:0;}
 .tbtns{display:flex;gap:2px;}
 .wb{background:var(--w);border:1px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);width:16px;height:14px;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .wb:active{border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);}
@@ -39,6 +38,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 .nbs{display:flex;gap:2px;flex-wrap:wrap;margin:4px 0 6px;}
 .nb{background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);padding:2px 7px;font-size:10px;cursor:pointer;}
 .nb.on{border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);background:#b0b0b0;}
+#nb_rusty{background:linear-gradient(135deg,#2a0a00,#4a1800);color:#ff8844;border-color:#8b3000 #3a0800 #3a0800 #8b3000;font-weight:bold;}
+#nb_rusty.on{background:linear-gradient(135deg,#5a1800,#8b2a00);color:#ffcc88;border-color:#3a0800 #8b3000 #8b3000 #3a0800;}
 #nb_unitexture{background:linear-gradient(135deg,#0d0520,#1e0840);color:#c080ff;border-color:#8040c0 #300060 #300060 #8040c0;font-weight:bold;}
 #nb_unitexture.on{background:linear-gradient(135deg,#3a1070,#5a1a9a);color:#fff;border-color:#300060 #8040c0 #8040c0 #300060;}
 .ckr{display:flex;align-items:center;gap:5px;margin-bottom:5px;}
@@ -48,7 +49,7 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
 .ctb{background:var(--w);border-bottom:1px solid var(--wd);padding:3px 6px;display:flex;gap:4px;align-items:center;flex-wrap:wrap;flex-shrink:0;}
 .btn{background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);padding:2px 10px;font-size:11px;cursor:pointer;white-space:nowrap;font-family:inherit;}
 .btn:active{border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);}
-.cvp{flex:1;overflow:auto;background:#5a7a5a;padding:16px;}
+.cvp{flex:1;overflow:auto;background:#3a2810;padding:16px;}
 #mainCanvas{display:block;cursor:crosshair;border:2px solid;border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);}
 .sb{background:var(--w);border-top:1px solid var(--wd);padding:2px 6px;display:flex;gap:6px;font-size:10px;flex-shrink:0;}
 .sp{border:1px solid;border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);padding:1px 6px;}
@@ -57,7 +58,11 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
 .sw.on{outline:2px solid #000;outline-offset:1px;}
 .swp{width:17px;height:17px;background:var(--w);border:1px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
 .ni{width:50px;border:1px solid;border-color:var(--wdd) var(--wl) var(--wl) var(--wdd);padding:1px 3px;font-size:11px;font-family:inherit;}
-#rs{font-family:'VT323',monospace;font-size:15px;color:var(--wb);min-width:90px;}
+#rs{font-family:'VT323',monospace;font-size:15px;color:#8b3000;min-width:90px;}
+.rust-presets{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px;}
+.rp-btn{background:linear-gradient(180deg,#5a2a00,#3a1800);color:#ffaa44;border:1px solid #8b4500;padding:2px 6px;font-size:9px;cursor:pointer;font-family:inherit;}
+.rp-btn:active{filter:brightness(1.3);}
+.rp-btn:hover{background:linear-gradient(180deg,#7a3a00,#5a2800);}
 #unitexturePanel{display:none;}
 .ut-glabel{font-size:9px;font-weight:bold;letter-spacing:.8px;text-transform:uppercase;padding:3px 2px 2px;margin-top:4px;}
 .ut-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:2px;}
@@ -71,7 +76,7 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
 .mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center;}
 .mo.show{display:flex;}
 .mwin{background:var(--w);border:2px solid;border-color:var(--wl) var(--wdd) var(--wdd) var(--wl);min-width:300px;}
-.mt{background:linear-gradient(90deg,var(--wb),var(--wbl));color:#fff;padding:3px 6px;font-weight:bold;font-size:12px;height:22px;display:flex;align-items:center;justify-content:space-between;}
+.mt{background:linear-gradient(90deg,#5a1a00,#a03000);color:#fff;padding:3px 6px;font-weight:bold;font-size:12px;height:22px;display:flex;align-items:center;justify-content:space-between;}
 .mb{padding:10px;display:flex;flex-direction:column;gap:8px;}
 .mbtns{display:flex;gap:4px;justify-content:flex-end;padding:4px 8px 8px;}
 .cprow{display:flex;gap:10px;align-items:flex-start;}
@@ -81,35 +86,27 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
 .sai-pre{background:#f0f0f0;border:1px solid var(--wdd);padding:4px;font-family:'VT323',monospace;font-size:12px;max-height:80px;overflow-y:auto;word-break:break-all;color:#333;}
 .shiny-range::-webkit-slider-runnable-track{background:#3a2a00;border-color:#6a5a00;}
 .shiny-range::-webkit-slider-thumb{background:#3a2a00;border-color:#ffcc44 #885500 #885500 #ffcc44;}
-/* Drag-and-drop overlay */
-#dropOverlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,128,.55);align-items:center;justify-content:center;pointer-events:none;}
+#dropOverlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(90,30,0,.6);align-items:center;justify-content:center;pointer-events:none;}
 #dropOverlay.active{display:flex;pointer-events:all;}
-#dropBox{border:4px dashed #fff;border-radius:4px;padding:40px 60px;text-align:center;color:#fff;pointer-events:none;}
+#dropBox{border:4px dashed #ff8844;border-radius:4px;padding:40px 60px;text-align:center;color:#ff8844;pointer-events:none;}
 #dropBox .drop-icon{font-size:52px;display:block;margin-bottom:12px;line-height:1;}
 #dropBox .drop-title{font-family:'VT323',monospace;font-size:32px;letter-spacing:1px;}
 #dropBox .drop-sub{font-size:11px;margin-top:6px;opacity:.85;}
 </style>
 </head>
 <body>
-<!-- Drag-and-drop full-window overlay -->
 <div id="dropOverlay">
   <div id="dropBox">
-    <span class="drop-icon">📂</span>
+    <span class="drop-icon">🦀</span>
     <div class="drop-title">Drop .sai Preset Here</div>
     <div class="drop-sub">Release to open preset file</div>
   </div>
 </div>
-
-<!-- Confirm-before-open modal -->
 <div class="mo" id="confirmOpenModal">
   <div class="mwin" style="max-width:340px">
     <div class="mt"><span>⚠ Open Preset?</span><div class="wb" onclick="cancelDrop()">✕</div></div>
     <div class="mb">
-      <div style="font-size:12px;line-height:1.8;color:#000">
-        Open <b id="confirmFileName">this preset</b>?<br>
-        <span style="color:#880000;font-weight:bold">You will lose your current work</span> unless you saved it first.
-      </div>
-      <div style="font-size:10px;color:#666;margin-top:2px">Tip: use 💾 .sai to save before opening.</div>
+      <div style="font-size:12px;line-height:1.8;color:#000">Open <b id="confirmFileName">this preset</b>?<br><span style="color:#880000;font-weight:bold">You will lose your current work</span> unless you saved it first.</div>
     </div>
     <div class="mbtns">
       <div class="btn" onclick="cancelDrop()">Cancel</div>
@@ -120,7 +117,7 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
 
 <div class="win">
   <div class="tbar">
-    <span style="display:flex;align-items:center;gap:6px"><img src="logo.png" style="height:16px;width:auto;image-rendering:pixelated;vertical-align:middle"> Rustveil — Emboss Studio v8</span>
+    <span>🦀 Rustveil — Rust Texture Studio v8</span>
     <div class="tbtns"><div class="wb">_</div><div class="wb">□</div><div class="wb">✕</div></div>
   </div>
   <div class="mbar" id="mbar">
@@ -133,6 +130,10 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
     </div></div>
     <div class="mi" id="mEdit">Edit<div class="drop">
       <div class="di" onclick="randomize();cm()">🎲 Randomize All</div>
+      <div class="di" onclick="applyRustPreset('heavy');cm()">🦀 Heavy Rust</div>
+      <div class="di" onclick="applyRustPreset('bloom');cm()">🌸 Rust Bloom</div>
+      <div class="di" onclick="applyRustPreset('patina');cm()">🟤 Patina</div>
+      <div class="di" onclick="applyRustPreset('raw');cm()">⚙ Raw Metal</div>
       <div class="di" onclick="resetDefs();cm()">Reset to Defaults</div>
     </div></div>
     <div class="mi" id="mView">View<div class="drop">
@@ -144,9 +145,10 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
     </div></div>
     <div class="mi" id="mRen">Render<div class="drop">
       <div class="di" onclick="doRender();cm()">▶ Render</div><div class="dsep"></div>
-      <div class="di" onclick="switchN('fiber');cm()">Fiber</div>
+      <div class="di" onclick="switchN('fiber');cm()">Fiber (Rocky)</div>
       <div class="di" onclick="switchN('stucco');cm()">Stucco</div>
       <div class="di" onclick="switchN('water');cm()">Water</div>
+      <div class="di" onclick="switchN('rusty');cm()">🦀 Rusty (Corrosion)</div>
       <div class="di" onclick="switchN('unitexture');cm()">✦ UniTexture</div>
     </div></div>
     <div class="mi" id="mHelp">Help<div class="drop">
@@ -157,94 +159,123 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
   <input type="file" id="saiIn" accept=".sai" style="display:none" onchange="onSAI(event)">
 
   <div class="body">
-    <!-- PANEL -->
     <div class="panel">
+
+      <!-- RUST QUICK PRESETS -->
+      <div class="gb" style="border-color:#8b3000 #3a1000 #3a1000 #8b3000;background:linear-gradient(180deg,#2a0800,#1a0500);margin-top:4px">
+        <span class="gl" style="background:#1a0500;color:#ff8844">🦀 Rust Presets</span>
+        <div class="rust-presets" style="margin-top:6px">
+          <div class="rp-btn" onclick="applyRustPreset('heavy')">Heavy Rust</div>
+          <div class="rp-btn" onclick="applyRustPreset('bloom')">Bloom</div>
+          <div class="rp-btn" onclick="applyRustPreset('patina')">Patina</div>
+          <div class="rp-btn" onclick="applyRustPreset('raw')">Raw Metal</div>
+          <div class="rp-btn" onclick="applyRustPreset('drip')">Drip Rust</div>
+          <div class="rp-btn" onclick="applyRustPreset('ancient')">Ancient</div>
+          <div class="rp-btn" onclick="applyRustPreset('corrosion')" style="background:linear-gradient(180deg,#3a1500,#1a0800);color:#ff6622;border-color:#aa3000">🦀 Corrosion</div>
+        </div>
+      </div>
+
       <div class="gb"><span class="gl">Noise / Base</span>
         <div class="nbs">
           <div class="nb on" id="nb_fiber"      onclick="switchNB(this,'fiber')">Fiber</div>
           <div class="nb"    id="nb_stucco"     onclick="switchNB(this,'stucco')">Stucco</div>
           <div class="nb"    id="nb_water"      onclick="switchNB(this,'water')">Water</div>
+          <div class="nb"    id="nb_rusty"      onclick="switchNB(this,'rusty')">🦀 Rusty</div>
           <div class="nb"    id="nb_unitexture" onclick="switchNB(this,'unitexture')">✦ UniTex</div>
         </div>
-        <div class="cr"><span class="cl">Scale</span>    <input type="range" min="2"  max="120" value="51" id="noiseScale"   oninput="uv('nsV',this.value);sr()"><span class="cv" id="nsV">51</span></div>
-        <div class="cr"><span class="cl">Density</span>  <input type="range" min="1"  max="16"  value="7"  id="noiseDensity" oninput="uv('ndV',this.value);sr()"><span class="cv" id="ndV">7</span></div>
-        <div class="cr"><span class="cl">Angle</span>    <input type="range" min="0"  max="180" value="35" id="noiseAngle"   oninput="uv('naV',this.value);sr()"><span class="cv" id="naV">35</span></div>
-        <div class="cr"><span class="cl">Roughness</span><input type="range" min="0"  max="100" value="21" id="roughness"    oninput="uv('rrV',this.value);sr()"><span class="cv" id="rrV">21</span></div>
-        <div class="cr"><span class="cl">Seed</span>     <input type="range" min="1"  max="999" value="42" id="seed"         oninput="uv('sdV',this.value);sr()"><span class="cv" id="sdV">42</span></div>
+        <div class="cr"><span class="cl">Scale</span>    <input type="range" min="2"  max="120" value="38" id="noiseScale"   oninput="uv('nsV',this.value);sr()"><span class="cv" id="nsV">38</span></div>
+        <div class="cr"><span class="cl">Density</span>  <input type="range" min="1"  max="16"  value="8"  id="noiseDensity" oninput="uv('ndV',this.value);sr()"><span class="cv" id="ndV">8</span></div>
+        <div class="cr"><span class="cl">Angle</span>    <input type="range" min="0"  max="180" value="55" id="noiseAngle"   oninput="uv('naV',this.value);sr()"><span class="cv" id="naV">55</span></div>
+        <div class="cr"><span class="cl">Roughness</span><input type="range" min="0"  max="100" value="45" id="roughness"    oninput="uv('rrV',this.value);sr()"><span class="cv" id="rrV">45</span></div>
+        <div class="cr"><span class="cl">Seed</span>     <input type="range" min="1"  max="999" value="137" id="seed"        oninput="uv('sdV',this.value);sr()"><span class="cv" id="sdV">137</span></div>
       </div>
 
       <div id="standardPanels">
 
-        <!-- FIBER MODE — Rock Shape controls -->
+        <!-- FIBER MODE -->
         <div id="fiberExtras" class="gb"><span class="gl">Rock Shape</span>
           <div style="display:flex;gap:3px;margin-bottom:7px">
-            <div id="fbModeRock" class="nb on" style="font-size:9px;padding:2px 6px" onclick="setFiberMode('rock')">🪨 Rocky</div>
-            <div id="fbModeClassic" class="nb" style="font-size:9px;padding:2px 6px" onclick="setFiberMode('classic')">〰 Classic</div>
+            <div id="fbModeRock"    class="nb on" style="font-size:9px;padding:2px 6px" onclick="setFiberMode('rock')">🪨 Rocky</div>
+            <div id="fbModeClassic" class="nb"    style="font-size:9px;padding:2px 6px" onclick="setFiberMode('classic')">〰 Classic</div>
           </div>
           <div id="fiberRockControls">
-          <div class="cr"><span class="cl">Bump Size</span>   <input type="range" min="0" max="100" value="20" id="fBumpSz" oninput="uv('fBumpSzV',this.value);sr()"><span class="cv" id="fBumpSzV">20</span></div>
-          <div class="cr"><span class="cl">Bump Height</span> <input type="range" min="0" max="100" value="70" id="fBumpH"  oninput="uv('fBumpHV',this.value);sr()"><span class="cv" id="fBumpHV">70</span></div>
-          <div class="cr"><span class="cl">Jagged</span>      <input type="range" min="0" max="100" value="20" id="fJag"    oninput="uv('fJagV',this.value);sr()"><span class="cv" id="fJagV">20</span></div>
-          <div class="cr"><span class="cl">Spread</span>      <input type="range" min="0" max="100" value="50" id="fSpr"    oninput="uv('fSprV',this.value);sr()"><span class="cv" id="fSprV">50</span></div>
-          <div class="cr"><span class="cl">Micro Detail</span><input type="range" min="0" max="100" value="20" id="fMic"    oninput="uv('fMicV',this.value);sr()"><span class="cv" id="fMicV">20</span></div>
-          <div class="cr"><span class="cl">Pit Size</span>    <input type="range" min="0" max="100" value="50" id="fPitSz"  oninput="uv('fPitSzV',this.value);sr()"><span class="cv" id="fPitSzV">50</span></div>
-          <div class="cr"><span class="cl">Pit Depth</span>   <input type="range" min="0" max="100" value="40" id="fPitDp"  oninput="uv('fPitDpV',this.value);sr()"><span class="cv" id="fPitDpV">40</span></div>
-          </div><!-- end fiberRockControls -->
+            <div class="cr"><span class="cl">Bump Size</span>   <input type="range" min="0" max="100" value="40" id="fBumpSz" oninput="uv('fBumpSzV',this.value);sr()"><span class="cv" id="fBumpSzV">40</span></div>
+            <div class="cr"><span class="cl">Bump Height</span> <input type="range" min="0" max="100" value="65" id="fBumpH"  oninput="uv('fBumpHV',this.value);sr()"><span class="cv" id="fBumpHV">65</span></div>
+            <div class="cr"><span class="cl">Jagged</span>      <input type="range" min="0" max="100" value="48" id="fJag"    oninput="uv('fJagV',this.value);sr()"><span class="cv" id="fJagV">48</span></div>
+            <div class="cr"><span class="cl">Spread</span>      <input type="range" min="0" max="100" value="55" id="fSpr"    oninput="uv('fSprV',this.value);sr()"><span class="cv" id="fSprV">55</span></div>
+            <div class="cr"><span class="cl">Micro Detail</span><input type="range" min="0" max="100" value="35" id="fMic"    oninput="uv('fMicV',this.value);sr()"><span class="cv" id="fMicV">35</span></div>
+            <div class="cr"><span class="cl">Pit Size</span>    <input type="range" min="0" max="100" value="65" id="fPitSz"  oninput="uv('fPitSzV',this.value);sr()"><span class="cv" id="fPitSzV">65</span></div>
+            <div class="cr"><span class="cl">Pit Depth</span>   <input type="range" min="0" max="100" value="68" id="fPitDp"  oninput="uv('fPitDpV',this.value);sr()"><span class="cv" id="fPitDpV">68</span></div>
+          </div>
           <div id="fiberClassicControls" style="display:none">
-          <div style="font-size:10px;color:#666;line-height:1.5;padding:2px 0 4px">Original fiber grain — strands driven by<br><b>Density</b> + <b>Roughness</b> sliders above.</div>
-          <!-- dummy elements so collectSettings/applySAI don't break -->
-          <input type="hidden" id="fcDens" value="6"><input type="hidden" id="fcBend" value="40"><input type="hidden" id="fcScr" value="20">
-          </div><!-- end fiberClassicControls -->
+            <div style="font-size:10px;color:#666;line-height:1.5;padding:2px 0 4px">Original fiber grain.</div>
+            <input type="hidden" id="fcDens" value="6"><input type="hidden" id="fcBend" value="40"><input type="hidden" id="fcScr" value="20">
+          </div>
         </div>
 
-        <!-- WATER MODE — Wave Shape controls -->
+        <!-- WATER MODE -->
         <div id="waterExtras" class="gb" style="display:none"><span class="gl">Wave Shape</span>
           <div style="display:flex;gap:3px;margin-bottom:7px">
-            <div id="wModeSmooth" class="nb on" style="font-size:9px;padding:2px 6px" onclick="setWaterMode('smooth')">🌊 Smooth</div>
-            <div id="wModeClassic" class="nb" style="font-size:9px;padding:2px 6px" onclick="setWaterMode('classic')">〰 Classic</div>
+            <div id="wModeSmooth"  class="nb on" style="font-size:9px;padding:2px 6px" onclick="setWaterMode('smooth')">🌊 Smooth</div>
+            <div id="wModeClassic" class="nb"    style="font-size:9px;padding:2px 6px" onclick="setWaterMode('classic')">〰 Classic</div>
           </div>
           <div id="waterSmoothControls">
-          <div class="cr"><span class="cl">Wave Dir</span>    <input type="range" min="-90" max="90"   value="0"  id="wDir"   oninput="uv('wDirV',this.value);sr()"><span class="cv" id="wDirV">0</span></div>
-          <div class="cr"><span class="cl">Swell Scale</span> <input type="range" min="0"   max="100"  value="30" id="wSwell" oninput="uv('wSwellV',this.value);sr()"><span class="cv" id="wSwellV">30</span></div>
-          <div class="cr"><span class="cl">Crest Sharp</span> <input type="range" min="0"   max="100"  value="30" id="wCrst"  oninput="uv('wCrstV',this.value);sr()"><span class="cv" id="wCrstV">30</span></div>
-          <div class="cr"><span class="cl">Chop Dir</span>    <input type="range" min="-180" max="180" value="45" id="wCDir"  oninput="uv('wCDirV',this.value);sr()"><span class="cv" id="wCDirV">45</span></div>
-          <div class="cr"><span class="cl">Chop Mix</span>    <input type="range" min="0"   max="100"  value="30" id="wChop"  oninput="uv('wChopV',this.value);sr()"><span class="cv" id="wChopV">30</span></div>
-          <div class="cr"><span class="cl">Ripple Freq</span> <input type="range" min="0"   max="100"  value="40" id="wRip"   oninput="uv('wRipV',this.value);sr()"><span class="cv" id="wRipV">40</span></div>
-          <div class="cr"><span class="cl">Warp Amt</span>    <input type="range" min="0"   max="100"  value="20" id="wWarp"  oninput="uv('wWarpV',this.value);sr()"><span class="cv" id="wWarpV">20</span></div>
-          </div><!-- end waterSmoothControls -->
+            <div class="cr"><span class="cl">Wave Dir</span>    <input type="range" min="-90" max="90"   value="0"  id="wDir"   oninput="uv('wDirV',this.value);sr()"><span class="cv" id="wDirV">0</span></div>
+            <div class="cr"><span class="cl">Swell Scale</span> <input type="range" min="0"   max="100"  value="30" id="wSwell" oninput="uv('wSwellV',this.value);sr()"><span class="cv" id="wSwellV">30</span></div>
+            <div class="cr"><span class="cl">Crest Sharp</span> <input type="range" min="0"   max="100"  value="30" id="wCrst"  oninput="uv('wCrstV',this.value);sr()"><span class="cv" id="wCrstV">30</span></div>
+            <div class="cr"><span class="cl">Chop Dir</span>    <input type="range" min="-180" max="180" value="45" id="wCDir"  oninput="uv('wCDirV',this.value);sr()"><span class="cv" id="wCDirV">45</span></div>
+            <div class="cr"><span class="cl">Chop Mix</span>    <input type="range" min="0"   max="100"  value="30" id="wChop"  oninput="uv('wChopV',this.value);sr()"><span class="cv" id="wChopV">30</span></div>
+            <div class="cr"><span class="cl">Ripple Freq</span> <input type="range" min="0"   max="100"  value="40" id="wRip"   oninput="uv('wRipV',this.value);sr()"><span class="cv" id="wRipV">40</span></div>
+            <div class="cr"><span class="cl">Warp Amt</span>    <input type="range" min="0"   max="100"  value="20" id="wWarp"  oninput="uv('wWarpV',this.value);sr()"><span class="cv" id="wWarpV">20</span></div>
+          </div>
           <div id="waterClassicControls" style="display:none">
-          <div style="font-size:10px;color:#666;line-height:1.5;padding:2px 0 4px">Original multi-sine waves — driven by<br><b>Density</b> + <b>Roughness</b> sliders above.</div>
-          <input type="hidden" id="wcDir" value="0"><input type="hidden" id="wcChop" value="50"><input type="hidden" id="wcTurb" value="40"><input type="hidden" id="wcFreq" value="40">
-          </div><!-- end waterClassicControls -->
+            <div style="font-size:10px;color:#666;line-height:1.5;padding:2px 0 4px">Original multi-sine waves.</div>
+            <input type="hidden" id="wcDir" value="0"><input type="hidden" id="wcChop" value="50"><input type="hidden" id="wcTurb" value="40"><input type="hidden" id="wcFreq" value="40">
+          </div>
+        </div>
+
+        <!-- 🦀 RUSTY MODE — dedicated corrosion algorithm -->
+        <div id="rustyExtras" class="gb" style="display:none;border-color:#8b3000 #3a0a00 #3a0a00 #8b3000;background:linear-gradient(180deg,#1a0500,#120300)">
+          <span class="gl" style="background:#120300;color:#ff8844">🦀 Corrosion</span>
+          <div class="cr"><span class="cl" style="color:#ffaa66">Oxidation</span>   <input type="range" min="0" max="100" value="60" id="rxOx"   oninput="uv('rxOxV',this.value);sr()"><span class="cv" style="color:#ff8844" id="rxOxV">60</span></div>
+          <div class="cr"><span class="cl" style="color:#ffaa66">Bloom Size</span>  <input type="range" min="0" max="100" value="40" id="rxBlm"  oninput="uv('rxBlmV',this.value);sr()"><span class="cv" style="color:#ff8844" id="rxBlmV">40</span></div>
+          <div class="cr"><span class="cl" style="color:#ffaa66">Bloom Edge</span> <input type="range" min="0" max="100" value="50" id="rxBEdg" oninput="uv('rxBEdgV',this.value);sr()"><span class="cv" style="color:#ff8844" id="rxBEdgV">50</span></div>
+          <div class="cr"><span class="cl" style="color:#ffaa66">Pit Density</span><input type="range" min="0" max="100" value="55" id="rxPDns" oninput="uv('rxPDnsV',this.value);sr()"><span class="cv" style="color:#ff8844" id="rxPDnsV">55</span></div>
+          <div class="cr"><span class="cl" style="color:#ffaa66">Pit Depth</span>  <input type="range" min="0" max="100" value="65" id="rxPDp"  oninput="uv('rxPDpV',this.value);sr()"><span class="cv" style="color:#ff8844" id="rxPDpV">65</span></div>
+          <div class="cr"><span class="cl" style="color:#ffaa66">Streak Amt</span> <input type="range" min="0" max="100" value="30" id="rxStr"  oninput="uv('rxStrV',this.value);sr()"><span class="cv" style="color:#ff8844" id="rxStrV">30</span></div>
+          <div class="cr"><span class="cl" style="color:#ffaa66">Streak Dir</span> <input type="range" min="0" max="360" value="90" id="rxSDir" oninput="uv('rxSDirV',this.value);sr()"><span class="cv" style="color:#ff8844" id="rxSDirV">90</span></div>
+          <div class="cr"><span class="cl" style="color:#ffaa66">Scale Var</span>  <input type="range" min="0" max="100" value="45" id="rxSVar" oninput="uv('rxSVarV',this.value);sr()"><span class="cv" style="color:#ff8844" id="rxSVarV">45</span></div>
+          <div class="cr"><span class="cl" style="color:#ffaa66">Surface Grit</span><input type="range" min="0" max="100" value="35" id="rxGrt"  oninput="uv('rxGrtV',this.value);sr()"><span class="cv" style="color:#ff8844" id="rxGrtV">35</span></div>
+          <div class="cr"><span class="cl" style="color:#ffaa66">Warp</span>       <input type="range" min="0" max="100" value="20" id="rxWrp"  oninput="uv('rxWrpV',this.value);sr()"><span class="cv" style="color:#ff8844" id="rxWrpV">20</span></div>
         </div>
 
         <div class="gb"><span class="gl">Emboss / Light</span>
-          <div class="cr"><span class="cl">Depth</span>        <input type="range" min="0"  max="100" value="100" id="embossDepth" oninput="uv('edV',this.value);sr()"><span class="cv" id="edV">100</span></div>
-          <div class="cr"><span class="cl">Normal Scale</span> <input type="range" min="1"  max="60"  value="1"   id="normalScale" oninput="uv('nmV',this.value);sr()"><span class="cv" id="nmV">1</span></div>
-          <div class="cr"><span class="cl">Light Dir</span>    <input type="range" min="0"  max="360" value="135" id="lightAngle"  oninput="uv('laV',this.value);sr()"><span class="cv" id="laV">135</span></div>
-          <div class="cr"><span class="cl">Light Elev</span>   <input type="range" min="1"  max="90"  value="45"  id="lightElev"   oninput="uv('leV',this.value);sr()"><span class="cv" id="leV">45</span></div>
-          <div class="cr"><span class="cl">Contrast</span>     <input type="range" min="0"  max="100" value="50"  id="contrast"    oninput="uv('cnV',this.value);sr()"><span class="cv" id="cnV">50</span></div>
-          <div class="cr"><span class="cl">Specularity</span>  <input type="range" min="0"  max="100" value="30"  id="specularity" oninput="uv('spV',this.value);sr()"><span class="cv" id="spV">30</span></div>
-          <div class="cr"><span class="cl">Spec Hard</span>    <input type="range" min="1"  max="100" value="30"  id="specHard"    oninput="uv('shV',this.value);sr()"><span class="cv" id="shV">30</span></div>
-          <div class="cr"><span class="cl">Ambient</span>      <input type="range" min="0"  max="80"  value="12"  id="ambient"     oninput="uv('amV',this.value);sr()"><span class="cv" id="amV">12</span></div>
-          <div class="cr"><span class="cl">Shadow Soft</span>  <input type="range" min="0"  max="100" value="40"  id="shadowSoft"  oninput="uv('ssV',this.value);sr()"><span class="cv" id="ssV">40</span></div>
+          <div class="cr"><span class="cl">Depth</span>        <input type="range" min="0"  max="100" value="85"  id="embossDepth" oninput="uv('edV',this.value);sr()"><span class="cv" id="edV">85</span></div>
+          <div class="cr"><span class="cl">Normal Scale</span> <input type="range" min="1"  max="60"  value="2"   id="normalScale" oninput="uv('nmV',this.value);sr()"><span class="cv" id="nmV">2</span></div>
+          <div class="cr"><span class="cl">Light Dir</span>    <input type="range" min="0"  max="360" value="210" id="lightAngle"  oninput="uv('laV',this.value);sr()"><span class="cv" id="laV">210</span></div>
+          <div class="cr"><span class="cl">Light Elev</span>   <input type="range" min="1"  max="90"  value="38"  id="lightElev"   oninput="uv('leV',this.value);sr()"><span class="cv" id="leV">38</span></div>
+          <div class="cr"><span class="cl">Contrast</span>     <input type="range" min="0"  max="100" value="60"  id="contrast"    oninput="uv('cnV',this.value);sr()"><span class="cv" id="cnV">60</span></div>
+          <div class="cr"><span class="cl">Specularity</span>  <input type="range" min="0"  max="100" value="45"  id="specularity" oninput="uv('spV',this.value);sr()"><span class="cv" id="spV">45</span></div>
+          <div class="cr"><span class="cl">Spec Hard</span>    <input type="range" min="1"  max="100" value="25"  id="specHard"    oninput="uv('shV',this.value);sr()"><span class="cv" id="shV">25</span></div>
+          <div class="cr"><span class="cl">Ambient</span>      <input type="range" min="0"  max="80"  value="10"  id="ambient"     oninput="uv('amV',this.value);sr()"><span class="cv" id="amV">10</span></div>
+          <div class="cr"><span class="cl">Shadow Soft</span>  <input type="range" min="0"  max="100" value="55"  id="shadowSoft"  oninput="uv('ssV',this.value);sr()"><span class="cv" id="ssV">55</span></div>
           <div class="ckr"><div class="ck" id="ckSh" onclick="togCk('ckSh');sr()"></div><span class="cl">Sharpen</span><input type="range" min="1" max="12" value="3" id="sharpAmt" oninput="uv('saV',this.value);sr()" style="width:46px"><span class="cv" id="saV">3</span></div>
-          <div class="ckr"><div class="ck" id="ckAO" onclick="togCk('ckAO');sr()"></div><span class="cl" style="min-width:110px">Cavity Shadow</span></div>
+          <div class="ckr"><div class="ck" id="ckAO" onclick="togCk('ckAO');sr()">✔</div><span class="cl" style="min-width:110px">Cavity Shadow</span></div>
         </div>
         <div class="gb"><span class="gl">Color</span>
-          <div class="cr"><span class="cl">Hue</span>          <input type="range" min="0" max="360" value="48" id="hueShift"   oninput="uv('huV',this.value);updP();sr()"><span class="cv" id="huV">48</span></div>
-          <div class="cr"><span class="cl">Saturation</span>   <input type="range" min="0" max="100" value="75" id="saturation" oninput="uv('saTV',this.value);updP();sr()"><span class="cv" id="saTV">75</span></div>
-          <div class="cr"><span class="cl">Brightness</span>   <input type="range" min="0" max="100" value="55" id="brightness" oninput="uv('brV',this.value);updP();sr()"><span class="cv" id="brV">55</span></div>
-          <div class="cr"><span class="cl">Dark Tint</span>    <input type="range" min="0" max="100" value="40" id="darkTint"   oninput="uv('dtV',this.value);sr()"><span class="cv" id="dtV">40</span></div>
-          <div class="cr"><span class="cl">Hue Variance</span> <input type="range" min="0" max="60"  value="12" id="hueVar"     oninput="uv('hvV',this.value);sr()"><span class="cv" id="hvV">12</span></div>
+          <div class="cr"><span class="cl">Hue</span>          <input type="range" min="0" max="360" value="18"  id="hueShift"   oninput="uv('huV',this.value);updP();sr()"><span class="cv" id="huV">18</span></div>
+          <div class="cr"><span class="cl">Saturation</span>   <input type="range" min="0" max="100" value="65"  id="saturation" oninput="uv('saTV',this.value);updP();sr()"><span class="cv" id="saTV">65</span></div>
+          <div class="cr"><span class="cl">Brightness</span>   <input type="range" min="0" max="100" value="40"  id="brightness" oninput="uv('brV',this.value);updP();sr()"><span class="cv" id="brV">40</span></div>
+          <div class="cr"><span class="cl">Dark Tint</span>    <input type="range" min="0" max="100" value="55"  id="darkTint"   oninput="uv('dtV',this.value);sr()"><span class="cv" id="dtV">55</span></div>
+          <div class="cr"><span class="cl">Hue Variance</span> <input type="range" min="0" max="60"  value="18"  id="hueVar"     oninput="uv('hvV',this.value);sr()"><span class="cv" id="hvV">18</span></div>
           <div style="margin-top:4px"><span class="cl" style="display:block;margin-bottom:3px">Palette:</span>
             <div class="swr">
-              <div class="sw on" style="background:#b8860b" onclick="setPal(48,75,55,40,this)"></div>
-              <div class="sw"    style="background:#8b4513" onclick="setPal(20,65,45,50,this)"></div>
+              <div class="sw"    style="background:#b8860b" onclick="setPal(48,75,55,40,this)"></div>
+              <div class="sw on" style="background:#8b4513" onclick="setPal(18,65,40,55,this)"></div>
               <div class="sw"    style="background:#2e8b57" onclick="setPal(120,60,40,45,this)"></div>
               <div class="sw"    style="background:#4682b4" onclick="setPal(210,40,50,35,this)"></div>
               <div class="sw"    style="background:#696969" onclick="setPal(30,10,50,40,this)"></div>
-              <div class="sw"    style="background:#8b0000" onclick="setPal(5,80,40,55,this)"></div>
+              <div class="sw"    style="background:#8b0000" onclick="setPal(5,80,35,58,this)"></div>
               <div class="sw"    style="background:#daa520" onclick="setPal(40,90,60,30,this)"></div>
               <div class="swp"   title="Color Wheel" onclick="openCW()">⊕</div>
             </div>
@@ -257,10 +288,8 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
       <div id="unitexturePanel">
         <div class="gb" style="border-color:#8040c0 #300060 #300060 #8040c0;background:linear-gradient(180deg,#0a0218,#180530)">
           <span class="gl" style="background:#0a0218;color:#c080ff">✦ UniTexture</span>
-
           <div class="ut-glabel" style="color:#d090ff">▸ Red Giant Texturize</div>
           <div class="ut-grid" id="utGridA"></div>
-
           <div style="color:#c080ff;font-size:10px;font-weight:bold;margin:6px 0 3px">⬛ Quick Color:</div>
           <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:6px">
             <div style="width:20px;height:20px;background:#b8a070;border:1px solid #8040c0;cursor:pointer" title="Stone"  onclick="utQC(30,18,52)"></div>
@@ -274,7 +303,6 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
             <div style="width:20px;height:20px;background:#7a2020;border:1px solid #8040c0;cursor:pointer" title="Blood"  onclick="utQC(2,55,30)"></div>
             <div style="width:20px;height:20px;background:#203040;border:1px solid #8040c0;cursor:pointer" title="Night"  onclick="utQC(215,35,18)"></div>
           </div>
-
           <div class="cr" style="margin-top:6px">
             <span class="cl" style="color:#c080ff">Blend</span>
             <select class="wsel" id="utBlend" onchange="sr()" style="background:#0a0218;color:#c080ff;border-color:#8040c0 #300060 #300060 #8040c0;max-width:120px">
@@ -295,10 +323,7 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
           <div class="cr"><span class="cl" style="color:#c080ff">Offset Y</span>   <input type="range" min="-100" max="100" value="0"   id="utOy"   oninput="uv('utOyV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utOyV">0</span></div>
           <div class="cr"><span class="cl" style="color:#c080ff">Contrast</span>   <input type="range" min="0"    max="400" value="180" id="utCt"   oninput="uv('utCtV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utCtV">180</span></div>
           <div class="cr"><span class="cl" style="color:#c080ff">Brightness</span> <input type="range" min="-100" max="100" value="0"   id="utBr"   oninput="uv('utBrV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utBrV">0</span></div>
-          <div class="ckr">
-            <div class="ck" id="ckUTInv" onclick="togCk('ckUTInv');sr()" style="background:#0a0218;border-color:#8040c0 #300060 #300060 #8040c0"></div>
-            <span style="color:#c080ff;font-size:10px">Invert</span>
-          </div>
+          <div class="ckr"><div class="ck" id="ckUTInv" onclick="togCk('ckUTInv');sr()" style="background:#0a0218;border-color:#8040c0 #300060 #300060 #8040c0"></div><span style="color:#c080ff;font-size:10px">Invert</span></div>
           <div class="cr"><span class="cl" style="color:#c080ff">Warp Strength</span><input type="range" min="0" max="100" value="0"   id="utWrp"  oninput="uv('utWrpV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utWrpV">0</span></div>
           <div class="cr"><span class="cl" style="color:#c080ff">Edge Sharp</span>    <input type="range" min="0" max="100" value="0"   id="utEdg"  oninput="uv('utEdgV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utEdgV">0</span></div>
           <div class="cr"><span class="cl" style="color:#c080ff">Detail Mix</span>    <input type="range" min="0" max="100" value="0"   id="utDtl"  oninput="uv('utDtlV',this.value);sr()"><span class="cv" style="color:#c080ff" id="utDtlV">0</span></div>
@@ -335,7 +360,6 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
         </div>
       </div>
 
-      <!-- S_EmbossShiny — all modes -->
       <div class="gb gb-shiny">
         <span class="gl gl-shiny">✨ S_EmbossShiny</span>
         <div class="ckr"><div class="ck" id="ckShiny" onclick="togCk('ckShiny');sr()" style="background:#1a1000;border-color:#ffcc44 #885500 #885500 #ffcc44"></div><span style="color:#ffcc88;font-size:10px;font-weight:bold">Enable — all modes</span></div>
@@ -343,8 +367,8 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
         <div class="cr"><span class="cl-shiny">Hilight Size</span>  <input class="shiny-range" type="range" min="1"   max="100" value="45" id="shHiS" oninput="uv('shHiSV',this.value);sr()"><span class="cv cv-shiny" id="shHiSV">45</span></div>
         <div class="cr"><span class="cl-shiny">Bump Smooth</span>   <input class="shiny-range" type="range" min="0"   max="30"  value="1"  id="shBS"  oninput="uv('shBSV',this.value);sr()"><span class="cv cv-shiny" id="shBSV">1</span></div>
         <div class="cr"><span class="cl-shiny">Fresnel Mix</span>   <input class="shiny-range" type="range" min="0"   max="100" value="40" id="shFr"  oninput="uv('shFrV',this.value);sr()"><span class="cv cv-shiny" id="shFrV">40</span></div>
-        <div class="cr"><span class="cl-shiny">Light Color H</span> <input class="shiny-range" type="range" min="0"   max="360" value="48" id="shLC"  oninput="uv('shLCV',this.value);upSP();sr()"><span class="cv cv-shiny" id="shLCV">48</span></div>
-        <div class="cr"><span class="cl-shiny">Light Color S</span> <input class="shiny-range" type="range" min="0"   max="100" value="20" id="shLCS" oninput="uv('shLCSV',this.value);upSP();sr()"><span class="cv cv-shiny" id="shLCSV">20</span></div>
+        <div class="cr"><span class="cl-shiny">Light Color H</span> <input class="shiny-range" type="range" min="0"   max="360" value="25" id="shLC"  oninput="uv('shLCV',this.value);upSP();sr()"><span class="cv cv-shiny" id="shLCV">25</span></div>
+        <div class="cr"><span class="cl-shiny">Light Color S</span> <input class="shiny-range" type="range" min="0"   max="100" value="40" id="shLCS" oninput="uv('shLCSV',this.value);upSP();sr()"><span class="cv cv-shiny" id="shLCSV">40</span></div>
         <div id="shinyPrev" style="width:100%;height:10px;border:1px solid #885500;margin-top:2px;border-radius:2px"></div>
       </div>
 
@@ -360,11 +384,11 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
       </div>
     </div>
 
-    <!-- CANVAS -->
     <div class="ca">
       <div class="ctb">
         <div class="btn" onclick="doRender()" style="font-weight:bold">▶ Render</div>
         <div class="btn" onclick="randomize()">🎲 Random</div>
+        <div class="btn" onclick="applyRustPreset('heavy')" style="background:#3a1500;color:#ffaa44;border-color:#8b4500 #3a1000 #3a1000 #8b4500">🦀 Rust</div>
         <div class="btn" onclick="saveImg('png')">💾 PNG</div>
         <div class="btn" onclick="saveSAI()">💾 .sai</div>
         <div class="btn" onclick="triggerSAI()">📂 Open</div>
@@ -375,7 +399,7 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
         <div class="sp" id="sSz">512 × 512</div>
         <div class="sp" id="sMode">Fiber Emboss</div>
         <div class="sp" id="sTime">--ms</div>
-        <div class="sp">TextureForge95 v8</div>
+        <div class="sp">Rustveil v8 🦀</div>
       </div>
     </div>
   </div>
@@ -387,9 +411,9 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
     <div class="mb"><div class="cprow">
       <canvas id="cwC" width="160" height="160" style="cursor:crosshair;border-radius:50%"></canvas>
       <div style="display:flex;flex-direction:column;gap:5px;flex:1">
-        <div class="cr"><span class="cl">Hue</span>        <input type="range" min="0" max="360" value="48" id="cwH" oninput="cwU()"><span class="cv" id="cwHv">48</span></div>
-        <div class="cr"><span class="cl">Saturation</span> <input type="range" min="0" max="100" value="75" id="cwS" oninput="cwU()"><span class="cv" id="cwSv">75</span></div>
-        <div class="cr"><span class="cl">Brightness</span> <input type="range" min="0" max="100" value="55" id="cwB" oninput="cwU()"><span class="cv" id="cwBv">55</span></div>
+        <div class="cr"><span class="cl">Hue</span>        <input type="range" min="0" max="360" value="18" id="cwH" oninput="cwU()"><span class="cv" id="cwHv">18</span></div>
+        <div class="cr"><span class="cl">Saturation</span> <input type="range" min="0" max="100" value="65" id="cwS" oninput="cwU()"><span class="cv" id="cwSv">65</span></div>
+        <div class="cr"><span class="cl">Brightness</span> <input type="range" min="0" max="100" value="40" id="cwB" oninput="cwU()"><span class="cv" id="cwBv">40</span></div>
         <div id="cwPrev" class="cpr"></div>
       </div></div>
       <canvas id="briBar" width="280" height="22" style="border:1px solid var(--wd);cursor:pointer" onclick="briClick(event)"></canvas>
@@ -405,13 +429,25 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
 </div>
 <div class="mo" id="helpM">
   <div class="mwin" style="max-width:440px"><div class="mt"><span>❓ Help</span><div class="wb" onclick="hideM('helpM')">✕</div></div>
-    <div class="mb" style="font-size:11px;line-height:1.7;max-height:300px;overflow-y:auto">
-      <b style="color:#7700bb">✦ UniTexture — Red Giant Texturize (9 presets):</b><br>
-      Concrete · Rust Bloom · Grime Drips · Cracked · Worn Paint · Asphalt · Fine Scratches · Plaster · Stucco<br><br>
-      <b style="color:#cc9900">✦ Sapphire S_Texture family (8 presets):</b><br>
-      S_Cells · S_Flux · S_Folded · S_Loops · S_Weave · S_Clouds · S_Grunge · S_Moire<br><br>
-      <b>Tip:</b> Contrast slider (default 180) dramatically changes texture impact. Invert flips dark/bright. Tint row colors the grunge. Blend Mode changes compositing math.<br><br>
-      <b style="color:#996600">✨ S_EmbossShiny</b> works on all modes. Fresnel Mix boosts edge shine.
+    <div class="mb" style="font-size:11px;line-height:1.7;max-height:360px;overflow-y:auto">
+      <b style="color:#8b3000">🦀 Rust Presets:</b><br>
+      <b>Heavy Rust</b> — dark, deeply pitted, high contrast oxidation<br>
+      <b>Bloom</b> — orange bloom patches, lighter surface<br>
+      <b>Patina</b> — aged greenish-brown oxidation<br>
+      <b>Raw Metal</b> — fresh unrusted steel<br>
+      <b>Drip Rust</b> — vertical rust streaks and drips<br>
+      <b>Ancient</b> — heavily weathered, almost black<br>
+      <b>Corrosion</b> — uses the new 🦀 Rusty noise type<br><br>
+      <b style="color:#aa3300">🦀 Rusty — Corrosion Noise Type:</b><br>
+      A dedicated procedural corrosion algorithm with its own panel:<br>
+      <b>Oxidation</b> — rust coverage (blob threshold)<br>
+      <b>Bloom Size / Edge</b> — scale and sharpness of rust patches<br>
+      <b>Pit Density / Depth</b> — Voronoi-based corrosion craters<br>
+      <b>Streak Amt / Dir</b> — directional gravity drip streaks<br>
+      <b>Scale Var</b> — multi-scale variation for natural look<br>
+      <b>Surface Grit</b> — fine granular surface noise<br>
+      <b>Warp</b> — organic domain warping<br><br>
+      <b style="color:#7700bb">✦ UniTexture</b> has 9 presets incl. "Rust Bloom".
     </div>
     <div class="mbtns"><div class="btn" onclick="hideM('helpM')">OK</div></div>
   </div>
@@ -419,30 +455,23 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
 <div class="mo" id="aboutM">
   <div class="mwin" style="max-width:260px"><div class="mt"><span>About</span><div class="wb" onclick="hideM('aboutM')">✕</div></div>
     <div class="mb" style="text-align:center">
-      <div style="font-family:'VT323',monospace;font-size:28px;color:var(--wb)">Rustveil</div>
-      <div style="margin-top:8px;font-size:11px;color:#555;line-height:1.8">v8.0 · Emboss Studio<br>9 Red Giant grunge presets<br>8 Sapphire S_Texture presets<br>✨ S_EmbossShiny · all modes<br>.SAI presets · up to 2K</div>
+      <div style="font-family:'VT323',monospace;font-size:28px;color:#8b3000">Rustveil 🦀</div>
+      <div style="margin-top:8px;font-size:11px;color:#555;line-height:1.8">v8.0 · Rust Texture Studio<br>🦀 Rusty — Corrosion noise type<br>6 Rust Quick Presets<br>9 Red Giant grunge presets<br>✨ S_EmbossShiny · all modes<br>.SAI presets · up to 2K</div>
     </div>
     <div class="mbtns"><div class="btn" onclick="hideM('aboutM')">OK</div></div>
   </div>
 </div>
-
-<!-- Export Rename Modal (PNG/JPEG) -->
 <div class="mo" id="exportModal">
   <div class="mwin" style="max-width:320px">
     <div class="mt"><span>💾 Export Texture</span><div class="wb" onclick="hideM('exportModal')">✕</div></div>
     <div class="mb">
       <div style="font-size:11px;margin-bottom:4px">File name:</div>
-      <input id="exportName" type="text" onkeydown="if(event.key==='Enter')doExport()" style="width:100%;border:1px solid;border-color:#808080 #fff #fff #808080;padding:3px 5px;font-family:inherit;font-size:12px;background:#fff" value="rustveil">
+      <input id="exportName" type="text" onkeydown="if(event.key==='Enter')doExport()" style="width:100%;border:1px solid;border-color:#808080 #fff #fff #808080;padding:3px 5px;font-family:inherit;font-size:12px;background:#fff" value="rust_texture">
       <div style="font-size:10px;color:#666;margin-top:3px">Format: <span id="exportFmtLabel">PNG</span></div>
     </div>
-    <div class="mbtns">
-      <div class="btn" onclick="hideM('exportModal')">Cancel</div>
-      <div class="btn" style="font-weight:bold" onclick="doExport()">Export</div>
-    </div>
+    <div class="mbtns"><div class="btn" onclick="hideM('exportModal')">Cancel</div><div class="btn" style="font-weight:bold" onclick="doExport()">Export</div></div>
   </div>
 </div>
-
-<!-- *** NEW: Save Preset Rename Modal *** -->
 <div class="mo" id="saiSaveModal">
   <div class="mwin" style="max-width:320px">
     <div class="mt"><span>💾 Save Preset</span><div class="wb" onclick="hideM('saiSaveModal')">✕</div></div>
@@ -451,10 +480,7 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
       <input id="saiSaveName" type="text" onkeydown="if(event.key==='Enter')doSaveSAI()" style="width:100%;border:1px solid;border-color:#808080 #fff #fff #808080;padding:3px 5px;font-family:inherit;font-size:12px;background:#fff" value="preset">
       <div style="font-size:10px;color:#666;margin-top:3px">Format: .sai</div>
     </div>
-    <div class="mbtns">
-      <div class="btn" onclick="hideM('saiSaveModal')">Cancel</div>
-      <div class="btn" style="font-weight:bold" onclick="doSaveSAI()">Save</div>
-    </div>
+    <div class="mbtns"><div class="btn" onclick="hideM('saiSaveModal')">Cancel</div><div class="btn" style="font-weight:bold" onclick="doSaveSAI()">Save</div></div>
   </div>
 </div>
 
@@ -462,12 +488,11 @@ select.wsel{background:var(--w);border:1px solid;border-color:var(--wdd) var(--w
 "use strict";
 let noiseType='fiber';
 let fiberMode='rock',waterMode='smooth';
-let cks={ckSh:false,ckAO:false,ckShiny:false,ckUTInv:false,ckUTGr:false};
+let cks={ckSh:false,ckAO:true,ckShiny:false,ckUTInv:false,ckUTGr:false};
 let omenu=null,rtimer=null,pendingSAI=null;
 let utTintH=0,utTintS=0,utTintL=0,utTintOn=false;
 let utTexIdx=0;
 
-// ── MENU ─────────────────────────────────────────────────────────────────────
 document.getElementById('mbar').addEventListener('mousedown',e=>{e.stopPropagation();const mi=e.target.closest('.mi');if(!mi||e.target.closest('.drop'))return;const id=mi.id;if(omenu===id)cm();else{cm();mi.classList.add('open');omenu=id;}});
 document.addEventListener('mousedown',cm);
 function cm(){document.querySelectorAll('.mi.open').forEach(m=>m.classList.remove('open'));omenu=null;}
@@ -477,37 +502,52 @@ function togCk(id){cks[id]=!cks[id];document.getElementById(id).textContent=cks[
 function showM(id){document.getElementById(id).classList.add('show');}
 function hideM(id){document.getElementById(id).classList.remove('show');}
 function switchNB(el,t){document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));el.classList.add('on');switchN(t);}
-function switchN(t){noiseType=t;const b=document.getElementById('nb_'+t);if(b){document.querySelectorAll('.nb').forEach(x=>x.classList.remove('on'));b.classList.add('on');}const isUT=t==='unitexture';document.getElementById('standardPanels').style.display=isUT?'none':'block';document.getElementById('unitexturePanel').style.display=isUT?'block':'none';document.getElementById('fiberExtras').style.display=t==='fiber'?'block':'none';document.getElementById('waterExtras').style.display=t==='water'?'block':'none';document.getElementById('sMode').textContent=isUT?'✦ UniTexture':t[0].toUpperCase()+t.slice(1)+' Emboss';sr();}
-function utQC(h,s,l){
-  ['utHue','utSat','utLum'].forEach((id,i)=>{
-    const v=[h,s,l][i];
-    document.getElementById(id).value=v;
-    uv(['utHuV','utSaV','utLuV'][i],v);
-  });
+function switchN(t){
+  noiseType=t;
+  const b=document.getElementById('nb_'+t);
+  if(b){document.querySelectorAll('.nb').forEach(x=>x.classList.remove('on'));b.classList.add('on');}
+  const isUT=t==='unitexture';
+  document.getElementById('standardPanels').style.display=isUT?'none':'block';
+  document.getElementById('unitexturePanel').style.display=isUT?'block':'none';
+  document.getElementById('fiberExtras').style.display=t==='fiber'?'block':'none';
+  document.getElementById('waterExtras').style.display=t==='water'?'block':'none';
+  document.getElementById('rustyExtras').style.display=t==='rusty'?'block':'none';
+  const names={fiber:'Fiber Emboss',stucco:'Stucco Emboss',water:'Water Emboss',rusty:'🦀 Rusty Emboss',unitexture:'✦ UniTexture'};
+  document.getElementById('sMode').textContent=names[t]||t+' Emboss';
   sr();
 }
-function setFiberMode(m){
-  fiberMode=m;
-  document.getElementById('fbModeRock').classList.toggle('on',m==='rock');
-  document.getElementById('fbModeClassic').classList.toggle('on',m==='classic');
-  document.getElementById('fiberRockControls').style.display=m==='rock'?'block':'none';
-  document.getElementById('fiberClassicControls').style.display=m==='classic'?'block':'none';
-  sr();
-}
-function setWaterMode(m){
-  waterMode=m;
-  document.getElementById('wModeSmooth').classList.toggle('on',m==='smooth');
-  document.getElementById('wModeClassic').classList.toggle('on',m==='classic');
-  document.getElementById('waterSmoothControls').style.display=m==='smooth'?'block':'none';
-  document.getElementById('waterClassicControls').style.display=m==='classic'?'block':'none';
-  sr();
-}
+function utQC(h,s,l){['utHue','utSat','utLum'].forEach((id,i)=>{const v=[h,s,l][i];document.getElementById(id).value=v;uv(['utHuV','utSaV','utLuV'][i],v);});sr();}
+function setFiberMode(m){fiberMode=m;document.getElementById('fbModeRock').classList.toggle('on',m==='rock');document.getElementById('fbModeClassic').classList.toggle('on',m==='classic');document.getElementById('fiberRockControls').style.display=m==='rock'?'block':'none';document.getElementById('fiberClassicControls').style.display=m==='classic'?'block':'none';sr();}
+function setWaterMode(m){waterMode=m;document.getElementById('wModeSmooth').classList.toggle('on',m==='smooth');document.getElementById('wModeClassic').classList.toggle('on',m==='classic');document.getElementById('waterSmoothControls').style.display=m==='smooth'?'block':'none';document.getElementById('waterClassicControls').style.display=m==='classic'?'block':'none';sr();}
 function setTint(h,s,l,on,el){utTintH=h;utTintS=s;utTintL=l;utTintOn=on;document.querySelectorAll('.tsw').forEach(x=>x.classList.remove('on'));if(el)el.classList.add('on');sr();}
 function setPal(h,s,b,d,el){document.querySelectorAll('.sw').forEach(x=>x.classList.remove('on'));if(el)el.classList.add('on');['hueShift','saturation','brightness','darkTint'].forEach((id,i)=>{const v=[h,s,b,d][i];document.getElementById(id).value=v;uv(['huV','saTV','brV','dtV'][i],v);});updP();sr();}
 function updP(){const c=document.getElementById('prevBar'),ctx=c.getContext('2d'),h=gi('hueShift'),s=gi('saturation'),bv=gi('brightness');const g=ctx.createLinearGradient(0,0,c.width,0);for(let i=0;i<=12;i++){const t=i/12,l=bv*.35+t*(bv*.85-bv*.2);const[r,gv,bb]=hsl2rgb(h+t*16-8,s,Math.max(0,Math.min(100,l)));g.addColorStop(t,`rgb(${r},${gv},${bb})`);}ctx.fillStyle=g;ctx.fillRect(0,0,c.width,c.height);}
 function upSP(){const h=gi('shLC'),s=gi('shLCS');const[r,g,b]=hsl2rgb(h,s,70);document.getElementById('shinyPrev').style.background=`linear-gradient(90deg,rgb(${r},${g},${b}),#ffeeaa,rgb(${r},${g},${b}))`;}
 
-// CW
+// ── RUST PRESETS ──────────────────────────────────────────────────────────────
+const RUST_PRESETS={
+  heavy:    {noiseType:'fiber',fiberMode:'rock',noiseScale:35,noiseDensity:9,noiseAngle:62,roughness:55,seed:317,embossDepth:90,normalScale:2,lightAngle:215,lightElev:35,contrast:68,specularity:50,specHard:20,ambient:8,shadowSoft:62,hueShift:15,saturation:70,brightness:36,darkTint:62,hueVar:22,fBumpSz:48,fBumpH:72,fJag:58,fSpr:60,fMic:42,fPitSz:72,fPitDp:75,ckAO:true},
+  bloom:    {noiseType:'fiber',fiberMode:'rock',noiseScale:42,noiseDensity:7,noiseAngle:30,roughness:38,seed:521,embossDepth:80,normalScale:2,lightAngle:180,lightElev:42,contrast:55,specularity:40,specHard:30,ambient:14,shadowSoft:45,hueShift:22,saturation:80,brightness:50,darkTint:42,hueVar:28,fBumpSz:30,fBumpH:58,fJag:35,fSpr:50,fMic:28,fPitSz:55,fPitDp:50,ckAO:true},
+  patina:   {noiseType:'stucco',noiseScale:55,noiseDensity:8,noiseAngle:45,roughness:42,seed:782,embossDepth:75,normalScale:2,lightAngle:165,lightElev:40,contrast:52,specularity:35,specHard:35,ambient:15,shadowSoft:48,hueShift:85,saturation:45,brightness:38,darkTint:50,hueVar:20,ckAO:true},
+  raw:      {noiseType:'fiber',fiberMode:'rock',noiseScale:28,noiseDensity:6,noiseAngle:70,roughness:22,seed:99,embossDepth:70,normalScale:1,lightAngle:225,lightElev:50,contrast:45,specularity:55,specHard:45,ambient:18,shadowSoft:35,hueShift:210,saturation:15,brightness:55,darkTint:30,hueVar:6,fBumpSz:18,fBumpH:45,fJag:22,fSpr:65,fMic:15,fPitSz:35,fPitDp:25,ckAO:false},
+  drip:     {noiseType:'water',waterMode:'smooth',noiseScale:40,noiseDensity:7,noiseAngle:90,roughness:50,seed:456,embossDepth:85,normalScale:2,lightAngle:195,lightElev:38,contrast:65,specularity:42,specHard:22,ambient:10,shadowSoft:58,wDir:0,wSwell:60,wCrst:65,wCDir:10,wChop:25,wRip:30,wWarp:35,hueShift:16,saturation:72,brightness:38,darkTint:58,hueVar:20,ckAO:true},
+  ancient:  {noiseType:'fiber',fiberMode:'rock',noiseScale:58,noiseDensity:10,noiseAngle:48,roughness:65,seed:888,embossDepth:95,normalScale:3,lightAngle:230,lightElev:30,contrast:75,specularity:28,specHard:15,ambient:6,shadowSoft:70,hueShift:12,saturation:55,brightness:28,darkTint:70,hueVar:14,fBumpSz:55,fBumpH:80,fJag:70,fSpr:45,fMic:50,fPitSz:80,fPitDp:82,ckAO:true},
+  // New preset using dedicated Rusty noise type
+  corrosion:{noiseType:'rusty',noiseScale:42,noiseDensity:8,noiseAngle:35,roughness:50,seed:613,embossDepth:88,normalScale:2,lightAngle:210,lightElev:38,contrast:65,specularity:48,specHard:22,ambient:9,shadowSoft:60,hueShift:16,saturation:72,brightness:38,darkTint:60,hueVar:22,rxOx:65,rxBlm:45,rxBEdg:55,rxPDns:60,rxPDp:70,rxStr:35,rxSDir:88,rxSVar:50,rxGrt:40,rxWrp:25,ckAO:true}
+};
+
+function applyRustPreset(name){
+  const p=RUST_PRESETS[name];if(!p)return;
+  const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV',fBumpSz:'fBumpSzV',fBumpH:'fBumpHV',fJag:'fJagV',fSpr:'fSprV',fMic:'fMicV',fPitSz:'fPitSzV',fPitDp:'fPitDpV',wDir:'wDirV',wSwell:'wSwellV',wChop:'wChopV',wCDir:'wCDirV',wRip:'wRipV',wCrst:'wCrstV',wWarp:'wWarpV',rxOx:'rxOxV',rxBlm:'rxBlmV',rxBEdg:'rxBEdgV',rxPDns:'rxPDnsV',rxPDp:'rxPDpV',rxStr:'rxStrV',rxSDir:'rxSDirV',rxSVar:'rxSVarV',rxGrt:'rxGrtV',rxWrp:'rxWrpV'};
+  Object.entries(vm).forEach(([id,vid])=>{if(p[id]!==undefined){const el=document.getElementById(id);if(el){el.value=p[id];uv(vid,p[id]);}}});
+  if(p.noiseType)switchN(p.noiseType);
+  if(p.fiberMode)setFiberMode(p.fiberMode);
+  if(p.waterMode)setWaterMode(p.waterMode);
+  if(p.ckAO!==undefined){cks.ckAO=p.ckAO;document.getElementById('ckAO').textContent=cks.ckAO?'✔':'';}
+  updP();sr();
+}
+
+// ── COLOR WHEEL ───────────────────────────────────────────────────────────────
 function openCW(){['cwH','cwS','cwB'].forEach((id,i)=>{const src=['hueShift','saturation','brightness'][i];document.getElementById(id).value=gi(src);uv(id+'v',gi(src));});showM('cwModal');drawWheel();cwPv();drawBB();}
 function applyCW(){['hueShift','saturation','brightness'].forEach((id,i)=>{const cwid=['cwH','cwS','cwB'][i];document.getElementById(id).value=gi(cwid);uv(['huV','saTV','brV'][i],gi(cwid));});updP();hideM('cwModal');sr();}
 function drawWheel(){const c=document.getElementById('cwC'),ctx=c.getContext('2d'),cx=c.width/2,cy=c.height/2,R=cx-2;const img=ctx.createImageData(c.width,c.height);for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){const dx=x-cx,dy=y-cy,d=Math.sqrt(dx*dx+dy*dy);if(d<=R){const a=(Math.atan2(dy,dx)*180/Math.PI+360)%360,s=(d/R)*100;const[r,g,b]=hsl2rgb(a,s,55);const i=(y*c.width+x)*4;img.data[i]=r;img.data[i+1]=g;img.data[i+2]=b;img.data[i+3]=255;}}ctx.putImageData(img,0,0);const h=gi('cwH'),s=gi('cwS'),rad=h*Math.PI/180,pr=(s/100)*R,px=cx+Math.cos(rad)*pr,py=cy+Math.sin(rad)*pr;ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.stroke();ctx.beginPath();ctx.arc(px,py,4,0,Math.PI*2);ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.stroke();}
@@ -517,7 +557,7 @@ function cwPv(){const[r,g,b]=hsl2rgb(gi('cwH'),gi('cwS'),gi('cwB'));document.get
 function drawBB(){const c=document.getElementById('briBar'),ctx=c.getContext('2d'),h=gi('cwH'),s=gi('cwS');const g=ctx.createLinearGradient(0,0,c.width,0);for(let i=0;i<=10;i++){const[r,gv,b]=hsl2rgb(h,s,(i/10)*100);g.addColorStop(i/10,`rgb(${r},${gv},${b})`);}ctx.fillStyle=g;ctx.fillRect(0,0,c.width,c.height);const bp=(gi('cwB')/100)*c.width;ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bp,0);ctx.lineTo(bp,c.height);ctx.stroke();ctx.strokeStyle='#000';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(bp,0);ctx.lineTo(bp,c.height);ctx.stroke();}
 function briClick(e){const r=e.currentTarget.getBoundingClientRect(),t=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));document.getElementById('cwB').value=Math.round(t*100);uv('cwBv',Math.round(t*100));cwPv();drawBB();}
 
-// ── MATH CORE ──────────────────────────────────────────────────────────────────
+// ── MATH CORE ─────────────────────────────────────────────────────────────────
 function mul32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 function mkPerm(rnd){const p=new Uint8Array(512),b=new Uint8Array(256);for(let i=0;i<256;i++)b[i]=i;for(let i=255;i>0;i--){const j=Math.floor(rnd()*(i+1));[b[i],b[j]]=[b[j],b[i]];}for(let i=0;i<512;i++)p[i]=b[i&255];return p;}
 const ss=t=>t*t*(3-2*t),lrp=(a,b,t)=>a+t*(b-a);
@@ -526,99 +566,64 @@ function fbm(x,y,p,oct,lac,gain){let v=0,a=.5,f=1,m=0;for(let i=0;i<oct;i++){v+=
 function v2f1(x,y,p){const cx=Math.floor(x),cy=Math.floor(y);let md=1e9;for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const cx2=cx+dx,cy2=cy+dy,idx=((cy2*1619+cx2)*6271)&0x7fffffff;const px=cx2+(p[idx&255]/255)*.75+.125,py2=cy2+(p[(idx>>4)&255]/255)*.75+.125;const d=Math.sqrt((x-px)**2+(y-py2)**2);if(d<md)md=d;}return md;}
 function v2f1f2(x,y,p){const cx=Math.floor(x),cy=Math.floor(y);let md=1e9,md2=1e9;for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const cx2=cx+dx,cy2=cy+dy,idx=((cy2*1619+cx2)*6271)&0x7fffffff;const px=cx2+(p[idx&255]/255)*.75+.125,py2=cy2+(p[(idx>>4)&255]/255)*.75+.125;const d=Math.sqrt((x-px)**2+(y-py2)**2);if(d<md){md2=md;md=d;}else if(d<md2)md2=d;}return{f1:md,f2:md2,edge:md2-md};}
 
-// ── BASE NOISE TYPES ───────────────────────────────────────────────────────────
+// ── NOISE FUNCTIONS ────────────────────────────────────────────────────────────
+function fiberNoise(x,y,ang,sc,dens,rough,p,P){const rad=ang*Math.PI/180;const tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc;const ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc;const rr=rough/100;const bsz=P?P.fBumpSz:0.2,bht=P?P.fBumpH:0.7,fJag=P?P.fJag:0.2,fSpr=P?P.fSpr:0.5,fMic=P?P.fMic:0.2,psz=P?P.fPitSz:0.5,pdp=P?P.fPitDp:0.4;const bFreq=0.10+bsz*1.20;const spreadW=(1.0-fSpr)*2.8;const wx=fbm(tx*0.45,ty*0.45,p,3,2.0,.52)*spreadW;const wy=fbm(tx*0.45+3.7,ty*0.45+3.7,p,3,2.0,.52)*spreadW;let macro=Math.abs(fbm((tx+wx)*bFreq*0.9,(ty+wy)*bFreq*0.9,p,6,2.15,.62));macro=macro*(0.40+bht*0.50)+0.08;const jPow=fJag<0.01?0.55:0.55+fJag*2.4;macro=Math.pow(Math.max(0,macro),jPow);const mid=Math.abs(fbm((tx+wx)*bFreq*2.8+1.3,(ty+wy)*bFreq*2.8+1.3,p,4,2.1,.52))*(0.10+bht*0.28)*(rr*0.4+0.65);const pitFreq=1.0+psz*8.0;const f1=v2f1((tx+wx)*pitFreq,(ty+wy)*pitFreq,p);const pitThresh=0.14+psz*0.20;const pits=Math.pow(Math.max(0,pitThresh-f1),2)*(6+pdp*16)*(rr*0.35+0.25)*pdp;const micro=Math.abs(fbm(tx*bFreq*13,ty*bFreq*13,p,2,2,.45))*fMic*0.32;return Math.max(0,Math.min(1,macro*0.60+mid*0.25+micro-pits));}
+function fiberNoiseClassic(x,y,ang,sc,dens,rough,p){const rad=ang*Math.PI/180,cos=Math.cos(rad),sin=Math.sin(rad),tx=(x*cos-y*sin)/sc,ty=(x*sin+y*cos)/sc,rr=rough/100;let v=0;for(let i=0;i<dens;i++){const fi=i/dens;v+=Math.abs(gn2(tx*.15+fi*3.7,ty*2.5+fbm(tx*.3,ty*.3+fi*7,p,3,2,.5)*rr*3,p));}return v/dens+fbm(tx*4,ty*4,p,4,2.1,.45)*rr*.4;}
+function stuccoNoise(x,y,ang,sc,dens,rough,p){const rad=ang*Math.PI/180,tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc,ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc,rr=rough/100;return Math.abs(fbm(tx,ty,p,4,2.5,.55)*.7+Math.abs(fbm(tx*5,ty*5,p,3,2,.4))*rr*.5)*1.2;}
+function waterNoiseClassic(x,y,ang,sc,dens,rough,p){const rad=ang*Math.PI/180,tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc,ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc,rr=rough/100;let v=0;for(let i=0;i<dens;i++){const fi=i/dens,wa=fi*Math.PI*2,warp=fbm(tx*.5+fi*2,ty*.5+fi*3,p,3,2,.5)*rr*2;v+=(Math.sin(tx*Math.cos(wa)*1.5+ty*Math.sin(wa)*1.5+warp*3)*.5+.5);}return Math.abs(v/dens+fbm(tx*3,ty*3,p,4,2.2,.5)*rr*.2);}
+function waterNoise(x,y,ang,sc,dens,rough,p,P){const dirOff=(P?P.wDir:0)*Math.PI/180,rad=ang*Math.PI/180+dirOff;const tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc,ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc;const rr=rough/100,wWarp=P?P.wWarp:0.2,wSwell=P?P.wSwell:0.3,wChop=P?P.wChop:0.3,wCDir=P?P.wCDir:45,wRip=P?P.wRip:0.4,wCrst=P?P.wCrst:0.3;const swF=0.08+wSwell*0.92;const domW=fbm(tx*0.22,ty*0.22,p,3,2.0,.52)*wWarp*5.5;let swell=fbm(tx*swF*0.55+domW,ty*swF*1.3+domW*0.3,p,5,1.80,.64)*0.55+0.28;if(wCrst>0.01){const cp=0.5+wCrst*3.0;swell=swell<0.5?Math.pow(swell*2,cp)/2:1-Math.pow((1-swell)*2,cp)/2;}const crad=rad+wCDir*Math.PI/180,ctx2=(x*Math.cos(crad)-y*Math.sin(crad))/sc,cty2=(x*Math.sin(crad)+y*Math.cos(crad))/sc;const rFreq=0.6+wRip*3.2;const chop=fbm(ctx2*swF*rFreq+domW*0.4,cty2*swF*rFreq*0.9+0.8,p,4,1.88,.56)*0.30*wChop*2.8*(rr*0.3+0.45);return Math.max(0,Math.min(1,swell+chop));}
 
-// FIBER (rocky) — big chunky bumps. BumpSize=feature scale, BumpHeight=prominence,
-//   Jagged=angular vs smooth, Spread=clustered vs even, MicroDetail=surface noise
-function fiberNoise(x,y,ang,sc,dens,rough,p,P){
+// ── 🦀 RUSTY NOISE — dedicated corrosion algorithm ─────────────────────────────
+function rustyNoise(x,y,ang,sc,dens,rough,p,P){
   const rad=ang*Math.PI/180;
   const tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc;
   const ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc;
   const rr=rough/100;
-  const bsz = P?P.fBumpSz:0.2;  // 0-1 → big=0 small=1
-  const bht = P?P.fBumpH:0.7;   // 0-1 prominence
-  const fJag = P?P.fJag:0.2;    // 0-1 smooth→angular
-  const fSpr = P?P.fSpr:0.5;    // 0-1 clustered→spread
-  const fMic = P?P.fMic:0.2;    // 0-1 micro surface detail amount
-  const psz  = P?P.fPitSz:0.5;
-  const pdp  = P?P.fPitDp:0.4;
-  // Bump scale: low bsz = very low frequency = very large boulders
-  const bFreq = 0.10 + bsz * 1.20;
-  // Domain spread warp — low fSpr = tight/clustered, high = evenly scattered
-  const spreadW = (1.0 - fSpr) * 2.8;
-  const wx = fbm(tx*0.45, ty*0.45, p, 3, 2.0, .52) * spreadW;
-  const wy = fbm(tx*0.45+3.7, ty*0.45+3.7, p, 3, 2.0, .52) * spreadW;
-  // Primary rock shape — abs(fbm) warped by spread
-  let macro = Math.abs(fbm((tx+wx)*bFreq*0.9, (ty+wy)*bFreq*0.9, p, 6, 2.15, .62));
-  macro = macro * (0.40 + bht*0.50) + 0.08;
-  // Jagged shaping: power < 1 = rounded dome; power > 1 = sharp peaky
-  const jPow = fJag < 0.01 ? 0.55 : 0.55 + fJag * 2.4;
-  macro = Math.pow(Math.max(0, macro), jPow);
-  // Mid-frequency layer — gives secondary bumps on top of large shapes
-  const mid = Math.abs(fbm((tx+wx)*bFreq*2.8+1.3, (ty+wy)*bFreq*2.8+1.3, p, 4, 2.1, .52))
-              * (0.10 + bht*0.28) * (rr*0.4+0.65);
-  // Voronoi pits
-  const pitFreq = 1.0 + psz * 8.0;
-  const f1 = v2f1((tx+wx)*pitFreq, (ty+wy)*pitFreq, p);
-  const pitThresh = 0.14 + psz*0.20;
-  const pits = Math.pow(Math.max(0, pitThresh-f1), 2) * (6+pdp*16) * (rr*0.35+0.25) * pdp;
-  // Micro surface detail
-  const micro = Math.abs(fbm(tx*bFreq*13, ty*bFreq*13, p, 2, 2, .45)) * fMic * 0.32;
-  return Math.max(0, Math.min(1, macro*0.60 + mid*0.25 + micro - pits));
+  const oxid =P?P.rxOx  :0.6,  blmSz=P?P.rxBlm :0.4,  blmEdg=P?P.rxBEdg:0.5;
+  const pitD =P?P.rxPDns:0.55, pitDp=P?P.rxPDp :0.65, strAmt=P?P.rxStr :0.3;
+  const strDir=P?P.rxSDir:90,  scVar=P?P.rxSVar:0.45, grit  =P?P.rxGrt :0.35;
+  const warp =P?P.rxWrp :0.2;
+  // ① Domain warp
+  let wx=0,wy=0;
+  if(warp>0.001){wx=fbm(tx*0.55,ty*0.55,p,3,2.1,.53)*warp*4.0;wy=fbm(tx*0.55+5.3,ty*0.55+5.3,p,3,2.1,.53)*warp*4.0;}
+  const wx2=tx+wx,wy2=ty+wy;
+  // ② Blob / bloom patches
+  const bFreq=0.15+blmSz*1.8;
+  const rawBlob=fbm(wx2*bFreq,wy2*bFreq,p,5,2.2,.58);
+  const blobBias=oxid*0.9-0.45;
+  let blob=rawBlob+blobBias;
+  if(blob>0)blob=Math.pow(Math.min(1,blob*1.5),1.0/Math.max(0.05,1.0-blmEdg*0.85));
+  else blob=0;
+  blob=Math.max(0,Math.min(1,blob));
+  // ③ Scale variation
+  const scv=0.3+scVar*1.4;
+  const blob2=Math.max(0,fbm(wx2*bFreq*scv+3.1,wy2*bFreq*scv+1.7,p,4,2.0,.55)+blobBias*0.7);
+  const blobMix=blob*0.65+blob2*0.35;
+  // ④ Pits — Voronoi craters
+  const pitFreq=0.8+pitD*9.0;
+  const f1=v2f1(wx2*pitFreq,wy2*pitFreq,p);
+  const pitThresh=0.10+pitD*0.22;
+  const pits=Math.pow(Math.max(0,pitThresh-f1),1.8)*(4.0+pitDp*14.0)*(rr*0.4+0.3)*pitDp;
+  // ⑤ Directional streaks
+  let streak=0;
+  if(strAmt>0.001){
+    const srad=strDir*Math.PI/180;
+    const sx=wx2*Math.cos(srad)-wy2*Math.sin(srad),sy=wx2*Math.sin(srad)+wy2*Math.cos(srad);
+    const strFreqCross=3.5+rr*4.0,strFreqAlong=0.18+rr*0.25;
+    const s1=Math.pow(Math.abs(gn2(sx*strFreqCross,sy*strFreqAlong,p)),1.5);
+    const s2=Math.pow(Math.abs(gn2(sx*strFreqCross*1.7+2.1,sy*strFreqAlong*1.3+0.8,p)),2.0)*0.6;
+    streak=(s1*0.6+s2*0.4)*strAmt*1.4*(0.3+blobMix*0.7);
+  }
+  // ⑥ Surface grit
+  const gritVal=grit>0.001?Math.abs(fbm(tx*18.0,ty*18.0,p,2,2,.45))*grit*0.28:0;
+  // ⑦ Mid-frequency roughness detail
+  const midDetail=rr>0?Math.abs(fbm(wx2*bFreq*3.2,wy2*bFreq*3.2,p,3,2.0,.50))*rr*0.20:0;
+  return Math.max(0,Math.min(1,blobMix*0.55+streak*0.28+gritVal-pits*0.55+midDetail));
 }
 
-// FIBER CLASSIC — original sine-band wood/fiber grain
-// FIBER CLASSIC — exact original algorithm
-function fiberNoiseClassic(x,y,ang,sc,dens,rough,p){const rad=ang*Math.PI/180,cos=Math.cos(rad),sin=Math.sin(rad),tx=(x*cos-y*sin)/sc,ty=(x*sin+y*cos)/sc,rr=rough/100;let v=0;for(let i=0;i<dens;i++){const fi=i/dens;v+=Math.abs(gn2(tx*.15+fi*3.7,ty*2.5+fbm(tx*.3,ty*.3+fi*7,p,3,2,.5)*rr*3,p));}return v/dens+fbm(tx*4,ty*4,p,4,2.1,.45)*rr*.4;}
-
-// WATER CLASSIC — exact original algorithm
-function waterNoiseClassic(x,y,ang,sc,dens,rough,p){const rad=ang*Math.PI/180,tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc,ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc,rr=rough/100;let v=0;for(let i=0;i<dens;i++){const fi=i/dens,wa=fi*Math.PI*2,warp=fbm(tx*.5+fi*2,ty*.5+fi*3,p,3,2,.5)*rr*2;v+=(Math.sin(tx*Math.cos(wa)*1.5+ty*Math.sin(wa)*1.5+warp*3)*.5+.5);}return Math.abs(v/dens+fbm(tx*3,ty*3,p,4,2.2,.5)*rr*.2);}
-
-// STUCCO — isotropic chunky abs(fbm) bumps, the reference look
-function stuccoNoise(x,y,ang,sc,dens,rough,p){
-  const rad=ang*Math.PI/180,tx=(x*Math.cos(rad)-y*Math.sin(rad))/sc,ty=(x*Math.sin(rad)+y*Math.cos(rad))/sc,rr=rough/100;
-  return Math.abs(fbm(tx,ty,p,4,2.5,.55)*.7+Math.abs(fbm(tx*5,ty*5,p,3,2,.4))*rr*.5)*1.2;
-}
-
-// WATER — WaveDir = main swell direction, SwellScale = wave size,
-//   CrestSharp = how peaked crests are, ChopDir = independent ripple angle,
-//   ChopMix = crossing ripple amount, RippleFreq = ripple tightness, WarpAmt = organic bend
-function waterNoise(x,y,ang,sc,dens,rough,p,P){
-  const dirOff = (P?P.wDir:0)*Math.PI/180;
-  const rad    = ang*Math.PI/180 + dirOff;
-  const tx = (x*Math.cos(rad)-y*Math.sin(rad))/sc;
-  const ty = (x*Math.sin(rad)+y*Math.cos(rad))/sc;
-  const rr     = rough/100;
-  const wWarp  = P?P.wWarp:0.2;
-  const wSwell = P?P.wSwell:0.3;
-  const wChop  = P?P.wChop:0.3;
-  const wCDir  = P?P.wCDir:45;   // chop direction offset (degrees from main)
-  const wRip   = P?P.wRip:0.4;   // ripple frequency 0-1
-  const wCrst  = P?P.wCrst:0.3;  // crest sharpness 0-1
-  // Swell frequency: 0.08 (massive rolling) to 1.0 (tight packed)
-  const swF = 0.08 + wSwell * 0.92;
-  // Domain warp — bends wave crests
-  const domW = fbm(tx*0.22, ty*0.22, p, 3, 2.0, .52) * wWarp * 5.5;
-  // Primary swell — smooth, directional
-  let swell = fbm(tx*swF*0.55+domW, ty*swF*1.3+domW*0.3, p, 5, 1.80, .64)*0.55+0.28;
-  // Crest sharpening — s-curve: below 0.5 squashes troughs, above 0.5 sharpens peaks
-  if(wCrst>0.01){const cp=0.5+wCrst*3.0;swell=swell<0.5?Math.pow(swell*2,cp)/2:1-Math.pow((1-swell)*2,cp)/2;}
-  // Chop layer — rotated independently by ChopDir slider
-  const crad = rad + wCDir*Math.PI/180;
-  const ctx2 = (x*Math.cos(crad)-y*Math.sin(crad))/sc;
-  const cty2 = (x*Math.sin(crad)+y*Math.cos(crad))/sc;
-  // RippleFreq scales chop tightness: 0=loose broad chop, 1=tight fine ripple
-  const rFreq = 0.6 + wRip * 3.2;
-  const chop  = fbm(ctx2*swF*rFreq+domW*0.4, cty2*swF*rFreq*0.9+0.8, p, 4, 1.88, .56)
-                * 0.30 * wChop * 2.8 * (rr*0.3+0.45);
-  return Math.max(0, Math.min(1, swell+chop));
-}
-
-// ══════════════════════════════════════════════════════════════════════════════
-// GROUP A — Red Giant Texturize style
-// ══════════════════════════════════════════════════════════════════════════════
+// ── UNITEXTURE PRESETS ────────────────────────────────────────────────────────
 function ut_Concrete(x,y,p){const macro=fbm(x*.6,y*.6,p,4,2.1,.52)*.4+.42;const agg=Math.abs(fbm(x*5,y*5,p,3,2,.48))*.35;const grain=fbm(x*22,y*22,p,2,2,.4)*.07;const f1=v2f1(x*14,y*14,p);const pits=Math.pow(Math.max(0,.28-f1),2)*12*.22;return Math.max(0,Math.min(1,macro+agg*.25+grain-pits));}
-function ut_Rust(x,y,p){const wx=fbm(x*1.8,y*1.8,p,3,2,.55)*.9;const wy=fbm(x*1.8+4.2,y*1.8+4.2,p,3,2,.55)*.9;const blob=fbm(x*.9+wx,y*.9+wy,p,5,2.3,.6);const v=blob*.5+.5;const sc=v<.45?v*.5:v>.55?v*.5+.5:v*3-.85;const sharp=Math.max(0,Math.min(1,sc));const pit=Math.abs(fbm(x*16,y*16,p,2,2,.45))*.12;return Math.max(0,Math.min(1,sharp*.88+pit));}
+function ut_Rust(x,y,p){const wx=fbm(x*1.8,y*1.8,p,3,2,.55)*.9;const wy=fbm(x*1.8+4.2,y*1.8+4.2,p,3,2,.55)*.9;const blob=fbm(x*.9+wx,y*.9+wy,p,5,2.3,.6);const v=blob*.5+.5;const sc2=v<.45?v*.5:v>.55?v*.5+.5:v*3-.85;const sharp=Math.max(0,Math.min(1,sc2));const pit=Math.abs(fbm(x*16,y*16,p,2,2,.45))*.12;return Math.max(0,Math.min(1,sharp*.88+pit));}
 function ut_GrimeDrips(x,y,p){const hWarp=fbm(x*2.2,y*.35,p,3,2,.5)*.55;const drip=Math.pow(Math.abs(fbm(x*8+hWarp,y*.22,p,4,2.5,.58)),1.1);const drip2=Math.pow(Math.abs(fbm(x*13+hWarp*.6+.9,y*.16+.4,p,3,2,.5)),1.5)*.55;const{f1}=v2f1f2(x*4.5+hWarp*.25,y*9.5+2,p);const splat=Math.pow(Math.max(0,.38-f1),2)*7*.4;return Math.max(0,Math.min(1,drip*.55+drip2*.28+splat));}
 function ut_Cracked(x,y,p){const{edge}=v2f1f2(x*2.8,y*2.8,p);const crackDark=Math.pow(Math.max(0,1-edge*14),2.5);const surf=fbm(x*6,y*6,p,3,2,.48)*.18+.68;return Math.max(0,Math.min(1,surf-crackDark*.82));}
 function ut_WornPaint(x,y,p){const wx=fbm(x*.8,y*.8,p,3,2,.55)*.65;const wy=fbm(x*.8+3.1,y*.8+3.1,p,3,2,.55)*.65;const raw=fbm(x*1.1+wx,y*1.1+wy,p,3,2,.52);const mask=Math.max(0,Math.min(1,(raw+.15)*3.5));const paintFace=fbm(x*9,y*9,p,3,2,.5)*.14+.66;const bareFace=fbm(x*13,y*13,p,2,2,.5)*.09+.16;return mask*paintFace+(1-mask)*bareFace;}
@@ -626,34 +631,14 @@ function ut_Asphalt(x,y,p){const base=fbm(x*2.2,y*2.2,p,4,2.1,.52)*.22+.16;const
 function ut_FineScratches(x,y,p){const angFld=fbm(x*.35,y*.35,p,2,2,.5)*.9;const ca=Math.cos(angFld),sa=Math.sin(angFld);const rx=x*ca-y*sa,ry=x*sa+y*ca;const s1=Math.pow(Math.abs(gn2(rx*24,ry*.07,p)),1.4);const s2=Math.pow(Math.abs(gn2(rx*18+3.1,ry*.09+1,p)),1.7)*.7;const s3=Math.pow(Math.abs(gn2(rx*30+6,ry*.05+2,p)),1.5)*.5;const base=fbm(x*4,y*4,p,2,2,.5)*.08+.22;return Math.max(0,Math.min(1,base+s1*.48+s2*.25+s3*.15));}
 function ut_Plaster(x,y,p){const wave=fbm(x*.9,y*.9,p,5,2.1,.5);const ripple=fbm(x*3.5+wave*1.6,y*3.5,p,3,2,.47)*.2;const dust=fbm(x*20,y*20,p,2,2,.45)*.06;return Math.max(0,Math.min(1,wave*.48+ripple+dust+.3));}
 function ut_Stucco(x,y,p){const base=Math.abs(fbm(x*.7,y*.7,p,5,2.5,.55))*.65+.15;const bumps=Math.abs(fbm(x*4.5,y*4.5,p,3,2,.48))*.35;const grit=fbm(x*16,y*16,p,2,2,.4)*.08;return Math.max(0,Math.min(1,base*.58+bumps+grit));}
-
-// ── PRESET REGISTRY ───────────────────────────────────────────────────────────
-const GROUP_A=[
-  {name:'Concrete',    fn:ut_Concrete,      ts:1.0},
-  {name:'Rust Bloom',  fn:ut_Rust,          ts:0.8},
-  {name:'Grime Drips', fn:ut_GrimeDrips,    ts:1.0},
-  {name:'Cracked',     fn:ut_Cracked,       ts:0.8},
-  {name:'Worn Paint',  fn:ut_WornPaint,     ts:0.9},
-  {name:'Asphalt',     fn:ut_Asphalt,       ts:1.0},
-  {name:'Scratches',   fn:ut_FineScratches, ts:1.0},
-  {name:'Plaster',     fn:ut_Plaster,       ts:1.0},
-  {name:'Stucco',      fn:ut_Stucco,        ts:1.0},
-];
+const GROUP_A=[{name:'Concrete',fn:ut_Concrete,ts:1.0},{name:'Rust Bloom',fn:ut_Rust,ts:0.8},{name:'Grime Drips',fn:ut_GrimeDrips,ts:1.0},{name:'Cracked',fn:ut_Cracked,ts:0.8},{name:'Worn Paint',fn:ut_WornPaint,ts:0.9},{name:'Asphalt',fn:ut_Asphalt,ts:1.0},{name:'Scratches',fn:ut_FineScratches,ts:1.0},{name:'Plaster',fn:ut_Plaster,ts:1.0},{name:'Stucco',fn:ut_Stucco,ts:1.0}];
 const ALL_PRESETS=[...GROUP_A];
 
-// ── BLEND ─────────────────────────────────────────────────────────────────────
 function blend(m,b,t){switch(m){case'multiply':return b*t;case'screen':return 1-(1-b)*(1-t);case'overlay':return b<.5?2*b*t:1-2*(1-b)*(1-t);case'softlight':return b<.5?2*b*t+b*b*(1-2*t):Math.sqrt(b)*(2*t-1)+2*b*(1-t);case'hardlight':return t<.5?2*b*t:1-2*(1-b)*(1-t);case'colorburn':return t===0?0:Math.max(0,1-(1-b)/t);case'difference':return Math.abs(b-t);default:return t;}}
-
-// ── HSL ───────────────────────────────────────────────────────────────────────
 function hsl2rgb(h,s,l){h/=360;s/=100;l/=100;const hu=(p,q,t)=>{if(t<0)t++;if(t>1)t--;if(t<1/6)return p+(q-p)*6*t;if(t<.5)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};if(!s){const v=Math.round(l*255);return[v,v,v];}const q=l<.5?l*(1+s):l+s-l*s,p2=2*l-q;return[Math.round(hu(p2,q,h+1/3)*255),Math.round(hu(p2,q,h)*255),Math.round(hu(p2,q,h-1/3)*255)];}
-
-// ── BOX BLUR ──────────────────────────────────────────────────────────────────
 function bBlur(arr,W,H,r){if(r<1)return arr;const t=new Float32Array(arr.length);for(let y=0;y<H;y++)for(let x=0;x<W;x++){let s=0,c=0;for(let dx=-r;dx<=r;dx++){const nx=Math.min(W-1,Math.max(0,x+dx));s+=arr[y*W+nx];c++;}t[y*W+x]=s/c;}const o=new Float32Array(arr.length);for(let y=0;y<H;y++)for(let x=0;x<W;x++){let s=0,c=0;for(let dy=-r;dy<=r;dy++){const ny=Math.min(H-1,Math.max(0,y+dy));s+=t[ny*W+x];c++;}o[y*W+x]=s/c;}return o;}
-
-// ── SHARPEN ───────────────────────────────────────────────────────────────────
 function doSharpen(d,W,H,amt){const s=new Uint8ClampedArray(d),k=amt*.12;for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){const i=(y*W+x)*4;for(let c=0;c<3;c++){const v=s[i+c]*5-s[i-4+c]-s[i+4+c]-s[i-W*4+c]-s[i+W*4+c];d[i+c]=Math.max(0,Math.min(255,s[i+c]+k*(v-s[i+c])));}};}
 
-// ── RENDER ────────────────────────────────────────────────────────────────────
 function sr(){if(rtimer)clearTimeout(rtimer);rtimer=setTimeout(doRender,20);}
 
 function doRender(){
@@ -661,33 +646,43 @@ function doRender(){
   const canvas=document.getElementById('mainCanvas');
   const W=canvas.width,H=canvas.height,t0=performance.now();
   document.getElementById('rs').textContent='Rendering…';
-
   const doShiny=cks['ckShiny'];
   const shHiB=gi('shHiB')/100,shHiS=gi('shHiS'),shBS=gi('shBS'),shFr=gi('shFr')/100;
-  const [shLR,shLG,shLB]=hsl2rgb(gi('shLC'),gi('shLCS'),80).map(v=>v/255);
-
-  if(noiseType==='unitexture'){
-    renderUT(canvas,W,H,doShiny,shHiB,shHiS,shBS,shFr,shLR,shLG,shLB);
-    const ms=Math.round(performance.now()-t0);document.getElementById('rs').textContent='✦ '+ms+'ms';document.getElementById('sTime').textContent=ms+'ms';
-    return;
-  }
-
-  const P={sc:gi('noiseScale'),dens:gi('noiseDensity'),ang:gi('noiseAngle'),rough:gi('roughness'),seed:gi('seed'),dep:gi('embossDepth')/100,ns:Math.max(1,Math.floor(gi('normalScale'))),lAng:gi('lightAngle'),lElev:gi('lightElev'),ct:gi('contrast')/100,spec:gi('specularity')/100,specH:gi('specHard'),amb:gi('ambient')/100,shSft:gi('shadowSoft')/100,doAO:cks['ckAO'],doSh:cks['ckSh'],shAmt:gi('sharpAmt'),hue:gi('hueShift'),sat:gi('saturation'),bri:gi('brightness'),dT:gi('darkTint')/100,hV:gi('hueVar'),fBumpSz:gi('fBumpSz')/100,fBumpH:gi('fBumpH')/100,fJag:gi('fJag')/100,fSpr:gi('fSpr')/100,fMic:gi('fMic')/100,fPitSz:gi('fPitSz')/100,fPitDp:gi('fPitDp')/100,wDir:gi('wDir'),wSwell:gi('wSwell')/100,wChop:gi('wChop')/100,wCDir:gi('wCDir'),wRip:gi('wRip')/100,wCrst:gi('wCrst')/100,wWarp:gi('wWarp')/100,fcDens:gi('fcDens'),fcBend:gi('fcBend')/100,fcScr:gi('fcScr')/100,wcDir:gi('wcDir'),wcChop:gi('wcChop')/100,wcTurb:gi('wcTurb')/100,wcFreq:gi('wcFreq')/100};
+  const[shLR,shLG,shLB]=hsl2rgb(gi('shLC'),gi('shLCS'),80).map(v=>v/255);
+  if(noiseType==='unitexture'){renderUT(canvas,W,H,doShiny,shHiB,shHiS,shBS,shFr,shLR,shLG,shLB);const ms=Math.round(performance.now()-t0);document.getElementById('rs').textContent='✦ '+ms+'ms';document.getElementById('sTime').textContent=ms+'ms';return;}
+  const P={
+    sc:gi('noiseScale'),dens:gi('noiseDensity'),ang:gi('noiseAngle'),rough:gi('roughness'),seed:gi('seed'),
+    dep:gi('embossDepth')/100,ns:Math.max(1,Math.floor(gi('normalScale'))),lAng:gi('lightAngle'),lElev:gi('lightElev'),
+    ct:gi('contrast')/100,spec:gi('specularity')/100,specH:gi('specHard'),amb:gi('ambient')/100,shSft:gi('shadowSoft')/100,
+    doAO:cks['ckAO'],doSh:cks['ckSh'],shAmt:gi('sharpAmt'),
+    hue:gi('hueShift'),sat:gi('saturation'),bri:gi('brightness'),dT:gi('darkTint')/100,hV:gi('hueVar'),
+    fBumpSz:gi('fBumpSz')/100,fBumpH:gi('fBumpH')/100,fJag:gi('fJag')/100,fSpr:gi('fSpr')/100,
+    fMic:gi('fMic')/100,fPitSz:gi('fPitSz')/100,fPitDp:gi('fPitDp')/100,
+    wDir:gi('wDir'),wSwell:gi('wSwell')/100,wChop:gi('wChop')/100,wCDir:gi('wCDir'),
+    wRip:gi('wRip')/100,wCrst:gi('wCrst')/100,wWarp:gi('wWarp')/100,
+    rxOx:gi('rxOx')/100,rxBlm:gi('rxBlm')/100,rxBEdg:gi('rxBEdg')/100,
+    rxPDns:gi('rxPDns')/100,rxPDp:gi('rxPDp')/100,
+    rxStr:gi('rxStr')/100,rxSDir:gi('rxSDir'),
+    rxSVar:gi('rxSVar')/100,rxGrt:gi('rxGrt')/100,rxWrp:gi('rxWrp')/100,
+    fcDens:gi('fcDens'),fcBend:gi('fcBend')/100,fcScr:gi('fcScr')/100,
+    wcDir:gi('wcDir'),wcChop:gi('wcChop')/100,wcTurb:gi('wcTurb')/100,wcFreq:gi('wcFreq')/100
+  };
   const perm=mkPerm(mul32(P.seed*7919+1));
-  const _fiberFn = fiberMode==='classic' ? fiberNoiseClassic : fiberNoise;
-  const _waterFn = waterMode==='classic' ? waterNoiseClassic : waterNoise;
-  const nfn={fiber:_fiberFn,stucco:stuccoNoise,water:_waterFn}[noiseType]||fiberNoise;
-
+  const _fiberFn=fiberMode==='classic'?fiberNoiseClassic:fiberNoise;
+  const _waterFn=waterMode==='classic'?waterNoiseClassic:waterNoise;
+  const nfn={fiber:_fiberFn,stucco:stuccoNoise,water:_waterFn,rusty:rustyNoise}[noiseType]||fiberNoise;
   let hs=new Float32Array(W*H);let mn=Infinity,mx=-Infinity;
-  const scX=512/W,scY=512/H;for(let y=0;y<H;y++)for(let x=0;x<W;x++){const v=nfn(x*scX,y*scY,P.ang,P.sc,P.dens,P.rough,perm,P);hs[y*W+x]=v;if(v<mn)mn=v;if(v>mx)mx=v;}
+  const scX=512/W,scY=512/H;
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    const v=nfn(x*scX,y*scY,P.ang,P.sc,P.dens,P.rough,perm,P);
+    hs[y*W+x]=v;if(v<mn)mn=v;if(v>mx)mx=v;
+  }
   const hr=mx-mn||1;for(let i=0;i<hs.length;i++)hs[i]=(hs[i]-mn)/hr;
   if(doShiny&&shBS>0)hs=bBlur(hs,W,H,Math.round(shBS));
-
   const lR2=P.lAng*Math.PI/180,lE=P.lElev*Math.PI/180;
   const lx=Math.cos(lR2)*Math.cos(lE),ly=Math.sin(lR2)*Math.cos(lE),lz=Math.sin(lE);
   const spow=4+P.specH*3,ns=P.ns;
   const ctx=canvas.getContext('2d');const img=ctx.createImageData(W,H);const px=img.data;
-
   for(let y=0;y<H;y++)for(let x=0;x<W;x++){
     const idx=y*W+x,h=hs[idx];
     const x0=Math.max(0,x-ns),x1=Math.min(W-1,x+ns),y0=Math.max(0,y-ns),y1=Math.min(H-1,y+ns);
@@ -706,156 +701,31 @@ function doRender(){
   }
   if(P.doSh)doSharpen(px,W,H,P.shAmt);
   canvas.getContext('2d').putImageData(img,0,0);
-  const ms=Math.round(performance.now()-t0);document.getElementById('rs').textContent='✔ '+ms+'ms';document.getElementById('sTime').textContent=ms+'ms';
+  const ms=Math.round(performance.now()-t0);
+  document.getElementById('rs').textContent='🦀 '+ms+'ms';
+  document.getElementById('sTime').textContent=ms+'ms';
 }
 
-function renderUT(canvas,W,H,doShiny,shHiB,shHiS,shBS,shFr,shLR,shLG,shLB){
-  const ctx=canvas.getContext('2d');
-  const pBase=mkPerm(mul32(gi('utSeed')*7919+1));
-  const pTex=mkPerm(mul32(gi('seed')*6571+13));
-  const nsc=gi('noiseScale');
-  const utAmt=gi('utAmt')/100,utSc=gi('utSc')/100,utRot=gi('utRot')*Math.PI/180;
-  const utOx=gi('utOx')/100,utOy=gi('utOy')/100;
-  const utCt=gi('utCt')/100,utBr=gi('utBr')/100;
-  const utVig=gi('utVig')/100,utGrAmt=gi('utGr')/100;
-  const blendMode=document.getElementById('utBlend').value;
-  const inv=cks['ckUTInv'],doGrain=cks['ckUTGr'];
-  const utWrp=gi('utWrp')/100,utEdg=gi('utEdg')/100,utDtl=gi('utDtl')/100;
-  const utFSz=gi('utFSz')/100,utDpth=gi('utDpth')/100,utWear=gi('utWear')/100,utGrit=gi('utGrit')/100;
-  const utHue=gi('utHue'),utSat=gi('utSat'),utLum=gi('utLum'),utVar=gi('utVar');
-  const texFn=ALL_PRESETS[utTexIdx].fn;
-  const cosR=Math.cos(utRot),sinR=Math.sin(utRot);
-  const cx=W/2,cy=H/2;
-  const scX=512/W,scY=512/H;
+function renderUT(canvas,W,H,doShiny,shHiB,shHiS,shBS,shFr,shLR,shLG,shLB){const ctx=canvas.getContext('2d');const pBase=mkPerm(mul32(gi('utSeed')*7919+1));const pTex=mkPerm(mul32(gi('seed')*6571+13));const nsc=gi('noiseScale');const utAmt=gi('utAmt')/100,utSc=gi('utSc')/100,utRot=gi('utRot')*Math.PI/180;const utOx=gi('utOx')/100,utOy=gi('utOy')/100,utCt=gi('utCt')/100,utBr=gi('utBr')/100;const utVig=gi('utVig')/100,utGrAmt=gi('utGr')/100;const blendMode=document.getElementById('utBlend').value;const inv=cks['ckUTInv'],doGrain=cks['ckUTGr'];const utWrp=gi('utWrp')/100,utEdg=gi('utEdg')/100,utDtl=gi('utDtl')/100;const utFSz=gi('utFSz')/100,utDpth=gi('utDpth')/100,utWear=gi('utWear')/100,utGrit=gi('utGrit')/100;const utHue=gi('utHue'),utSat=gi('utSat'),utLum=gi('utLum'),utVar=gi('utVar');const texFn=ALL_PRESETS[utTexIdx].fn;const cosR=Math.cos(utRot),sinR=Math.sin(utRot);const cx=W/2,cy=H/2,scX=512/W,scY=512/H;let heights=null;if(doShiny){heights=new Float32Array(W*H);let hmn=Infinity,hmx=-Infinity;for(let y=0;y<H;y++)for(let x=0;x<W;x++){const v=fbm(x*scX/nsc,y*scY/nsc,pBase,5,2.1,.5);heights[y*W+x]=v;if(v<hmn)hmn=v;if(v>hmx)hmx=v;}const hr=hmx-hmn||1;for(let i=0;i<heights.length;i++)heights[i]=(heights[i]-hmn)/hr;if(shBS>0)heights=bBlur(heights,W,H,Math.round(shBS));}const lA=135*Math.PI/180,lEl=45*Math.PI/180;const lx=Math.cos(lA)*Math.cos(lEl),ly=Math.sin(lA)*Math.cos(lEl),lz2=Math.sin(lEl);const img=ctx.createImageData(W,H);const px=img.data;let gs=98765;function grng(){gs=(gs*1664525+1013904223)&0xFFFFFFFF;return(gs>>>0)/4294967296-0.5;}for(let y=0;y<H;y++)for(let x=0;x<W;x++){const idx=y*W+x;const bh=fbm(x*scX/nsc,y*scY/nsc,pBase,5,2.1,.5)*.5+.5;const sL=utLum+bh*utVar-utVar*.5,sH=utHue+(bh-.5)*8;let[br,bg,bb]=hsl2rgb(sH,utSat,Math.max(5,Math.min(95,sL)));const dx2=x-cx,dy2=y-cy;const tx2=(dx2*cosR-dy2*sinR)/W,ty2=(dx2*sinR+dy2*cosR)/H;const fscale=(utFSz>0?1/utFSz:1);const tsx=(tx2/utSc+utOx+.5)*4*fscale,tsy=(ty2/utSc+utOy+.5)*4*fscale;let twx=0,twy=0;if(utWrp>0){twx=fbm(tsx*.42,tsy*.42,pTex,3,2,.5)*utWrp*3.8;twy=fbm(tsx*.42+5.7,tsy*.42+5.7,pTex,3,2,.5)*utWrp*3.8;}let tv=texFn(tsx+twx,tsy+twy,pTex);if(utDtl>0){const tvd=texFn((tsx+twx)*2.7+3.3,(tsy+twy)*2.7+1.7,pTex);tv=tv*(1-utDtl*0.55)+tvd*(utDtl*0.55);}tv=(tv-.5)*utCt+.5+utBr;tv=Math.max(0,Math.min(1,tv));if(utEdg>0){const ep=1+utEdg*4.5;tv=tv<0.5?Math.pow(tv*2,ep)/2:1-Math.pow((1-tv)*2,ep)/2;}if(utDpth>0){tv=(tv-0.5)*(1+utDpth*1.8)+0.5;tv=Math.max(0,Math.min(1,tv));}if(utWear>0){const wr=Math.abs(fbm(tsx*0.55,tsy*0.55,pTex,4,2.1,.58));tv=tv*(1-utWear*0.55)+wr*utWear*0.55;tv=Math.max(0,Math.min(1,tv));}if(utGrit>0){const gr=Math.abs(fbm(tsx*5.5,tsy*5.5,pTex,2,2,.5));tv=tv*(1-utGrit*0.38)+gr*utGrit*0.38;tv=Math.max(0,Math.min(1,tv));}if(inv)tv=1-tv;let[tr,tg,tb]=[tv,tv,tv];if(utTintOn){const[tR,tG,tB]=hsl2rgb(utTintH,utTintS,utTintL+(tv*18-9));tr=tv*tR/255+(1-tv)*tr;tg=tv*tG/255+(1-tv)*tg;tb=tv*tB/255+(1-tv)*tb;}const brf=br/255,bgf=bg/255,bbf=bb/255;let fr=blend(blendMode,brf,tr)*utAmt+brf*(1-utAmt);let fg=blend(blendMode,bgf,tg)*utAmt+bgf*(1-utAmt);let fb2=blend(blendMode,bbf,tb)*utAmt+bbf*(1-utAmt);if(utVig>0){const ex=Math.abs((x/W-.5)*2),ey=Math.abs((y/H-.5)*2);const ed=Math.max(ex,ey);const vig=Math.pow(Math.max(0,1-ed),1/(utVig*.05+.01))*.5;fr*=1-vig*.5;fg*=1-vig*.5;fb2*=1-vig*.5;}if(doShiny&&heights){const h=heights[idx];const x0=Math.max(0,x-2),x1=Math.min(W-1,x+2),y0=Math.max(0,y-2),y1=Math.min(H-1,y+2);let nx=(heights[y*W+x0]-heights[y*W+x1])*15/((x1-x0)||1),ny=(heights[y0*W+x]-heights[y1*W+x])*15/((y1-y0)||1),nz=1;const nl=Math.sqrt(nx*nx+ny*ny+nz*nz);nx/=nl;ny/=nl;nz/=nl;const dot=nx*lx+ny*ly+nz*lz2;const rx=2*dot*nx-lx,ry=2*dot*ny-ly,rz2=2*dot*nz-lz2;const spec=Math.pow(Math.max(0,rz2),2+shHiS*3)*shHiB;const frn=Math.pow(1-Math.max(0,nz),.5)*shFr*spec*.5;const s=Math.min(2,(spec+frn)*1.8);fr=Math.min(1,fr+s*shLR);fg=Math.min(1,fg+s*shLG);fb2=Math.min(1,fb2+s*shLB);}if(doGrain){const g=grng()*utGrAmt;fr+=g;fg+=g;fb2+=g;}const pi=idx*4;px[pi]=Math.max(0,Math.min(255,fr*255));px[pi+1]=Math.max(0,Math.min(255,fg*255));px[pi+2]=Math.max(0,Math.min(255,fb2*255));px[pi+3]=255;}ctx.putImageData(img,0,0);}
 
-  let heights=null;
-  if(doShiny){
-    heights=new Float32Array(W*H);let hmn=Infinity,hmx=-Infinity;
-    for(let y=0;y<H;y++)for(let x=0;x<W;x++){const v=fbm(x*scX/nsc,y*scY/nsc,pBase,5,2.1,.5);heights[y*W+x]=v;if(v<hmn)hmn=v;if(v>hmx)hmx=v;}
-    const hr=hmx-hmn||1;for(let i=0;i<heights.length;i++)heights[i]=(heights[i]-hmn)/hr;
-    if(shBS>0)heights=bBlur(heights,W,H,Math.round(shBS));
-  }
-  const lA=135*Math.PI/180,lEl=45*Math.PI/180;
-  const lx=Math.cos(lA)*Math.cos(lEl),ly=Math.sin(lA)*Math.cos(lEl),lz2=Math.sin(lEl);
+function buildPreviews(){const perm=mkPerm(mul32(42*7919+1));const TW=50,TH=44;function mkGrid(gridId,presets,offset){const grid=document.getElementById(gridId);grid.innerHTML='';presets.forEach((preset,i)=>{const gi2=i+offset;const wrap=document.createElement('div');wrap.className='ut-tile'+(gi2===utTexIdx?' on':'');wrap.title=preset.name;wrap.onclick=()=>{utTexIdx=gi2;document.querySelectorAll('.ut-tile').forEach(x=>x.classList.remove('on'));wrap.classList.add('on');sr();};const sc=preset.ts||1;const vals=new Float32Array(TW*TH);for(let py=0;py<TH;py++)for(let px2=0;px2<TW;px2++)vals[py*TW+px2]=preset.fn(px2/12*sc,py/11*sc,perm);let vmn=Infinity,vmx=-Infinity;for(let k=0;k<vals.length;k++){if(vals[k]<vmn)vmn=vals[k];if(vals[k]>vmx)vmx=vals[k];}const vrange=vmx-vmn||1;const cv=document.createElement('canvas');cv.width=TW;cv.height=TH;const c2=cv.getContext('2d');const id2=c2.createImageData(TW,TH);for(let k=0;k<vals.length;k++){const v=Math.pow((vals[k]-vmn)/vrange,.85);const g=Math.round(Math.max(0,Math.min(255,v*255)));const ii=k*4;id2.data[ii]=g;id2.data[ii+1]=g;id2.data[ii+2]=g;id2.data[ii+3]=255;}c2.putImageData(id2,0,0);const lbl=document.createElement('div');lbl.className='ut-tile-lbl';lbl.textContent=preset.name;wrap.appendChild(cv);wrap.appendChild(lbl);grid.appendChild(wrap);});}mkGrid('utGridA',GROUP_A,0);}
 
-  const img=ctx.createImageData(W,H);const px=img.data;
-  let gs=98765;function grng(){gs=(gs*1664525+1013904223)&0xFFFFFFFF;return(gs>>>0)/4294967296-0.5;}
-
-  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
-    const idx=y*W+x;
-    const bh=fbm(x*scX/nsc,y*scY/nsc,pBase,5,2.1,.5)*.5+.5;
-    const sL=utLum+bh*utVar-utVar*.5,sH=utHue+(bh-.5)*8;
-    let[br,bg,bb]=hsl2rgb(sH,utSat,Math.max(5,Math.min(95,sL)));
-    const dx2=x-cx,dy2=y-cy;
-    const tx2=(dx2*cosR-dy2*sinR)/W,ty2=(dx2*sinR+dy2*cosR)/H;
-    // utFSz: 1.0=default; <1 = zoomed in (bigger features); >1 = zoomed out (smaller)
-    const fscale=(utFSz>0?1/utFSz:1);
-    const tsx=(tx2/utSc+utOx+.5)*4*fscale,tsy=(ty2/utSc+utOy+.5)*4*fscale;
-    // Domain warp on texture coords — bends and distorts the pattern
-    let twx=0,twy=0;
-    if(utWrp>0){twx=fbm(tsx*.42,tsy*.42,pTex,3,2,.5)*utWrp*3.8;twy=fbm(tsx*.42+5.7,tsy*.42+5.7,pTex,3,2,.5)*utWrp*3.8;}
-    let tv=texFn(tsx+twx,tsy+twy,pTex);
-    // Detail mix — finer sample of same texture layered on top for micro-detail
-    if(utDtl>0){const tvd=texFn((tsx+twx)*2.7+3.3,(tsy+twy)*2.7+1.7,pTex);tv=tv*(1-utDtl*0.55)+tvd*(utDtl*0.55);}
-    tv=(tv-.5)*utCt+.5+utBr;
-    tv=Math.max(0,Math.min(1,tv));
-    // Edge sharpness — s-curve pulls contrast toward edges
-    if(utEdg>0){const ep=1+utEdg*4.5;tv=tv<0.5?Math.pow(tv*2,ep)/2:1-Math.pow((1-tv)*2,ep)/2;}
-    // Depth boost — amplifies feature relief (raises contrast around midpoint)
-    if(utDpth>0){tv=(tv-0.5)*(1+utDpth*1.8)+0.5;tv=Math.max(0,Math.min(1,tv));}
-    // Wear/Age — weathering erodes the highs and fills lows with a noise wash
-    if(utWear>0){const wr=Math.abs(fbm(tsx*0.55,tsy*0.55,pTex,4,2.1,.58));tv=tv*(1-utWear*0.55)+wr*utWear*0.55;tv=Math.max(0,Math.min(1,tv));}
-    // Surface grit — high-freq noise speckle layered on top
-    if(utGrit>0){const gr=Math.abs(fbm(tsx*5.5,tsy*5.5,pTex,2,2,.5));tv=tv*(1-utGrit*0.38)+gr*utGrit*0.38;tv=Math.max(0,Math.min(1,tv));}
-    if(inv)tv=1-tv;
-    let[tr,tg,tb]=[tv,tv,tv];
-    if(utTintOn){const[tR,tG,tB]=hsl2rgb(utTintH,utTintS,utTintL+(tv*18-9));tr=tv*tR/255+(1-tv)*tr;tg=tv*tG/255+(1-tv)*tg;tb=tv*tB/255+(1-tv)*tb;}
-    const brf=br/255,bgf=bg/255,bbf=bb/255;
-    let fr=blend(blendMode,brf,tr)*utAmt+brf*(1-utAmt);
-    let fg=blend(blendMode,bgf,tg)*utAmt+bgf*(1-utAmt);
-    let fb2=blend(blendMode,bbf,tb)*utAmt+bbf*(1-utAmt);
-    if(utVig>0){const ex=Math.abs((x/W-.5)*2),ey=Math.abs((y/H-.5)*2);const ed=Math.max(ex,ey);const vig=Math.pow(Math.max(0,1-ed),1/(utVig*.05+.01))*.5;fr*=1-vig*.5;fg*=1-vig*.5;fb2*=1-vig*.5;}
-    if(doShiny&&heights){
-      const h=heights[idx];
-      const x0=Math.max(0,x-2),x1=Math.min(W-1,x+2),y0=Math.max(0,y-2),y1=Math.min(H-1,y+2);
-      let nx=(heights[y*W+x0]-heights[y*W+x1])*15/((x1-x0)||1),ny=(heights[y0*W+x]-heights[y1*W+x])*15/((y1-y0)||1),nz=1;
-      const nl=Math.sqrt(nx*nx+ny*ny+nz*nz);nx/=nl;ny/=nl;nz/=nl;
-      const dot=nx*lx+ny*ly+nz*lz2;const rx=2*dot*nx-lx,ry=2*dot*ny-ly,rz2=2*dot*nz-lz2;
-      const spec=Math.pow(Math.max(0,rz2),2+shHiS*3)*shHiB;const frn=Math.pow(1-Math.max(0,nz),.5)*shFr*spec*.5;
-      const s=Math.min(2,(spec+frn)*1.8);
-      fr=Math.min(1,fr+s*shLR);fg=Math.min(1,fg+s*shLG);fb2=Math.min(1,fb2+s*shLB);
-    }
-    if(doGrain){const g=grng()*utGrAmt;fr+=g;fg+=g;fb2+=g;}
-    const pi=idx*4;px[pi]=Math.max(0,Math.min(255,fr*255));px[pi+1]=Math.max(0,Math.min(255,fg*255));px[pi+2]=Math.max(0,Math.min(255,fb2*255));px[pi+3]=255;
-  }
-  ctx.putImageData(img,0,0);
-}
-
-// ── THUMBNAILS ────────────────────────────────────────────────────────────────
-function buildPreviews(){
-  const perm=mkPerm(mul32(42*7919+1));
-  const TW=50,TH=44;
-  function mkGrid(gridId,presets,offset){
-    const grid=document.getElementById(gridId);grid.innerHTML='';
-    presets.forEach((preset,i)=>{
-      const gi2=i+offset;
-      const wrap=document.createElement('div');wrap.className='ut-tile'+(gi2===utTexIdx?' on':'');
-      wrap.title=preset.name;
-      wrap.onclick=()=>{utTexIdx=gi2;document.querySelectorAll('.ut-tile').forEach(x=>x.classList.remove('on'));wrap.classList.add('on');sr();};
-      const sc=preset.ts||1;
-      const vals=new Float32Array(TW*TH);
-      for(let py=0;py<TH;py++)for(let px2=0;px2<TW;px2++)vals[py*TW+px2]=preset.fn(px2/12*sc,py/11*sc,perm);
-      let vmn=Infinity,vmx=-Infinity;
-      for(let k=0;k<vals.length;k++){if(vals[k]<vmn)vmn=vals[k];if(vals[k]>vmx)vmx=vals[k];}
-      const vrange=vmx-vmn||1;
-      const cv=document.createElement('canvas');cv.width=TW;cv.height=TH;
-      const c2=cv.getContext('2d');const id2=c2.createImageData(TW,TH);
-      for(let k=0;k<vals.length;k++){
-        const v=Math.pow((vals[k]-vmn)/vrange,.85);
-        const g=Math.round(Math.max(0,Math.min(255,v*255)));
-        const ii=k*4;id2.data[ii]=g;id2.data[ii+1]=g;id2.data[ii+2]=g;id2.data[ii+3]=255;
-      }
-      c2.putImageData(id2,0,0);
-      const lbl=document.createElement('div');lbl.className='ut-tile-lbl';lbl.textContent=preset.name;
-      wrap.appendChild(cv);wrap.appendChild(lbl);grid.appendChild(wrap);
-    });
-  }
-  mkGrid('utGridA',GROUP_A,0);
-}
-
-// ── UTILS ─────────────────────────────────────────────────────────────────────
 function applySize(){let w=Math.max(64,Math.min(2048,parseInt(document.getElementById('cvW').value)||512));let h=Math.max(64,Math.min(2048,parseInt(document.getElementById('cvH').value)||512));document.getElementById('cvW').value=w;document.getElementById('cvH').value=h;const c=document.getElementById('mainCanvas');c.width=w;c.height=h;document.getElementById('sSz').textContent=w+' × '+h;doRender();}
 function qs(w,h){document.getElementById('cvW').value=w;document.getElementById('cvH').value=h;applySize();}
 function sv(id,v,vid){document.getElementById(id).value=v;uv(vid,v);}
 function randomize(){
   sv('seed',Math.floor(Math.random()*999)+1,'sdV');
-  if(noiseType==='unitexture'){
-    sv('utSeed',Math.floor(Math.random()*999)+1,'utSdV');sv('noiseScale',10+Math.floor(Math.random()*80),'nsV');
-    sv('utSc',20+Math.floor(Math.random()*300),'utScV');sv('utRot',Math.floor(Math.random()*360),'utRoV');
-    sv('utAmt',55+Math.floor(Math.random()*45),'utAmV');sv('utCt',100+Math.floor(Math.random()*200),'utCtV');
-    sv('utHue',Math.floor(Math.random()*360),'utHuV');sv('utSat',Math.floor(Math.random()*35),'utSaV');sv('utLum',20+Math.floor(Math.random()*50),'utLuV');
-    sv('utWrp',Math.floor(Math.random()*70),'utWrpV');sv('utEdg',Math.floor(Math.random()*70),'utEdgV');sv('utDtl',Math.floor(Math.random()*70),'utDtlV');sv('utFSz',30+Math.floor(Math.random()*200),'utFSzV');sv('utDpth',Math.floor(Math.random()*70),'utDpthV');sv('utWear',Math.floor(Math.random()*60),'utWearV');sv('utGrit',Math.floor(Math.random()*50),'utGritV');
-    utTexIdx=Math.floor(Math.random()*ALL_PRESETS.length);
-    document.querySelectorAll('.ut-tile').forEach((x,i)=>x.classList.toggle('on',i===utTexIdx));
-    document.getElementById('utBlend').value=['overlay','multiply','screen','softlight','hardlight'][Math.floor(Math.random()*5)];
-  }else{
-    sv('noiseScale',10+Math.floor(Math.random()*90),'nsV');sv('noiseDensity',2+Math.floor(Math.random()*12),'ndV');sv('noiseAngle',Math.floor(Math.random()*180),'naV');sv('roughness',Math.floor(Math.random()*80),'rrV');sv('embossDepth',40+Math.floor(Math.random()*60),'edV');sv('lightAngle',Math.floor(Math.random()*360),'laV');sv('lightElev',20+Math.floor(Math.random()*65),'leV');sv('specularity',Math.floor(Math.random()*70),'spV');sv('specHard',5+Math.floor(Math.random()*80),'shV');sv('ambient',Math.floor(Math.random()*30),'amV');sv('hueVar',Math.floor(Math.random()*40),'hvV');
-    if(noiseType==='fiber'&&fiberMode==='classic'){sv('fcDens',2+Math.floor(Math.random()*18),'fcDensV');sv('fcBend',Math.floor(Math.random()*90),'fcBendV');sv('fcScr',Math.floor(Math.random()*70),'fcScrV');}
-    if(noiseType==='fiber'&&fiberMode==='rock'){sv('fBumpSz',5+Math.floor(Math.random()*60),'fBumpSzV');sv('fBumpH',20+Math.floor(Math.random()*80),'fBumpHV');sv('fJag',Math.floor(Math.random()*90),'fJagV');sv('fSpr',Math.floor(Math.random()*100),'fSprV');sv('fMic',Math.floor(Math.random()*70),'fMicV');sv('fPitSz',5+Math.floor(Math.random()*90),'fPitSzV');sv('fPitDp',5+Math.floor(Math.random()*90),'fPitDpV');}
-    if(noiseType==='water'&&waterMode==='classic'){sv('wcDir',-70+Math.floor(Math.random()*141),'wcDirV');sv('wcChop',Math.floor(Math.random()*90),'wcChopV');sv('wcTurb',Math.floor(Math.random()*80),'wcTurbV');sv('wcFreq',5+Math.floor(Math.random()*90),'wcFreqV');}
-    if(noiseType==='water'&&waterMode==='smooth'){sv('wDir',-70+Math.floor(Math.random()*141),'wDirV');sv('wSwell',5+Math.floor(Math.random()*60),'wSwellV');sv('wCrst',Math.floor(Math.random()*80),'wCrstV');sv('wCDir',-170+Math.floor(Math.random()*341),'wCDirV');sv('wChop',Math.floor(Math.random()*80),'wChopV');sv('wRip',Math.floor(Math.random()*90),'wRipV');sv('wWarp',Math.floor(Math.random()*80),'wWarpV');}
-    updP();
-  }
+  if(noiseType==='unitexture'){sv('utSeed',Math.floor(Math.random()*999)+1,'utSdV');sv('noiseScale',10+Math.floor(Math.random()*80),'nsV');sv('utSc',20+Math.floor(Math.random()*300),'utScV');sv('utRot',Math.floor(Math.random()*360),'utRoV');sv('utAmt',55+Math.floor(Math.random()*45),'utAmV');sv('utCt',100+Math.floor(Math.random()*200),'utCtV');sv('utHue',10+Math.floor(Math.random()*40),'utHuV');sv('utSat',20+Math.floor(Math.random()*50),'utSaV');sv('utLum',15+Math.floor(Math.random()*45),'utLuV');sv('utWrp',Math.floor(Math.random()*70),'utWrpV');sv('utEdg',Math.floor(Math.random()*70),'utEdgV');sv('utDtl',Math.floor(Math.random()*70),'utDtlV');sv('utFSz',30+Math.floor(Math.random()*200),'utFSzV');sv('utDpth',Math.floor(Math.random()*70),'utDpthV');sv('utWear',Math.floor(Math.random()*60),'utWearV');sv('utGrit',Math.floor(Math.random()*50),'utGritV');utTexIdx=Math.floor(Math.random()*ALL_PRESETS.length);document.querySelectorAll('.ut-tile').forEach((x,i)=>x.classList.toggle('on',i===utTexIdx));document.getElementById('utBlend').value=['overlay','multiply','screen','softlight','hardlight'][Math.floor(Math.random()*5)];}
+  else if(noiseType==='rusty'){sv('noiseScale',20+Math.floor(Math.random()*80),'nsV');sv('roughness',Math.floor(Math.random()*70),'rrV');sv('noiseAngle',Math.floor(Math.random()*180),'naV');sv('embossDepth',50+Math.floor(Math.random()*50),'edV');sv('lightAngle',150+Math.floor(Math.random()*180),'laV');sv('lightElev',20+Math.floor(Math.random()*65),'leV');sv('specularity',10+Math.floor(Math.random()*55),'spV');sv('specHard',5+Math.floor(Math.random()*60),'shV');sv('ambient',5+Math.floor(Math.random()*20),'amV');sv('hueShift',5+Math.floor(Math.random()*40),'huV');sv('saturation',45+Math.floor(Math.random()*45),'saTV');sv('brightness',20+Math.floor(Math.random()*45),'brV');sv('darkTint',35+Math.floor(Math.random()*40),'dtV');sv('rxOx',20+Math.floor(Math.random()*70),'rxOxV');sv('rxBlm',10+Math.floor(Math.random()*80),'rxBlmV');sv('rxBEdg',Math.floor(Math.random()*90),'rxBEdgV');sv('rxPDns',10+Math.floor(Math.random()*80),'rxPDnsV');sv('rxPDp',Math.floor(Math.random()*90),'rxPDpV');sv('rxStr',Math.floor(Math.random()*80),'rxStrV');sv('rxSDir',60+Math.floor(Math.random()*60),'rxSDirV');sv('rxSVar',Math.floor(Math.random()*90),'rxSVarV');sv('rxGrt',Math.floor(Math.random()*70),'rxGrtV');sv('rxWrp',Math.floor(Math.random()*70),'rxWrpV');updP();}
+  else{sv('noiseScale',10+Math.floor(Math.random()*90),'nsV');sv('noiseDensity',2+Math.floor(Math.random()*12),'ndV');sv('noiseAngle',Math.floor(Math.random()*180),'naV');sv('roughness',20+Math.floor(Math.random()*70),'rrV');sv('embossDepth',50+Math.floor(Math.random()*50),'edV');sv('lightAngle',150+Math.floor(Math.random()*160),'laV');sv('lightElev',25+Math.floor(Math.random()*55),'leV');sv('specularity',25+Math.floor(Math.random()*55),'spV');sv('specHard',5+Math.floor(Math.random()*60),'shV');sv('ambient',5+Math.floor(Math.random()*20),'amV');sv('hueVar',8+Math.floor(Math.random()*30),'hvV');sv('hueShift',10+Math.floor(Math.random()*35),'huV');sv('saturation',45+Math.floor(Math.random()*45),'saTV');sv('brightness',25+Math.floor(Math.random()*40),'brV');sv('darkTint',35+Math.floor(Math.random()*40),'dtV');if(noiseType==='fiber'&&fiberMode==='rock'){sv('fBumpSz',15+Math.floor(Math.random()*65),'fBumpSzV');sv('fBumpH',30+Math.floor(Math.random()*70),'fBumpHV');sv('fJag',10+Math.floor(Math.random()*80),'fJagV');sv('fSpr',20+Math.floor(Math.random()*80),'fSprV');sv('fMic',10+Math.floor(Math.random()*70),'fMicV');sv('fPitSz',25+Math.floor(Math.random()*70),'fPitSzV');sv('fPitDp',25+Math.floor(Math.random()*70),'fPitDpV');}if(noiseType==='water'&&waterMode==='smooth'){sv('wDir',-70+Math.floor(Math.random()*141),'wDirV');sv('wSwell',5+Math.floor(Math.random()*60),'wSwellV');sv('wCrst',Math.floor(Math.random()*80),'wCrstV');sv('wCDir',-170+Math.floor(Math.random()*341),'wCDirV');sv('wChop',Math.floor(Math.random()*80),'wChopV');sv('wRip',Math.floor(Math.random()*90),'wRipV');sv('wWarp',Math.floor(Math.random()*80),'wWarpV');}updP();}
   sr();
 }
-function resetDefs(){const d={noiseScale:51,noiseDensity:7,noiseAngle:35,roughness:21,seed:42,embossDepth:100,normalScale:1,lightAngle:135,lightElev:45,contrast:50,specularity:30,specHard:30,ambient:12,shadowSoft:40,sharpAmt:3,hueShift:48,saturation:75,brightness:55,darkTint:40,hueVar:12,fBumpSz:20,fBumpH:70,fJag:20,fSpr:50,fMic:20,fPitSz:50,fPitDp:40,wDir:0,wSwell:30,wChop:30,wCDir:45,wRip:40,wCrst:30,wWarp:20,utWrp:0,utEdg:0,utDtl:0,utFSz:100,utDpth:0,utWear:0,utGrit:0,fcDens:6,fcBend:40,fcScr:20,wcDir:0,wcChop:50,wcTurb:40,wcFreq:40};const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',sharpAmt:'saV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV',fBumpSz:'fBumpSzV',fBumpH:'fBumpHV',fJag:'fJagV',fSpr:'fSprV',fMic:'fMicV',fPitSz:'fPitSzV',fPitDp:'fPitDpV',wDir:'wDirV',wSwell:'wSwellV',wChop:'wChopV',wCDir:'wCDirV',wRip:'wRipV',wCrst:'wCrstV',wWarp:'wWarpV',utWrp:'utWrpV',utEdg:'utEdgV',utDtl:'utDtlV',utFSz:'utFSzV',utDpth:'utDpthV',utWear:'utWearV',utGrit:'utGritV',fcDens:'fcDensV',fcBend:'fcBendV',fcScr:'fcScrV',wcDir:'wcDirV',wcChop:'wcChopV',wcTurb:'wcTurbV',wcFreq:'wcFreqV'};Object.entries(d).forEach(([id,v])=>{document.getElementById(id).value=v;uv(vm[id],v);});updP();sr();}
+function resetDefs(){applyRustPreset('heavy');}
 
-// ── EXPORT (PNG/JPEG) ─────────────────────────────────────────────────────────
 let _exportFmt='png';
-function saveImg(fmt){_exportFmt=fmt;setTimeout(()=>{document.getElementById('exportFmtLabel').textContent=fmt.toUpperCase();document.getElementById('exportName').value='rustveil';showM('exportModal');setTimeout(()=>{const n=document.getElementById('exportName');n.focus();n.select();},60);},10);}
-function doExport(){const c=document.getElementById('mainCanvas'),fmt=_exportFmt;const name=(document.getElementById('exportName').value.trim()||'rustveil');const l=document.createElement('a');l.download=name+'.'+fmt;l.href=c.toDataURL(fmt==='jpg'?'image/jpeg':'image/png',.95);l.click();hideM('exportModal');}
+function saveImg(fmt){_exportFmt=fmt;setTimeout(()=>{document.getElementById('exportFmtLabel').textContent=fmt.toUpperCase();document.getElementById('exportName').value='rust_texture';showM('exportModal');setTimeout(()=>{const n=document.getElementById('exportName');n.focus();n.select();},60);},10);}
+function doExport(){const c=document.getElementById('mainCanvas'),fmt=_exportFmt;const name=(document.getElementById('exportName').value.trim()||'rust_texture');const l=document.createElement('a');l.download=name+'.'+fmt;l.href=c.toDataURL(fmt==='jpg'?'image/jpeg':'image/png',.95);l.click();hideM('exportModal');}
 
-// ── SAI FORMAT ────────────────────────────────────────────────────────────────
 const SM='TF95::',SK='TextureForge95_SAI_KEY_v1_EMBOSS';
 function _kt(){const e=new TextEncoder(),kb=e.encode(SK);const t=new Uint8Array(256);for(let i=0;i<256;i++)t[i]=kb[i%kb.length];return t;}
 const _KT=_kt();
@@ -863,110 +733,30 @@ function enc(b){const o=new Uint8Array(b.length);let c=0x5A;for(let i=0;i<b.leng
 function dec2(b){const o=new Uint8Array(b.length);let c=0x5A;for(let i=0;i<b.length;i++){const k=(_KT[i&255]^c)&0xFF;o[i]=b[i]^k;c=b[i];}return o;}
 function u2b(b){let s='';for(let i=0;i<b.length;i++)s+=String.fromCharCode(b[i]);return btoa(s);}
 function b2u(s){const a=atob(s),o=new Uint8Array(a.length);for(let i=0;i<a.length;i++)o[i]=a.charCodeAt(i);return o;}
-function collectSettings(){const ids=['noiseScale','noiseDensity','noiseAngle','roughness','seed','embossDepth','normalScale','lightAngle','lightElev','contrast','specularity','specHard','ambient','shadowSoft','sharpAmt','hueShift','saturation','brightness','darkTint','hueVar','shHiB','shHiS','shBS','shFr','shLC','shLCS','utAmt','utSc','utRot','utOx','utOy','utCt','utBr','utVig','utGr','utHue','utSat','utLum','utVar','utSeed','fBumpSz','fBumpH','fJag','fSpr','fMic','fPitSz','fPitDp','wDir','wSwell','wChop','wCDir','wRip','wCrst','wWarp','utWrp','utEdg','utDtl','utFSz','utDpth','utWear','utGrit','fcDens','fcBend','fcScr','wcDir','wcChop','wcTurb','wcFreq'];const o={_f:'TF95v8',_d:new Date().toISOString(),noiseType,fiberMode,waterMode,ckSh:cks.ckSh,ckAO:cks.ckAO,ckShiny:cks.ckShiny,ckUTInv:cks.ckUTInv,ckUTGr:cks.ckUTGr,utTexIdx,utTintH,utTintS,utTintL,utTintOn,utBlend:document.getElementById('utBlend').value,cW:document.getElementById('mainCanvas').width,cH:document.getElementById('mainCanvas').height};ids.forEach(id=>{const el=document.getElementById(id);if(el)o[id]=parseFloat(el.value);});return o;}
+function collectSettings(){const ids=['noiseScale','noiseDensity','noiseAngle','roughness','seed','embossDepth','normalScale','lightAngle','lightElev','contrast','specularity','specHard','ambient','shadowSoft','sharpAmt','hueShift','saturation','brightness','darkTint','hueVar','shHiB','shHiS','shBS','shFr','shLC','shLCS','utAmt','utSc','utRot','utOx','utOy','utCt','utBr','utVig','utGr','utHue','utSat','utLum','utVar','utSeed','fBumpSz','fBumpH','fJag','fSpr','fMic','fPitSz','fPitDp','wDir','wSwell','wChop','wCDir','wRip','wCrst','wWarp','rxOx','rxBlm','rxBEdg','rxPDns','rxPDp','rxStr','rxSDir','rxSVar','rxGrt','rxWrp','utWrp','utEdg','utDtl','utFSz','utDpth','utWear','utGrit','fcDens','fcBend','fcScr','wcDir','wcChop','wcTurb','wcFreq'];const o={_f:'TF95v8',_d:new Date().toISOString(),noiseType,fiberMode,waterMode,ckSh:cks.ckSh,ckAO:cks.ckAO,ckShiny:cks.ckShiny,ckUTInv:cks.ckUTInv,ckUTGr:cks.ckUTGr,utTexIdx,utTintH,utTintS,utTintL,utTintOn,utBlend:document.getElementById('utBlend').value,cW:document.getElementById('mainCanvas').width,cH:document.getElementById('mainCanvas').height};ids.forEach(id=>{const el=document.getElementById(id);if(el)o[id]=parseFloat(el.value);});return o;}
 function encodeSAI(obj){const p='SAI1\n'+JSON.stringify(obj)+'\nSAI1END';const b=new TextEncoder().encode(p);return SM+u2b(enc(b));}
 function decodeSAI(t){t=t.trim();if(!t.startsWith(SM))throw new Error('Not a .sai file');const b=b2u(t.slice(SM.length));const p=new TextDecoder().decode(dec2(b));if(!p.startsWith('SAI1\n')||!p.endsWith('\nSAI1END'))throw new Error('Corrupted .sai');return JSON.parse(p.slice(5,p.length-8));}
-
-// *** FIXED: saveSAI now opens a rename modal instead of saving directly ***
-function saveSAI(){
-  // Generate a smart default name based on mode + timestamp
-  const modeShort = noiseType==='unitexture' ? 'unitex' : noiseType;
-  const ts = new Date().toISOString().slice(0,10).replace(/-/g,'');
-  document.getElementById('saiSaveName').value = 'preset_' + modeShort + '_' + ts;
-  showM('saiSaveModal');
-  setTimeout(()=>{
-    const n = document.getElementById('saiSaveName');
-    n.focus();
-    n.select();
-  }, 60);
-}
-
-function doSaveSAI(){
-  const name = (document.getElementById('saiSaveName').value.trim() || 'preset');
-  const content = encodeSAI(collectSettings());
-  const blob = new Blob([content], {type:'text/plain'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = name + '.sai';
-  a.click();
-  URL.revokeObjectURL(url);
-  hideM('saiSaveModal');
-}
-
+function saveSAI(){const modeShort=noiseType==='unitexture'?'unitex':noiseType;const ts=new Date().toISOString().slice(0,10).replace(/-/g,'');document.getElementById('saiSaveName').value='rust_'+modeShort+'_'+ts;showM('saiSaveModal');setTimeout(()=>{const n=document.getElementById('saiSaveName');n.focus();n.select();},60);}
+function doSaveSAI(){const name=(document.getElementById('saiSaveName').value.trim()||'rust_preset');const content=encodeSAI(collectSettings());const blob=new Blob([content],{type:'text/plain'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name+'.sai';a.click();URL.revokeObjectURL(url);hideM('saiSaveModal');}
 function triggerSAI(){document.getElementById('saiIn').value='';document.getElementById('saiIn').click();}
 function onSAI(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{const t=ev.target.result;try{const o=decodeSAI(t);pendingSAI=o;document.getElementById('saiInfo').innerHTML='<b>'+file.name+'</b> — Mode: '+(o.noiseType||'?')+' '+((o.cW||'?')+'×'+(o.cH||'?'));document.getElementById('saiPre').textContent=t.trim().slice(0,140)+'…';document.getElementById('saiApply').style.display='';showM('saiModal');}catch(err){pendingSAI=null;document.getElementById('saiInfo').innerHTML='<span style="color:red">❌ '+err.message+'</span>';document.getElementById('saiPre').textContent='';document.getElementById('saiApply').style.display='none';showM('saiModal');}};r.readAsText(file);}
-function applySAI(){if(!pendingSAI)return;const o=pendingSAI;const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',sharpAmt:'saV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV',shHiB:'shHiBV',shHiS:'shHiSV',shBS:'shBSV',shFr:'shFrV',shLC:'shLCV',shLCS:'shLCSV',utAmt:'utAmV',utSc:'utScV',utRot:'utRoV',utOx:'utOxV',utOy:'utOyV',utCt:'utCtV',utBr:'utBrV',utVig:'utVgV',utGr:'utGrV',utHue:'utHuV',utSat:'utSaV',utLum:'utLuV',utVar:'utVaV',utSeed:'utSdV',fBumpSz:'fBumpSzV',fBumpH:'fBumpHV',fJag:'fJagV',fSpr:'fSprV',fMic:'fMicV',fPitSz:'fPitSzV',fPitDp:'fPitDpV',wDir:'wDirV',wSwell:'wSwellV',wChop:'wChopV',wCDir:'wCDirV',wRip:'wRipV',wCrst:'wCrstV',wWarp:'wWarpV',utWrp:'utWrpV',utEdg:'utEdgV',utDtl:'utDtlV',utFSz:'utFSzV',utDpth:'utDpthV',utWear:'utWearV',utGrit:'utGritV',fcDens:'fcDensV',fcBend:'fcBendV',fcScr:'fcScrV',wcDir:'wcDirV',wcChop:'wcChopV',wcTurb:'wcTurbV',wcFreq:'wcFreqV'};Object.entries(vm).forEach(([id,vid])=>{if(o[id]!==undefined){document.getElementById(id).value=o[id];uv(vid,o[id]);}});if(o.noiseType)switchN(o.noiseType);if(o.fiberMode)setFiberMode(o.fiberMode);if(o.waterMode)setWaterMode(o.waterMode);[['ckSh','ckSh'],['ckAO','ckAO'],['ckShiny','ckShiny'],['ckUTInv','ckUTInv'],['ckUTGr','ckUTGr']].forEach(([k,id])=>{if(o[k]!==undefined){cks[id]=!!o[k];document.getElementById(id).textContent=cks[id]?'✔':'';}});if(o.cW&&o.cH){document.getElementById('cvW').value=o.cW;document.getElementById('cvH').value=o.cH;const c=document.getElementById('mainCanvas');c.width=o.cW;c.height=o.cH;document.getElementById('sSz').textContent=o.cW+' × '+o.cH;}if(o.utTexIdx!==undefined){utTexIdx=Math.min(o.utTexIdx||0,ALL_PRESETS.length-1);document.querySelectorAll('.ut-tile').forEach((x,i)=>x.classList.toggle('on',i===utTexIdx));}if(o.utBlend)document.getElementById('utBlend').value=o.utBlend;if(o.utTintH!==undefined){utTintH=o.utTintH;utTintS=o.utTintS;utTintL=o.utTintL;utTintOn=o.utTintOn;}updP();upSP();hideM('saiModal');doRender();pendingSAI=null;}
+function applySAI(){if(!pendingSAI)return;const o=pendingSAI;const vm={noiseScale:'nsV',noiseDensity:'ndV',noiseAngle:'naV',roughness:'rrV',seed:'sdV',embossDepth:'edV',normalScale:'nmV',lightAngle:'laV',lightElev:'leV',contrast:'cnV',specularity:'spV',specHard:'shV',ambient:'amV',shadowSoft:'ssV',sharpAmt:'saV',hueShift:'huV',saturation:'saTV',brightness:'brV',darkTint:'dtV',hueVar:'hvV',shHiB:'shHiBV',shHiS:'shHiSV',shBS:'shBSV',shFr:'shFrV',shLC:'shLCV',shLCS:'shLCSV',utAmt:'utAmV',utSc:'utScV',utRot:'utRoV',utOx:'utOxV',utOy:'utOyV',utCt:'utCtV',utBr:'utBrV',utVig:'utVgV',utGr:'utGrV',utHue:'utHuV',utSat:'utSaV',utLum:'utLuV',utVar:'utVaV',utSeed:'utSdV',fBumpSz:'fBumpSzV',fBumpH:'fBumpHV',fJag:'fJagV',fSpr:'fSprV',fMic:'fMicV',fPitSz:'fPitSzV',fPitDp:'fPitDpV',wDir:'wDirV',wSwell:'wSwellV',wChop:'wChopV',wCDir:'wCDirV',wRip:'wRipV',wCrst:'wCrstV',wWarp:'wWarpV',rxOx:'rxOxV',rxBlm:'rxBlmV',rxBEdg:'rxBEdgV',rxPDns:'rxPDnsV',rxPDp:'rxPDpV',rxStr:'rxStrV',rxSDir:'rxSDirV',rxSVar:'rxSVarV',rxGrt:'rxGrtV',rxWrp:'rxWrpV',utWrp:'utWrpV',utEdg:'utEdgV',utDtl:'utDtlV',utFSz:'utFSzV',utDpth:'utDpthV',utWear:'utWearV',utGrit:'utGritV',fcDens:'fcDensV',fcBend:'fcBendV',fcScr:'fcScrV',wcDir:'wcDirV',wcChop:'wcChopV',wcTurb:'wcTurbV',wcFreq:'wcFreqV'};Object.entries(vm).forEach(([id,vid])=>{if(o[id]!==undefined){document.getElementById(id).value=o[id];uv(vid,o[id]);}});if(o.noiseType)switchN(o.noiseType);if(o.fiberMode)setFiberMode(o.fiberMode);if(o.waterMode)setWaterMode(o.waterMode);[['ckSh','ckSh'],['ckAO','ckAO'],['ckShiny','ckShiny'],['ckUTInv','ckUTInv'],['ckUTGr','ckUTGr']].forEach(([k,id])=>{if(o[k]!==undefined){cks[id]=!!o[k];document.getElementById(id).textContent=cks[id]?'✔':'';}});if(o.cW&&o.cH){document.getElementById('cvW').value=o.cW;document.getElementById('cvH').value=o.cH;const c=document.getElementById('mainCanvas');c.width=o.cW;c.height=o.cH;document.getElementById('sSz').textContent=o.cW+' × '+o.cH;}if(o.utTexIdx!==undefined){utTexIdx=Math.min(o.utTexIdx||0,ALL_PRESETS.length-1);document.querySelectorAll('.ut-tile').forEach((x,i)=>x.classList.toggle('on',i===utTexIdx));}if(o.utBlend)document.getElementById('utBlend').value=o.utBlend;if(o.utTintH!==undefined){utTintH=o.utTintH;utTintS=o.utTintS;utTintL=o.utTintL;utTintOn=o.utTintOn;}updP();upSP();hideM('saiModal');doRender();pendingSAI=null;}
 
-// ── DRAG & DROP ───────────────────────────────────────────────────────────────
-let _dropFile = null;      // holds the File object pending confirmation
-let _dragDepth = 0;        // track enter/leave nesting
+let _dropFile=null,_dragDepth=0;
+document.addEventListener('dragenter',e=>{e.preventDefault();_dragDepth++;if(e.dataTransfer&&e.dataTransfer.types&&e.dataTransfer.types.includes('Files'))document.getElementById('dropOverlay').classList.add('active');});
+document.addEventListener('dragleave',e=>{e.preventDefault();_dragDepth--;if(_dragDepth<=0){_dragDepth=0;document.getElementById('dropOverlay').classList.remove('active');}});
+document.addEventListener('dragover',e=>{e.preventDefault();});
+document.addEventListener('drop',e=>{e.preventDefault();_dragDepth=0;document.getElementById('dropOverlay').classList.remove('active');const file=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];if(!file)return;if(!file.name.toLowerCase().endsWith('.sai')){document.getElementById('rs').textContent='⚠ Not a .sai file';setTimeout(()=>document.getElementById('rs').textContent='Ready',2500);return;}_dropFile=file;document.getElementById('confirmFileName').textContent='"'+file.name+'"';showM('confirmOpenModal');});
+function cancelDrop(){_dropFile=null;hideM('confirmOpenModal');}
+function confirmDrop(){hideM('confirmOpenModal');if(!_dropFile)return;const file=_dropFile;_dropFile=null;const r=new FileReader();r.onload=ev=>{const t=ev.target.result;try{const o=decodeSAI(t);pendingSAI=o;applySAI();}catch(err){document.getElementById('rs').textContent='❌ Bad .sai';setTimeout(()=>document.getElementById('rs').textContent='Ready',2500);}};r.readAsText(file);}
 
-document.addEventListener('dragenter', e => {
-  e.preventDefault();
-  _dragDepth++;
-  // Only show overlay if it looks like a file drag
-  if (e.dataTransfer && e.dataTransfer.types && e.dataTransfer.types.includes('Files')) {
-    document.getElementById('dropOverlay').classList.add('active');
-  }
+window.addEventListener('load',()=>{
+  buildPreviews();
+  applyRustPreset('heavy');
+  updP();upSP();
+  document.getElementById('fiberExtras').style.display='block';
+  doRender();
 });
-document.addEventListener('dragleave', e => {
-  e.preventDefault();
-  _dragDepth--;
-  if (_dragDepth <= 0) {
-    _dragDepth = 0;
-    document.getElementById('dropOverlay').classList.remove('active');
-  }
-});
-document.addEventListener('dragover', e => { e.preventDefault(); });
-document.addEventListener('drop', e => {
-  e.preventDefault();
-  _dragDepth = 0;
-  document.getElementById('dropOverlay').classList.remove('active');
-  const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-  if (!file) return;
-  if (!file.name.toLowerCase().endsWith('.sai')) {
-    // Show a quick error in the status bar and bail
-    document.getElementById('rs').textContent = '⚠ Not a .sai file';
-    setTimeout(() => document.getElementById('rs').textContent = 'Ready', 2500);
-    return;
-  }
-  // Store the file and show confirmation before loading
-  _dropFile = file;
-  document.getElementById('confirmFileName').textContent = '"' + file.name + '"';
-  showM('confirmOpenModal');
-});
-
-function cancelDrop() {
-  _dropFile = null;
-  hideM('confirmOpenModal');
-}
-
-function confirmDrop() {
-  hideM('confirmOpenModal');
-  if (!_dropFile) return;
-  const file = _dropFile;
-  _dropFile = null;
-  const r = new FileReader();
-  r.onload = ev => {
-    const t = ev.target.result;
-    try {
-      const o = decodeSAI(t);
-      pendingSAI = o;
-      document.getElementById('saiInfo').innerHTML = '<b>' + file.name + '</b> — Mode: ' + (o.noiseType || '?') + ' ' + ((o.cW || '?') + '×' + (o.cH || '?'));
-      document.getElementById('saiPre').textContent = t.trim().slice(0, 140) + '…';
-      document.getElementById('saiApply').style.display = '';
-      // Apply immediately — user already confirmed
-      applySAI();
-    } catch (err) {
-      document.getElementById('rs').textContent = '❌ Bad .sai';
-      setTimeout(() => document.getElementById('rs').textContent = 'Ready', 2500);
-    }
-  };
-  r.readAsText(file);
-}
-
-window.addEventListener('load',()=>{buildPreviews();updP();upSP();document.getElementById('fiberExtras').style.display='block';doRender();});
 </script>
 </body>
 </html>
